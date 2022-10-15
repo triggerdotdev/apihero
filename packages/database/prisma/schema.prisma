@@ -1,18 +1,629 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["interactiveTransactions", "fullTextSearch"]
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id    String @id @default(cuid())
+  email String @unique
+
+  authenticationMethod      AuthenticationMethod
+  accessToken               String?
+  authenticationProfile     Json?
+  authenticationExtraParams Json?
+
+  authTokens AuthToken[]
+
+  displayName String?
+  name        String?
+  avatarUrl   String?
+
+  admin Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  workspaces Workspace[]
+}
+
+model RequestToken {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+
+  token String @unique
+
+  authToken AuthToken?
+}
+
+model AuthToken {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  token String @unique
+
+  requestToken   RequestToken @relation(fields: [requestTokenId], references: [id])
+  requestTokenId String       @unique
+
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
+}
+
+model Workspace {
+  id    String @id @default(cuid())
+  slug  String @unique
+  title String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users    User[]
+  projects Project[]
+}
+
+model Project {
+  id    String @id @default(cuid())
+  slug  String
+  title String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  workspaceId String
+
+  httpClients HttpClient[]
+
+  @@unique([workspaceId, slug])
+}
+
+model HttpClient {
+  id String @id @default(cuid())
+
+  integration   Integration @relation(fields: [integrationId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  integrationId String
+
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  projectId String
+
+  endpoints       HttpEndpoint[]
+  authentications HttpClientAuthentication[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  cacheEnabled Boolean @default(false)
+  cacheTtl     Int     @default(0)
+
+  @@unique([projectId, integrationId])
+}
+
+model HttpClientAuthentication {
+  id String @id @default(cuid())
+
+  httpClient   HttpClient @relation(fields: [httpClientId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  httpClientId String
+
+  securityScheme   ApiSchemaSecurityScheme @relation(fields: [securitySchemeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  securitySchemeId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  authenticationData Json?
+  HttpRequestLog     HttpRequestLog[]
+
+  username String? /// @encrypted
+  password String? /// @encrypted
+
+  @@unique([httpClientId, securitySchemeId])
+}
+
+model HttpEndpoint {
+  id String @id @default(cuid())
+
+  client   HttpClient @relation(fields: [clientId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  clientId String
+
+  operation   ApiSchemaOperation @relation(fields: [operationId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  operationId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  requestLogs HttpRequestLog[]
+
+  cacheEnabled Boolean @default(false)
+  cacheTtl     Int     @default(0)
+
+  @@unique([clientId, operationId])
+}
+
+model HttpRequestLog {
+  id         String     @id
+  method     HTTPMethod @default(GET)
+  statusCode Int
+  baseUrl    String
+  path       String
+  search     String     @default("")
+
+  requestBody     Json?
+  requestHeaders  Json?
+  responseBody    Json?
+  responseHeaders Json?
+
+  params       Json?
+  mappings     Json?
+  isCacheHit   Boolean
+  responseSize Int     @default(0)
+
+  requestDuration Float @default(0)
+  gatewayDuration Float @default(0)
+
+  createdAt DateTime @default(now())
+
+  endpoint   HttpEndpoint @relation(fields: [endpointId], references: [id], onDelete: Cascade)
+  endpointId String
+
+  clientAuthentication   HttpClientAuthentication? @relation(fields: [clientAuthenticationId], references: [id], onDelete: SetNull)
+  clientAuthenticationId String?
+}
+
+enum HTTPMethod {
+  GET
+  HEAD
+  POST
+  PUT
+  PATCH
+  OPTIONS
+  DELETE
+  TRACE
+}
+
+enum AuthenticationMethod {
+  GITHUB
+  MAGIC_LINK
+}
+
+model Integration {
+  id                    String   @id @default(cuid())
+  name                  String
+  description           String   @default("")
+  officialDocumentation String?
+  keywords              String[] @default([])
+  slug                  String   @unique
+  authorNotes           String   @default("")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  logoImage String?
+
+  schemas         ApiSchema[] @relation("allSchemas")
+  currentSchema   ApiSchema?  @relation("currentSchema", fields: [currentSchemaId], references: [id])
+  currentSchemaId String?
+
+  releases Release[]
+
+  clients HttpClient[]
+}
+
+model Release {
+  id           String  @id @default(cuid())
+  version      String
+  message      String
+  isPrerelease Boolean @default(false)
+
+  integration   Integration @relation(fields: [integrationId], references: [id], onDelete: Cascade)
+  integrationId String
+
+  schema   ApiSchema @relation(fields: [schemaId], references: [id])
+  schemaId String
+
+  commit      Json?
+  tagRef      Json?
+  gitRef      Json?
+  releaseData Json?
+
+  createdAt DateTime @default(now())
+}
+
+model ApiSchema {
+  id             String @id @default(cuid())
+  title          String
+  version        String
+  openApiVersion String
+
+  description    String?
+  termsOfService String?
+  license        String?
+  contact        String?
+
+  jsonSchemaDialect String?
+
+  tags    ApiSchemaTag[]
+  servers ApiSchemaServer[]
+  paths   ApiSchemaPath[]
+
+  securityOptional     Boolean                        @default(false)
+  securityRequirements ApiSchemaSecurityRequirement[]
+
+  externalDocsUrl         String?
+  externalDocsDescription String?
+
+  parameters      ApiSchemaParameter[]
+  operations      ApiSchemaOperation[]
+  securitySchemes ApiSchemaSecurityScheme[]
+  examples        ApiSchemaExample[]
+  models          ApiSchemaModel[]
+  responseBodies  ApiSchemaResponseBody[]
+  requestBodies   ApiSchemaRequestBody[]
+  headers         ApiSchemaResponseHeader[]
+
+  changes ApiSchemaChange[]
+
+  integration   Integration @relation("allSchemas", fields: [integrationId], references: [id], onDelete: Cascade)
+  integrationId String
+
+  releases Release[]
+
+  rawData Json
+
+  currentIntegrations Integration[] @relation("currentSchema")
+}
+
+model ApiSchemaChange {
+  id        String    @id @default(cuid())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  rawData   Json
+  schema    ApiSchema @relation(fields: [schemaId], references: [id], onDelete: Cascade)
+  schemaId  String
+}
+
+model ApiSchemaTag {
+  id          String  @id @default(cuid())
+  name        String
+  description String?
+
+  schema     ApiSchema            @relation(fields: [schemaId], references: [id], onDelete: Cascade)
+  schemaId   String
+  operations ApiSchemaOperation[]
+
+  @@unique([name, schemaId])
+}
+
+model ApiSchemaServer {
+  id          String  @id @default(cuid())
+  url         String
+  description String?
+
+  schema      ApiSchema?          @relation(fields: [schemaId], references: [id], onDelete: Cascade)
+  schemaId    String?
+  path        ApiSchemaPath?      @relation(fields: [pathId], references: [id], onDelete: Cascade)
+  pathId      String?
+  operation   ApiSchemaOperation? @relation(fields: [operationId], references: [id], onDelete: Cascade)
+  operationId String?
+}
+
+model ApiSchemaPath {
+  id        String @id @default(cuid())
+  path      String
+  sortIndex Int    @default(0)
+
+  summary     String?
+  description String?
+
+  schema   ApiSchema @relation(fields: [schemaId], references: [id], onDelete: Cascade)
+  schemaId String
+
+  rawJson Json
+
+  servers    ApiSchemaServer[]
+  parameters ApiSchemaParameter[]
+  operations ApiSchemaOperation[]
+
+  @@unique([schemaId, path])
+}
+
+model ApiSchemaOperation {
+  id          String     @id @default(cuid())
+  method      HTTPMethod @default(GET)
+  operationId String
+  sortIndex   Int        @default(0)
+
+  summary                 String?
+  description             String?
+  externalDocsUrl         String?
+  externalDocsDescription String?
+  deprecated              Boolean @default(false)
+
+  tags       ApiSchemaTag[]
+  parameters ApiSchemaParameter[]
+  servers    ApiSchemaServer[]
+
+  responseBodies ApiSchemaResponseBody[]
+  requestBody    ApiSchemaRequestBody?   @relation(fields: [requestBodyId], references: [id])
+  requestBodyId  String?
+
+  securityOptional     Boolean                        @default(false)
+  securityRequirements ApiSchemaSecurityRequirement[]
+
+  extensions Json?
+  mappings   Json?
+
+  path      ApiSchemaPath  @relation(fields: [pathId], references: [id], onDelete: Cascade)
+  pathId    String
+  schema    ApiSchema      @relation(fields: [schemaId], references: [id], onDelete: Cascade)
+  schemaId  String
+  endpoints HttpEndpoint[]
+
+  @@unique([pathId, method])
+  @@unique([schemaId, operationId])
+}
+
+model ApiSchemaSecurityRequirement {
+  id String @id @default(cuid())
+
+  scopes ApiSchemaSecurityScope[]
+
+  securityScheme   ApiSchemaSecurityScheme @relation(fields: [securitySchemeId], references: [id])
+  securitySchemeId String
+
+  operation   ApiSchemaOperation? @relation(fields: [operationId], references: [id], onDelete: Cascade)
+  operationId String?
+
+  schema   ApiSchema? @relation(fields: [schemaId], references: [id], onDelete: Cascade)
+  schemaId String?
+}
+
+model ApiSchemaSecurityScheme {
+  id         String                      @id @default(cuid())
+  type       ApiSchemaSecuritySchemeType
+  identifier String
+
+  name     String?
+  location ApiSchemaSecuritySchemeLocation?
+
+  httpScheme   String?
+  bearerFormat String?
+
+  openIdConnectUrl String?
+
+  oauthFlows ApiSchemaSecurityOAuthFlow[]
+
+  summary              String?
+  description          String?
+  securityRequirements ApiSchemaSecurityRequirement[]
+
+  schema                ApiSchema                  @relation(fields: [schemaId], references: [id], onDelete: Cascade)
+  schemaId              String
+  scopes                ApiSchemaSecurityScope[]
+  clientAuthentications HttpClientAuthentication[]
+
+  title     String?
+  isEnabled Boolean @default(true)
+
+  @@unique([identifier, schemaId])
+}
+
+model ApiSchemaSecurityOAuthFlow {
+  id String @id @default(cuid())
+
+  type                   ApiSchemaSecurityOAuthFlowType
+  authorizationUrl       String?
+  tokenUrl               String?
+  refreshUrl             String?
+  deviceAuthorizationUrl String?
+
+  scopes ApiSchemaSecurityScope[]
+
+  securityScheme   ApiSchemaSecurityScheme @relation(fields: [securitySchemeId], references: [id], onDelete: Cascade)
+  securitySchemeId String
+
+  @@unique([securitySchemeId, type])
+}
+
+model ApiSchemaSecurityScope {
+  id          String @id @default(cuid())
+  name        String
+  description String
+
+  flows ApiSchemaSecurityOAuthFlow[]
+
+  securityScheme   ApiSchemaSecurityScheme? @relation(fields: [securitySchemeId], references: [id], onDelete: Cascade)
+  securitySchemeId String?
+
+  securityRequirements ApiSchemaSecurityRequirement[]
+
+  @@unique([name, securitySchemeId])
+}
+
+enum ApiSchemaSecurityOAuthFlowType {
+  IMPLICIT
+  PASSWORD
+  AUTHORIZATION_CODE
+  CLIENT_CREDENTIALS
+  DEVICE_CODE
+}
+
+enum ApiSchemaSecuritySchemeLocation {
+  QUERY
+  HEADER
+  COOKIE
+}
+
+enum ApiSchemaSecuritySchemeType {
+  APIKEY
+  HTTP
+  OAUTH2
+  OPENIDCONNECT
+  MUTUALTLS
+}
+
+model ApiSchemaResponseBody {
+  id         String  @id @default(cuid())
+  ref        String?
+  statusCode String?
+  isDefault  Boolean @default(false)
+
+  contents ApiSchemaResponseBodyContent[]
+  headers  ApiSchemaResponseHeader[]
+
+  summary     String?
+  description String?
+
+  operations ApiSchemaOperation[]
+
+  schema   ApiSchema @relation(fields: [schemaId], references: [id], onDelete: Cascade)
+  schemaId String
+
+  @@unique([ref, schemaId])
+}
+
+model ApiSchemaResponseBodyContent {
+  id               String @id @default(cuid())
+  mediaTypeRange   String
+  validationSchema Json?
+
+  responseBody   ApiSchemaResponseBody @relation(fields: [responseBodyId], references: [id], onDelete: Cascade)
+  responseBodyId String
+
+  example  Json?
+  examples ApiSchemaExample[]
+  encoding Json?
+}
+
+model ApiSchemaResponseHeader {
+  id          String  @id @default(cuid())
+  name        String
+  description String?
+  summary     String?
+
+  ref        String?
+  required   Boolean @default(false)
+  deprecated Boolean @default(false)
+
+  style            ApiSchemaParameterStyle @default(SIMPLE)
+  explode          Boolean                 @default(false)
+  validationSchema Json?
+  example          Json?
+  examples         ApiSchemaExample[]
+  responseBodies   ApiSchemaResponseBody[]
+
+  schema   ApiSchema @relation(fields: [schemaId], references: [id], onDelete: Cascade)
+  schemaId String
+
+  @@unique([ref, schemaId])
+}
+
+model ApiSchemaRequestBody {
+  id          String                        @id @default(cuid())
+  ref         String?
+  summary     String?
+  description String?
+  contents    ApiSchemaRequestBodyContent[]
+  required    Boolean                       @default(false)
+
+  operations ApiSchemaOperation[]
+
+  schema   ApiSchema @relation(fields: [schemaId], references: [id], onDelete: Cascade)
+  schemaId String
+
+  @@unique([ref, schemaId])
+}
+
+model ApiSchemaRequestBodyContent {
+  id               String @id @default(cuid())
+  mediaTypeRange   String
+  validationSchema Json?
+
+  requestBody   ApiSchemaRequestBody @relation(fields: [requestBodyId], references: [id], onDelete: Cascade)
+  requestBodyId String
+
+  example  Json?
+  examples ApiSchemaExample[]
+  encoding Json?
+}
+
+model ApiSchemaExample {
+  id            String  @id @default(cuid())
+  ref           String?
+  isDefault     Boolean @default(false)
   name          String?
-  email         String?   @unique
-  emailVerified DateTime?
+  summary       String?
+  description   String?
+  value         Json?
+  externalValue String?
+
+  parameters           ApiSchemaParameter[]
+  responseHeaders      ApiSchemaResponseHeader[]
+  responseBodyContents ApiSchemaResponseBodyContent[]
+  requestBodyContents  ApiSchemaRequestBodyContent[]
+
+  schema   ApiSchema @relation(fields: [schemaId], references: [id], onDelete: Cascade)
+  schemaId String
+
+  @@unique([ref, schemaId])
+}
+
+model ApiSchemaModel {
+  id       String @id @default(cuid())
+  name     String
+  contents Json
+  example  Json?
+
+  schema   ApiSchema @relation(fields: [schemaId], references: [id], onDelete: Cascade)
+  schemaId String
+
+  @@unique([name, schemaId])
+}
+
+model ApiSchemaParameter {
+  id              String                     @id @default(cuid())
+  ref             String?
+  name            String
+  location        ApiSchemaParameterLocation
+  required        Boolean                    @default(false)
+  deprecated      Boolean                    @default(false)
+  allowEmptyValue Boolean                    @default(false)
+  summary         String?
+  description     String?
+
+  style            ApiSchemaParameterStyle @default(SIMPLE)
+  explode          Boolean                 @default(false)
+  allowReserved    Boolean                 @default(false)
+  validationSchema Json?
+  example          Json?
+  examples         ApiSchemaExample[]
+
+  paths      ApiSchemaPath[]
+  operations ApiSchemaOperation[]
+
+  schema   ApiSchema @relation(fields: [schemaId], references: [id], onDelete: Cascade)
+  schemaId String
+
+  @@unique([ref, schemaId])
+}
+
+enum ApiSchemaParameterLocation {
+  QUERY
+  HEADER
+  PATH
+  COOKIE
+}
+
+enum ApiSchemaParameterStyle {
+  SIMPLE
+  FORM
+  MATRIX
+  LABEL
+  SPACE_DELIMITED
+  PIPE_DELIMITED
+  DEEP_OBJECT
 }
