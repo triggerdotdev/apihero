@@ -1,1 +1,1 @@
-export type { User } from "@remix-gospel-stack/database";
+export type { User } from "@apihero/database";

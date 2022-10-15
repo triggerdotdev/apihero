@@ -23,13 +23,15 @@
     "typeRoots": ["../types", "../node_modules/@types"],
     "paths": {
       "~/*": ["./app/*"],
-      "@remix-gospel-stack/ui/*": ["../../packages/ui/src/*"],
-      "@remix-gospel-stack/ui": ["../../packages/ui/src/index"],
-      "@remix-gospel-stack/business/*": ["../../packages/business/src/*"],
-      "@remix-gospel-stack/business": ["../../packages/business/src/index"],
-      "@remix-gospel-stack/internal-nobuild": ["../../packages/internal-nobuild/src/index"],
-      "@remix-gospel-stack/internal-nobuild/*": ["../../packages/internal-nobuild/src/*"],
-    },
+      "@apihero/ui/*": ["../../packages/ui/src/*"],
+      "@apihero/ui": ["../../packages/ui/src/index"],
+      "@apihero/business/*": ["../../packages/business/src/*"],
+      "@apihero/business": ["../../packages/business/src/index"],
+      "@apihero/internal-nobuild": [
+        "../../packages/internal-nobuild/src/index"
+      ],
+      "@apihero/internal-nobuild/*": ["../../packages/internal-nobuild/src/*"]
+    }
   },
   "ts-node": {
     "swc": true

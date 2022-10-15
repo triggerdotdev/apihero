@@ -1,12 +1,11 @@
 {
-    "compilerOptions": {
-      "lib": ["dom", "ES2015"],
-      "module": "ESNext",
-      "target": "ES6",
-      "jsx": "react-jsx",
-    },
-    "extends": "@remix-gospel-stack/tsconfig/react-library.json",
-    "include": ["src"],
-    "exclude": ["dist", "build", "node_modules"]
-  }
-  
+  "compilerOptions": {
+    "lib": ["dom", "ES2015"],
+    "module": "ESNext",
+    "target": "ES6",
+    "jsx": "react-jsx"
+  },
+  "extends": "@apihero/tsconfig/react-library.json",
+  "include": ["src"],
+  "exclude": ["dist", "build", "node_modules"]
+}

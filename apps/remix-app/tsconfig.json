@@ -1,5 +1,5 @@
 {
-  "exclude": ["./cypress","./cypress.config.ts"],
+  "exclude": ["./cypress", "./cypress.config.ts"],
   "include": ["remix.env.d.ts", "**/*.ts", "**/*.tsx"],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2019"],
@@ -18,18 +18,20 @@
     "baseUrl": ".",
     "paths": {
       "~/*": ["./app/*"],
-      "@remix-gospel-stack/ui/*": ["../../packages/ui/src/*"],
-      "@remix-gospel-stack/ui": ["../../packages/ui/src/index"],
-      "@remix-gospel-stack/business/*": ["../../packages/business/src/*"],
-      "@remix-gospel-stack/business": ["../../packages/business/src/index"],
-      "@remix-gospel-stack/database/*": ["../../packages/database/src/*"],
-      "@remix-gospel-stack/database": ["../../packages/database/src/index"],
-      "@remix-gospel-stack/internal-nobuild": ["../../packages/internal-nobuild/src/index"],
-      "@remix-gospel-stack/internal-nobuild/*": ["../../packages/internal-nobuild/src/*"],
+      "@apihero/ui/*": ["../../packages/ui/src/*"],
+      "@apihero/ui": ["../../packages/ui/src/index"],
+      "@apihero/business/*": ["../../packages/business/src/*"],
+      "@apihero/business": ["../../packages/business/src/index"],
+      "@apihero/database/*": ["../../packages/database/src/*"],
+      "@apihero/database": ["../../packages/database/src/index"],
+      "@apihero/internal-nobuild": [
+        "../../packages/internal-nobuild/src/index"
+      ],
+      "@apihero/internal-nobuild/*": ["../../packages/internal-nobuild/src/*"]
     },
 
     // Remix takes care of building everything in `remix build`.
     "noEmit": true
-  },
+  }
   // "references": [{ "path": "../../packages/ui/tsconfig.json" }],
 }

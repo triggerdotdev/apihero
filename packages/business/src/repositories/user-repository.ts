@@ -1,5 +1,5 @@
 import { autoInjectable, inject } from "tsyringe";
-import type { JsonObject, PrismaClient } from "@remix-gospel-stack/database";
+import type { JsonObject, PrismaClient } from "@apihero/database";
 
 import type {
   FindOrCreateGithub,

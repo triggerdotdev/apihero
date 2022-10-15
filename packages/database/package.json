@@ -1,5 +1,5 @@
 {
-  "name": "@remix-gospel-stack/database",
+  "name": "@apihero/database",
   "version": "1.0.0",
   "license": "MIT",
   "main": "./dist/index.js",
@@ -28,7 +28,7 @@
     "@prisma/client": "^4.4.0"
   },
   "devDependencies": {
-    "@remix-gospel-stack/tsconfig": "*",
+    "@apihero/tsconfig": "*",
     "@types/node": "^18.8.0",
     "eslint-config-vite": "*",
     "prisma": "^4.4.0",
