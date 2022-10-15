@@ -205,6 +205,7 @@ importers:
       '@types/node': ^18.8.0
       eslint-config-vite: '*'
       reflect-metadata: ^0.1.13
+      remix-auth-github: ^1.1.1
       rimraf: ^3.0.2
       tiny-invariant: ^1.3.1
       tsup: ^6.2.3
@@ -220,6 +221,7 @@ importers:
       '@remix-gospel-stack/tsconfig': link:../../config-packages/tsconfig
       '@types/node': 18.8.0
       eslint-config-vite: link:../../config-packages/eslint-config-vite
+      remix-auth-github: 1.1.1_652ac6b148efb5eb199e528a20111eca
       rimraf: 3.0.2
       tsup: 6.2.3_postcss@8.4.17+typescript@4.8.4
       tsx: 3.9.0
@@ -2273,7 +2275,6 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-router-dom: 6.3.0_react-dom@18.2.0+react@18.2.0
-    dev: false
 
   /@remix-run/server-runtime/1.7.2_react-dom@18.2.0+react@18.2.0:
     resolution: {integrity: sha512-YqdYHjqAukh5wbfix6ZqibUX5wYLm4SyyhibPiTthAV6SXHbTMu952jqf6Fa+asJRSf+QlNVwsizxH0zUGPAtw==}
@@ -9449,6 +9450,44 @@ packages:
       unified: 10.1.2
     dev: true
 
+  /remix-auth-github/1.1.1_652ac6b148efb5eb199e528a20111eca:
+    resolution: {integrity: sha512-/LHX0u8AsJUV02T2WC+f6NRWqsYwsWJY+1UUSW2E+lXyo6mf6ajlM802Iem/F74OxNVukOYJerwwoludwGJj6Q==}
+    peerDependencies:
+      '@remix-run/server-runtime': ^1.0.0
+    dependencies:
+      '@remix-run/server-runtime': 1.7.2_react-dom@18.2.0+react@18.2.0
+      remix-auth: 3.3.0_652ac6b148efb5eb199e528a20111eca
+      remix-auth-oauth2: 1.3.0_652ac6b148efb5eb199e528a20111eca
+    transitivePeerDependencies:
+      - '@remix-run/react'
+      - supports-color
+    dev: true
+
+  /remix-auth-oauth2/1.3.0_652ac6b148efb5eb199e528a20111eca:
+    resolution: {integrity: sha512-vibb7jxzRmeTqkl2SORgTg5rZqSAt8VdAvz3JBJOAbjn1wScvEcHttAJDQHDhdtdDgJVaOjJ0K7QpQNEeZdi0A==}
+    peerDependencies:
+      '@remix-run/server-runtime': ^1.0.0
+    dependencies:
+      '@remix-run/server-runtime': 1.7.2_react-dom@18.2.0+react@18.2.0
+      debug: 4.3.4
+      remix-auth: 3.3.0_652ac6b148efb5eb199e528a20111eca
+      uuid: 8.3.2
+    transitivePeerDependencies:
+      - '@remix-run/react'
+      - supports-color
+    dev: true
+
+  /remix-auth/3.3.0_652ac6b148efb5eb199e528a20111eca:
+    resolution: {integrity: sha512-sLY5s6DQF4OJp03HM/dIEw3tLfSOIowerS2QDTuvEVXoEA3IHVmk7QkvOKosWdVPbcnlRfwF6PbeBLKgo6vqsg==}
+    peerDependencies:
+      '@remix-run/react': ^1.0.0
+      '@remix-run/server-runtime': ^1.0.0
+    dependencies:
+      '@remix-run/react': 1.7.2_react-dom@18.2.0+react@18.2.0
+      '@remix-run/server-runtime': 1.7.2_react-dom@18.2.0+react@18.2.0
+      uuid: 8.3.2
+    dev: true
+
   /repeat-element/1.1.4:
     resolution: {integrity: sha512-LFiNfRcSu7KK3evMyYOuCzv3L10TW7yC1G2/+StMjK8Y6Vqd2MG7r/Qjw4ghtuCOjFvlnms/iMmLqpvW/ES/WQ==}
     engines: {node: '>=0.10.0'}
@@ -10868,6 +10907,7 @@ packages:
 
   /uuid/8.3.2:
     resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
+    hasBin: true
     dev: true
 
   /uvu/0.5.6:
