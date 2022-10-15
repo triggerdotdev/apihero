@@ -20,7 +20,7 @@ _This Package **uses `pnpm` as the package manager** of choice to manage workspa
 ### Monorepo architecture powered by [Turborepo](https://turborepo.org/) and pnpm workspaces:
 
 - `apps` Folder containing the applications
-  - [`cms`](https://github.com/PhilDL/remix-gospel-stack/tree/main/apps/cms): the [Remix.run](https://remix.run) app
+  - [`webapp`](https://github.com/PhilDL/remix-gospel-stack/tree/main/apps/webapp): the [Remix.run](https://remix.run) app
   - [`nextjs-app`](https://github.com/PhilDL/remix-gospel-stack/tree/main/apps/nextjs-app): a [Next.js](https://nextjs.org) app
 - `packages` Folder containing examples
 
@@ -78,12 +78,12 @@ _This Package **uses `pnpm` as the package manager** of choice to manage workspa
   ```
 - Run the first build (with dependencies via the `...` option)
   ```bash
-  pnpm run build --filter=cms...
+  pnpm run build --filter=webapp...
   ```
   **Running simply `pnpm run build` will build everything, including the NextJS app.**
 - Run the Remix dev server
   ```bash
-  pnpm run dev --filter=cms
+  pnpm run dev --filter=webapp
   ```
 
 ## Tests, Typechecks, Lint, Install packages...
@@ -92,7 +92,7 @@ Check the `turbo.json` file to see the available pipelines.
 
 - Run the Cypress tests and Dev
   ```bash
-  pnpm run test:e2e:dev --filter=cms
+  pnpm run test:e2e:dev --filter=webapp
   ```
 - Lint everything
   ```bash
@@ -110,7 +110,7 @@ Check the `turbo.json` file to see the available pipelines.
   ```
 - How to install an npm package in the Remix app ?
   ```bash
-  pnpm add dayjs --filter cms
+  pnpm add dayjs --filter webapp
   ```
 - Tweak the tsconfigs, eslint configs in the `config-package` folder. Any package or app will then extend from these configs.
 
@@ -191,15 +191,15 @@ We use GitHub Actions for continuous integration and deployment. Anything that g
   ```
 - Build the docker image
   ```sh
-  pnpm docker:build:cms
+  pnpm docker:build:webapp
   ```
 - Run the docker Image
   ```sh
-  pnpm docker:run:cms
+  pnpm docker:run:webapp
   ```
 - (Optionnal) If you want to manually deploy to fly.io:
   ```bash
-  DOCKER_DEFAULT_PLATFORM=linux/amd64 flyctl deploy --config ./apps/cms/fly.toml --dockerfile ./apps/cms/Dockerfile
+  DOCKER_DEFAULT_PLATFORM=linux/amd64 flyctl deploy --config ./apps/webapp/fly.toml --dockerfile ./apps/webapp/Dockerfile
   ```
 
 ## Useful Turborepo Links

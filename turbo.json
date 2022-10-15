@@ -12,7 +12,7 @@
         ".cache"
       ]
     },
-    "cms#start": {
+    "webapp#start": {
       "dependsOn": ["^build"],
       "outputs": ["public/build/**"]
     },

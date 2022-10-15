@@ -151,7 +151,7 @@ jobs:
         run: pnpm run db:migrate:force
 
       - name: ⚙️ Build
-        run: pnpm run build --filter=cms...
+        run: pnpm run build --filter=webapp...
 
       - name: Cypress PNPM Patch
         run: cp pnpm-lock.yaml package-lock.json
@@ -160,9 +160,9 @@ jobs:
         uses: cypress-io/github-action@v3
         with:
           install: false
-          start: pnpm run start --filter=cms
+          start: pnpm run start --filter=webapp
           wait-on: "http://localhost:8811"
-          working-directory: apps/cms
+          working-directory: apps/webapp
         env:
           PORT: "8811"
           REMIX_APP_PORT: "8811"
@@ -183,7 +183,7 @@ jobs:
         uses: SebRollen/toml-action@v1.0.0
         id: app_name
         with:
-          file: "apps/cms/fly.toml"
+          file: "apps/webapp/fly.toml"
           field: "app"
 
       - name: 🐳 Set up Docker Buildx
@@ -209,7 +209,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          file: apps/cms/Dockerfile
+          file: apps/webapp/Dockerfile
           push: true
           tags: registry.fly.io/${{ steps.app_name.outputs.value }}:${{ github.ref_name }}-${{ github.sha }}
           build-args: |
@@ -245,14 +245,14 @@ jobs:
         uses: SebRollen/toml-action@v1.0.0
         id: app_name
         with:
-          file: "apps/cms/fly.toml"
+          file: "apps/webapp/fly.toml"
           field: "app"
 
       - name: 🚀 Deploy Staging
         if: ${{ github.ref == 'refs/heads/dev' }}
         uses: superfly/flyctl-actions@1.3
         with:
-          args: "deploy --app ${{ steps.app_name.outputs.value }}-staging --config ./apps/cms/fly.toml --image registry.fly.io/${{ steps.app_name.outputs.value }}:${{ github.ref_name }}-${{ github.sha }}"
+          args: "deploy --app ${{ steps.app_name.outputs.value }}-staging --config ./apps/webapp/fly.toml --image registry.fly.io/${{ steps.app_name.outputs.value }}:${{ github.ref_name }}-${{ github.sha }}"
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 
@@ -260,6 +260,6 @@ jobs:
         if: ${{ github.ref == 'refs/heads/main' }}
         uses: superfly/flyctl-actions@1.3
         with:
-          args: "deploy --config ./apps/cms/fly.toml --image registry.fly.io/${{ steps.app_name.outputs.value }}:${{ github.ref_name }}-${{ github.sha }}"
+          args: "deploy --config ./apps/webapp/fly.toml --image registry.fly.io/${{ steps.app_name.outputs.value }}:${{ github.ref_name }}-${{ github.sha }}"
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
