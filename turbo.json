@@ -71,6 +71,9 @@
     },
     "clean": {
       "cache": false
+    },
+    "env": {
+      "cache": false
     }
   },
   "globalDependencies": [".env"],
