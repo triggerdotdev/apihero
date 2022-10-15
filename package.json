@@ -32,10 +32,12 @@
     "typecheck": "turbo run typecheck",
     "test:e2e:dev": "turbo run test:e2e:dev",
     "test:e2e:ci": "turbo run test:e2e:ci",
-    "setup": "turbo run generate db:migrate:force db:seed"
+    "setup": "turbo run generate db:migrate:force db:seed",
+    "env": "turbo run env"
   },
   "devDependencies": {
     "@manypkg/cli": "^0.19.2",
+    "@tailwindcss/forms": "^0.5.3",
     "@tailwindcss/typography": "^0.5.7",
     "autoprefixer": "^10.4.12",
     "eslint-config-custom": "*",

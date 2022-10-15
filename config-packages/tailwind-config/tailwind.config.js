@@ -10,11 +10,15 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["Inter", "sans-serif"],
+        mono: ["Roboto Mono", "monospace"],
+      },
       colors: {
         brandblue: colors.blue[500],
         brandred: colors.red[500],
       },
     },
   },
-  plugins: [require("@tailwindcss/typography")],
+  plugins: [require("@tailwindcss/forms"), require("@tailwindcss/typography")],
 };
