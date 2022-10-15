@@ -26,7 +26,32 @@ importers:
       tsx: 3.10.1
       turbo: 1.5.6
 
-  apps/cms:
+  apps/nextjs-app:
+    specifiers:
+      '@apihero/database': '*'
+      '@apihero/tsconfig': '*'
+      '@types/node': ^18.8.0
+      '@types/react': ^18.0.21
+      '@types/react-dom': ^18.0.6
+      eslint-config-custom-next: '*'
+      next: ^12.3.1
+      react: ^18.2.0
+      react-dom: ^18.2.0
+      typescript: ^4.8.4
+    dependencies:
+      next: 12.3.1_react-dom@18.2.0+react@18.2.0
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    devDependencies:
+      '@apihero/database': link:../../packages/database
+      '@apihero/tsconfig': link:../../config-packages/tsconfig
+      '@types/node': 18.11.0
+      '@types/react': 18.0.21
+      '@types/react-dom': 18.0.6
+      eslint-config-custom-next: link:../../config-packages/eslint-config-custom-next
+      typescript: 4.8.4
+
+  apps/webapp:
     specifiers:
       '@apihero/business': '*'
       '@apihero/database': '*'
@@ -290,31 +315,6 @@ importers:
       vite: 3.1.8
       vite-tsconfig-paths: 3.5.1_vite@3.1.8
       vitest: 0.23.4_happy-dom@6.0.4
-
-  apps/nextjs-app:
-    specifiers:
-      '@apihero/database': '*'
-      '@apihero/tsconfig': '*'
-      '@types/node': ^18.8.0
-      '@types/react': ^18.0.21
-      '@types/react-dom': ^18.0.6
-      eslint-config-custom-next: '*'
-      next: ^12.3.1
-      react: ^18.2.0
-      react-dom: ^18.2.0
-      typescript: ^4.8.4
-    dependencies:
-      next: 12.3.1_react-dom@18.2.0+react@18.2.0
-      react: 18.2.0
-      react-dom: 18.2.0_react@18.2.0
-    devDependencies:
-      '@apihero/database': link:../../packages/database
-      '@apihero/tsconfig': link:../../config-packages/tsconfig
-      '@types/node': 18.11.0
-      '@types/react': 18.0.21
-      '@types/react-dom': 18.0.6
-      eslint-config-custom-next: link:../../config-packages/eslint-config-custom-next
-      typescript: 4.8.4
 
   config-packages/eslint-config-custom:
     specifiers:
