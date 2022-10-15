@@ -1,0 +1,23 @@
+{
+  "name": "@remix-gospel-stack/internal-nobuild",
+  "version": "0.0.1",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "clean": "rimraf .turbo node_modules dist",
+    "lint": "eslint ./src --fix",
+    "test": "vitest run",
+    "test:dev": "vitest",
+    "typecheck": "tsc --project ./tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "@remix-gospel-stack/tsconfig": "*",
+    "eslint-config-vite": "*",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.8.4",
+    "vite": "^3.1.4",
+    "vite-tsconfig-paths": "^3.5.1",
+    "vitest": "^0.23.4"
+  }
+}
