@@ -3,7 +3,7 @@ RUN apt-get update && apt-get install -y openssl
 WORKDIR /app
 RUN yarn global add turbo
 COPY . .
-RUN turbo prune --scope=remix-app --docker
+RUN turbo prune --scope=cms --docker
 RUN find . -name "node_modules" -type d -prune -exec rm -rf '{}' +
 
 # Base strategy to have layer caching
@@ -37,7 +37,7 @@ COPY --from=pruner /app/out/full/ .
 COPY --from=dev-deps /app/ .
 COPY turbo.json turbo.json
 RUN pnpm run generate
-RUN pnpm run build --filter=remix-app...
+RUN pnpm run build --filter=cms...
 
 # Runner
 FROM node:16-bullseye-slim AS runner
@@ -52,10 +52,10 @@ USER remixjs
 
 COPY --from=pruner --chown=remixjs:nodejs /app/out/full/ .
 COPY --from=production-deps --chown=remixjs:nodejs /app .
-COPY --from=builder --chown=remixjs:nodejs /app/apps/remix-app/app/styles/tailwind.css ./apps/remix-app/app/styles/tailwind.css
-COPY --from=builder --chown=remixjs:nodejs /app/apps/remix-app/build/server.js ./apps/remix-app/build/server.js
-COPY --from=builder --chown=remixjs:nodejs /app/apps/remix-app/build ./apps/remix-app/build
-COPY --from=builder --chown=remixjs:nodejs /app/apps/remix-app/public ./apps/remix-app/public
+COPY --from=builder --chown=remixjs:nodejs /app/apps/cms/app/styles/tailwind.css ./apps/cms/app/styles/tailwind.css
+COPY --from=builder --chown=remixjs:nodejs /app/apps/cms/build/server.js ./apps/cms/build/server.js
+COPY --from=builder --chown=remixjs:nodejs /app/apps/cms/build ./apps/cms/build
+COPY --from=builder --chown=remixjs:nodejs /app/apps/cms/public ./apps/cms/public
 
 # release_command = "pnpx prisma migrate deploy --schema packages/database/prisma/schema.prisma"
-CMD ["pnpm", "--filter", "remix-app", "run", "start"]
+CMD ["pnpm", "--filter", "cms", "run", "start"]
