@@ -22,6 +22,7 @@
     "tsyringe": "^4.7.0"
   },
   "devDependencies": {
+    "remix-auth-github": "^1.1.1",
     "@remix-gospel-stack/tsconfig": "*",
     "@types/node": "^18.8.0",
     "eslint-config-vite": "*",
