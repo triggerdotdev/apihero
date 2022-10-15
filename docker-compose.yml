@@ -26,13 +26,13 @@ services:
       - app_network
   # If you want to run the remix app also inside Docker
   #
-  # remix-app:
+  # cms:
   #   environment:
   #     DATABASE_URL: postgresql://postgres:postgres@db:5432/postgres
-  #   container_name: remix-app
+  #   container_name: cms
   #   build:
   #     context: .
-  #     dockerfile: ./apps/remix-app/Dockerfile
+  #     dockerfile: ./apps/cms/Dockerfile
   #   restart: always
   #   depends_on:
   #     - db

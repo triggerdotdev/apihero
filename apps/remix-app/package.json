@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "remix-app",
+  "name": "cms",
   "version": "1.0.0",
   "sideEffects": false,
   "scripts": {
@@ -14,7 +14,7 @@
     "dev:remix": "cross-env NODE_ENV=development remix watch",
     "dev:server": "cross-env NODE_ENV=development node --inspect --require ./node_modules/dotenv/config ./build/server.js",
     "start": "cross-env NODE_ENV=production node ./build/server.js",
-    "docker:build": "cd ../.. & docker build -t remix-gospel-stack-remix-app -f ./apps/remix-app/Dockerfile .",
+    "docker:build": "cd ../.. & docker build -t remix-gospel-stack-cms -f ./apps/cms/Dockerfile .",
     "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
     "test": "vitest run",
     "test:cov": "vitest run --coverage",
