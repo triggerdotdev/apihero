@@ -1,4 +1,4 @@
-import type { User } from "../shared/dtos";
+import type { User } from "../shared/user";
 
 export interface UserRepository {
   getUsers(): Promise<User[]>;

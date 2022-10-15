@@ -1,13 +1,18 @@
-version: "3"
+version: "3.7"
 
 volumes:
   database:
     driver: local
 
 services:
+  redis:
+    image: redis:7.0.0-alpine
+    command: redis-server
+    restart: always
+    ports:
+      - 6379:6379
   db:
     image: postgres:latest
-    container_name: remix_gospel_postgres
     restart: always
     environment:
       - POSTGRES_USER=postgres
@@ -35,7 +40,6 @@ services:
   #     - 3000:3000
   #   networks:
   #     - app_network
-
 
 networks:
   app_network:
