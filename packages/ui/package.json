@@ -1,5 +1,5 @@
 {
-  "name": "@remix-gospel-stack/ui",
+  "name": "@apihero/ui",
   "version": "0.0.0",
   "private": true,
   "main": "./dist/index.js",
@@ -16,7 +16,7 @@
     "typecheck": "tsc --project ./tsconfig.json --noEmit"
   },
   "devDependencies": {
-    "@remix-gospel-stack/tsconfig": "*",
+    "@apihero/tsconfig": "*",
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
     "concurrently": "^7.2.2",

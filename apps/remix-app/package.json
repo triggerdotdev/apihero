@@ -29,10 +29,10 @@
     "/public/build"
   ],
   "dependencies": {
-    "@remix-gospel-stack/business": "*",
-    "@remix-gospel-stack/database": "*",
-    "@remix-gospel-stack/internal-nobuild": "*",
-    "@remix-gospel-stack/ui": "*",
+    "@apihero/business": "*",
+    "@apihero/database": "*",
+    "@apihero/internal-nobuild": "*",
+    "@apihero/ui": "*",
     "@remix-run/express": "^1.7.2",
     "@remix-run/node": "^1.7.2",
     "@remix-run/react": "^1.7.2",
@@ -45,7 +45,7 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^7.5.0",
-    "@remix-gospel-stack/tailwind-config": "*",
+    "@apihero/tailwind-config": "*",
     "@remix-run/dev": "^1.7.2",
     "@remix-run/eslint-config": "^1.7.2",
     "@swc/core": "^1.3.4",

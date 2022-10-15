@@ -23,6 +23,6 @@ export type LoggedInUser = {
 
 export interface UserRepository {
   asyncfindOrCreateUser(input: FindOrCreateUser): Promise<LoggedInUser>;
-  getUserById(id: User["id"]);
-  getUserByEmail(email: User["email"]);
+  getUserById(id: User["id"]): Promise<User>;
+  getUserByEmail(email: User["email"]): Promise<User>;
 }
