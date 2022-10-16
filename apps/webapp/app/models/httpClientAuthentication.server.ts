@@ -1,4 +1,4 @@
-import { prisma } from "~/db.server";
+import { prisma } from "@apihero/database";
 
 export function upsertBasicAuthentication(
   clientId: string,

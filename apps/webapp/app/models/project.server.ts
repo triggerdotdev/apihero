@@ -1,7 +1,6 @@
-import { prisma } from "~/db.server";
-import type { Workspace, Project, User } from "@prisma/client";
+import type { Workspace, Project, User } from "@apihero/database";
+import { prisma } from "@apihero/database";
 import slug from "slug";
-export type { Project } from "@prisma/client";
 
 export function getProjectById(id: string) {
   return prisma.project.findUnique({

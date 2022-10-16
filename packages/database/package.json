@@ -25,7 +25,9 @@
     "studio": "prisma studio"
   },
   "dependencies": {
-    "@prisma/client": "^4.4.0"
+    "@apihero/prisma-field-encryption": "^1.3.5",
+    "@prisma/client": "^4.4.0",
+    "tiny-invariant": "^1.3.1"
   },
   "devDependencies": {
     "@apihero/tsconfig": "*",

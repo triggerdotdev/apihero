@@ -1,5 +1,5 @@
+import { prisma } from "@apihero/database";
 import { z } from "zod";
-import { prisma } from "~/db.server";
 
 export class UpdateIntegration {
   FormSchema = z.object({

@@ -1,7 +1,5 @@
-import { prisma } from "~/db.server";
+import { prisma } from "@apihero/database";
 import { nanoid } from "nanoid";
-
-export type { RequestToken } from "@prisma/client";
 
 export function createRequestToken() {
   return prisma.requestToken.create({

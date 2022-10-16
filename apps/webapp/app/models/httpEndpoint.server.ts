@@ -1,5 +1,5 @@
-import type { HTTPMethod } from "@prisma/client";
-import { prisma } from "~/db.server";
+import type { HTTPMethod } from "@apihero/database";
+import { prisma } from "@apihero/database";
 
 export function getEndpoint(
   clientId: string,

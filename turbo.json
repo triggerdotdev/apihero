@@ -82,6 +82,12 @@
     "REMIX_APP_PORT",
     "FLY_REGION",
     "PRIMARY_REGION",
-    "CI"
+    "CI",
+    "DATABASE_URL",
+    "GATEWAY_ORIGIN",
+    "GATEWAY_API_PRIVATE_KEY",
+    "SESSION_SECRET",
+    "GITHUB_USERNAME",
+    "GITHUB_TOKEN"
   ]
 }

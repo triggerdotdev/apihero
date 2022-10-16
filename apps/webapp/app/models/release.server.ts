@@ -1,11 +1,10 @@
-import { prisma } from "~/db.server";
+import { prisma } from "@apihero/database";
 import invariant from "tiny-invariant";
 import {
   findSchemaById,
   generateSpecFromSchemaScopedToOperation,
 } from "./apiSchema.server";
 import { generateFilesForSchema } from "./generator.server";
-import { OpenAPIV3_1 } from "openapi-types";
 
 export async function findReleaseById(releaseId: string) {
   return prisma.release.findFirst({

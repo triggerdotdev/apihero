@@ -9,7 +9,30 @@ type JsonObject = Prisma.JsonObject;
 export type { JsonObject };
 
 //schema types
-export type { User } from "@prisma/client";
-export type { Workspace } from "@prisma/client";
-export type { Project } from "@prisma/client";
-export type { HttpClient } from "@prisma/client";
+
+export type {
+  User,
+  AuthToken,
+  Workspace,
+  Project,
+  HttpClient,
+  HTTPMethod,
+  HttpEndpoint,
+  HttpRequestLog,
+  ApiSchema,
+  ApiSchemaExample,
+  ApiSchemaParameterStyle,
+  ApiSchemaSecurityOAuthFlowType,
+  ApiSchemaSecurityScheme,
+  ApiSchemaSecuritySchemeType,
+  ApiSchemaServer,
+  ApiSchemaModel,
+  ApiSchemaOperation,
+  ApiSchemaParameterLocation,
+  ApiSchemaPath,
+  ApiSchemaRequestBody,
+  ApiSchemaResponseBody,
+  ApiSchemaSecuritySchemeLocation,
+  ApiSchemaTag,
+  Integration,
+} from "@prisma/client";
