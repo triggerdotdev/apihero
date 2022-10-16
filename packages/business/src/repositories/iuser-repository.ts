@@ -23,6 +23,6 @@ export type LoggedInUser = {
 
 export interface UserRepository {
   findOrCreateUser(input: FindOrCreateUser): Promise<LoggedInUser>;
-  getUserById(id: User["id"]): Promise<User>;
-  getUserByEmail(email: User["email"]): Promise<User>;
+  getUserById(id: User["id"]): Promise<User | null>;
+  getUserByEmail(email: User["email"]): Promise<User | null>;
 }

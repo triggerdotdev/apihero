@@ -8,7 +8,7 @@ import type {
   LoggedInUser,
   UserRepository,
 } from "./iuser-repository";
-import type { User } from "../shared/user";
+import type { User } from "../shared/types";
 
 @autoInjectable()
 export class PrismaUserRepository implements UserRepository {
@@ -28,13 +28,13 @@ export class PrismaUserRepository implements UserRepository {
   private async findOrCreateMagicLinkUser(
     input: FindOrCreateMagicLink
   ): Promise<LoggedInUser> {
-    const existingUser = await prisma.user.findFirst({
+    const existingUser = await this.prisma.user.findFirst({
       where: {
         email: input.email,
       },
     });
 
-    const user = await prisma.user.upsert({
+    const user = await this.prisma.user.upsert({
       where: {
         email: input.email,
       },
@@ -76,13 +76,13 @@ export class PrismaUserRepository implements UserRepository {
       displayName,
     };
 
-    const existingUser = await prisma.user.findFirst({
+    const existingUser = await this.prisma.user.findFirst({
       where: {
         email,
       },
     });
 
-    const user = await prisma.user.upsert({
+    const user = await this.prisma.user.upsert({
       where: {
         email,
       },
@@ -97,10 +97,10 @@ export class PrismaUserRepository implements UserRepository {
   }
 
   async getUserById(id: User["id"]) {
-    return prisma.user.findUnique({ where: { id } });
+    return this.prisma.user.findUnique({ where: { id } });
   }
 
   async getUserByEmail(email: User["email"]) {
-    return prisma.user.findUnique({ where: { email } });
+    return this.prisma.user.findUnique({ where: { email } });
   }
 }
