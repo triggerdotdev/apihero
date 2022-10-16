@@ -9,7 +9,6 @@ type JsonObject = Prisma.JsonObject;
 export type { JsonObject };
 
 //schema types
-
 export type {
   User,
   AuthToken,
