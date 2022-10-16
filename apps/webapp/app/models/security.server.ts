@@ -1,4 +1,4 @@
-import { prisma } from "~/db.server";
+import { prisma } from "@apihero/database";
 
 export async function findSecurityRequirementsByOperationId(
   operationId: string

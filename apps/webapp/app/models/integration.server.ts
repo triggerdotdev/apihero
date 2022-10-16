@@ -14,8 +14,8 @@ import type {
   ApiSchemaTag,
   HTTPMethod,
   Integration,
-} from "@prisma/client";
-import { prisma } from "~/db.server";
+} from "@apihero/database";
+import { prisma } from "@apihero/database";
 import type { OpenAPIV3_1, OpenAPIV3, OpenAPIV2, OpenAPI } from "openapi-types";
 import type { Mapping } from "@apihero/openapi-spec-generator/lib/generate";
 

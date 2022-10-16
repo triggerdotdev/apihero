@@ -1,6 +1,5 @@
 import { nanoid } from "nanoid";
-import { prisma } from "~/db.server";
-export type { AuthToken } from "@prisma/client";
+import { prisma } from "@apihero/database";
 
 export function getAuthToken({ requestToken }: { requestToken: string }) {
   return prisma.authToken.findFirst({

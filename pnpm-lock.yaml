@@ -399,17 +399,21 @@ importers:
 
   packages/database:
     specifiers:
+      '@apihero/prisma-field-encryption': ^1.3.5
       '@apihero/tsconfig': '*'
       '@prisma/client': ^4.4.0
       '@types/node': ^18.8.0
       eslint-config-vite: '*'
       prisma: ^4.4.0
       rimraf: ^3.0.2
+      tiny-invariant: ^1.3.1
       tsup: ^6.2.3
       tsx: ^3.7.1
       typescript: ^4.8.4
     dependencies:
+      '@apihero/prisma-field-encryption': 1.3.5_@prisma+client@4.4.0
       '@prisma/client': 4.4.0_prisma@4.4.0
+      tiny-invariant: 1.3.1
     devDependencies:
       '@apihero/tsconfig': link:../../config-packages/tsconfig
       '@types/node': 18.11.0
