@@ -1,10 +1,7 @@
 import type { Authenticator } from "remix-auth";
 import { GitHubStrategy } from "remix-auth-github";
-import { findOrCreateUser } from "~/models/user.server";
-import {
-  createFirstWorkspace,
-  createWorkspace,
-} from "~/models/workspace.server";
+import { createFirstWorkspace } from "~/models/workspace.server";
+import Service from "~/services.server";
 import type { AuthUser } from "./authUser";
 import { addToEmailList } from "./email.server";
 
@@ -22,13 +19,15 @@ const gitHubStrategy = new GitHubStrategy(
     }
 
     try {
-      const { user, isNewUser } = await findOrCreateUser({
-        email: emails[0].value,
-        authenticationMethod: "GITHUB",
-        accessToken,
-        authenticationProfile: profile,
-        authenticationExtraParams: extraParams,
-      });
+      const { user, isNewUser } = await Service.userRepository.findOrCreateUser(
+        {
+          email: emails[0].value,
+          authenticationMethod: "GITHUB",
+          accessToken,
+          authenticationProfile: profile,
+          authenticationExtraParams: extraParams,
+        }
+      );
 
       await addToEmailList(user);
 

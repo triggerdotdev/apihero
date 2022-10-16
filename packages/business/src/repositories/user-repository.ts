@@ -14,7 +14,7 @@ import type { User } from "../shared/user";
 export class PrismaUserRepository implements UserRepository {
   constructor(@inject("PrismaClient") private readonly prisma: PrismaClient) {}
 
-  asyncfindOrCreateUser(input: FindOrCreateUser): Promise<LoggedInUser> {
+  findOrCreateUser(input: FindOrCreateUser): Promise<LoggedInUser> {
     switch (input.authenticationMethod) {
       case "GITHUB": {
         return this.findOrCreateGithubUser(input);
