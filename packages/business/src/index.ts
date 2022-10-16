@@ -5,6 +5,4 @@ export const Service = {
   userRepository: container.resolve<UserRepository>("UserRepository"),
 };
 
-export type { User } from "./shared/user";
-
-export { helloWorld } from "./shared/utils";
+export type { User } from "./shared/types";

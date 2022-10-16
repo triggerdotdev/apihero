@@ -10,3 +10,6 @@ export type { JsonObject };
 
 //schema types
 export type { User } from "@prisma/client";
+export type { Workspace } from "@prisma/client";
+export type { Project } from "@prisma/client";
+export type { HttpClient } from "@prisma/client";

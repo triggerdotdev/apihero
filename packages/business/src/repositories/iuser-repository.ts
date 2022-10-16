@@ -1,4 +1,4 @@
-import type { User } from "../shared/user";
+import type { User } from "../shared/types";
 import type { GitHubProfile } from "remix-auth-github";
 
 export type FindOrCreateMagicLink = {
