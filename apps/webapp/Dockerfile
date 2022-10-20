@@ -27,7 +27,7 @@ RUN corepack enable
 ENV NODE_ENV production
 RUN pnpm install --prod --frozen-lockfile
 COPY --from=pruner /app/out/full/apps/webapp/prisma/schema.prisma /app/apps/webapp/prisma/schema.prisma
-RUN pnpx --yes prisma generate --schema /app/apps/webapp/prisma/schema.prisma
+RUN pnpx prisma generate --schema /app/apps/webapp/prisma/schema.prisma
 
 FROM base AS builder
 WORKDIR /app
