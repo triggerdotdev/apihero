@@ -26,13 +26,13 @@ WORKDIR /app
 RUN corepack enable
 ENV NODE_ENV production
 RUN pnpm install --prod --frozen-lockfile
-COPY --from=pruner /app/out/full/packages/database/prisma/schema.prisma /app/packages/database/prisma/schema.prisma
-RUN pnpx prisma generate --schema /app/packages/database/prisma/schema.prisma
+COPY --from=pruner /app/out/full/apps/webapp/prisma/schema.prisma /app/apps/webapp/prisma/schema.prisma
+RUN pnpx --yes prisma generate --schema /app/apps/webapp/prisma/schema.prisma
 
 FROM base AS builder
 WORKDIR /app
 RUN corepack enable
-# ENV NODE_ENV production
+ENV NODE_ENV production
 COPY --from=pruner /app/out/full/ .
 COPY --from=dev-deps /app/ .
 COPY turbo.json turbo.json
