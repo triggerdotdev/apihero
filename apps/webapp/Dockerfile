@@ -57,6 +57,7 @@ COPY --from=builder --chown=remixjs:nodejs /app/apps/webapp/build/server.js ./ap
 COPY --from=builder --chown=remixjs:nodejs /app/apps/webapp/build ./apps/webapp/build
 COPY --from=builder --chown=remixjs:nodejs /app/apps/webapp/public ./apps/webapp/public
 COPY --from=builder --chown=remixjs:nodejs /app/apps/webapp/prisma/schema.prisma ./apps/webapp/build/schema.prisma
+COPY --from=builder --chown=remixjs:nodejs /app/apps/webapp/prisma/migrations ./apps/webapp/build/migrations
 COPY --from=builder --chown=remixjs:nodejs /app/apps/webapp/node_modules/.prisma/client/libquery_engine-debian-openssl-1.1.x.so.node ./apps/webapp/build/libquery_engine-debian-openssl-1.1.x.so.node
 
 # release_command = "pnpx prisma migrate deploy --schema apps/webapp/prisma/schema.prisma"
