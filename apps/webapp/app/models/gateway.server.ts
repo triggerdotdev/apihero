@@ -138,4 +138,6 @@ export async function syncIntegrationsSettingsWithGateway({
 
   const body = await response.json();
   console.log(`Gateway: updated project integration settings url`);
+
+  return body;
 }

@@ -1,7 +1,7 @@
 import type { ActionFunction, LoaderFunction } from "@remix-run/server-runtime";
 import { json } from "@remix-run/server-runtime";
 import { z } from "zod";
-import { HTTPMethod } from "~/libraries/client";
+import type { HTTPMethod } from "~/libraries/client";
 import { createRequestLog } from "~/models/requestLog.server";
 
 const logSchema = z.object({

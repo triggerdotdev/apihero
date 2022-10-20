@@ -1,4 +1,4 @@
-import { faker } from "@faker-js/faker";
+export {};
 
 declare global {
   namespace Cypress {

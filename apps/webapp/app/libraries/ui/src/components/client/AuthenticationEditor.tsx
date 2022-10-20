@@ -6,7 +6,6 @@ import { Form, useTransition } from "@remix-run/react";
 import { marked } from "marked";
 import { useEffect, useState } from "react";
 import {
-  DestructiveButton,
   PrimaryButton,
   SecondaryButton,
   SecondaryDestructiveButton,

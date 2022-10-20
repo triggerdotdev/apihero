@@ -2,10 +2,6 @@ import { useLoaderData } from "@remix-run/react";
 import type { LoaderFunction } from "@remix-run/server-runtime";
 import invariant from "tiny-invariant";
 import { findSecurityRequirementsByOperationId } from "~/models/security.server";
-import {
-  useOperationData,
-  LoaderData as OperationLoaderData,
-} from "../$operationId";
 
 type LoaderData = {
   securityRequirements: Awaited<
@@ -29,7 +25,6 @@ export const loader: LoaderFunction = async ({ params }) => {
 
 export default function OperationSecurityRoute() {
   const { securityRequirements } = useLoaderData<LoaderData>();
-  const operation = useOperationData();
 
   return (
     <div className="mx-auto w-full sm:px-6 lg:px-8">
