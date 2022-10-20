@@ -5,7 +5,7 @@ processes = [ ]
 
 [env]
 REMIX_APP_PORT = "8080"
-PRIMARY_REGION = "cdg"
+PRIMARY_REGION = "mia"
 
 [deploy]
 release_command = "pnpx prisma migrate deploy --schema apps/webapp/build/schema.prisma"
