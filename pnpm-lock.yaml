@@ -75,12 +75,14 @@ importers:
       '@types/compression': ^1.7.2
       '@types/eslint': ^8.4.6
       '@types/express': ^4.17.13
+      '@types/jest': ^29.2.0
       '@types/json-query': ^2.2.3
       '@types/lodash': ^4.14.182
       '@types/marked': ^4.0.3
       '@types/morgan': ^1.9.3
       '@types/node': ^18.8.0
       '@types/node-fetch': ^2.6.2
+      '@types/qs': ^6.9.7
       '@types/react': ^18.0.21
       '@types/react-date-range': ^1.4.3
       '@types/react-dom': ^18.0.6
@@ -247,12 +249,14 @@ importers:
       '@types/compression': 1.7.2
       '@types/eslint': 8.4.6
       '@types/express': 4.17.14
+      '@types/jest': 29.2.0
       '@types/json-query': 2.2.3
       '@types/lodash': 4.14.186
       '@types/marked': 4.0.7
       '@types/morgan': 1.9.3
       '@types/node': 18.11.0
       '@types/node-fetch': 2.6.2
+      '@types/qs': 6.9.7
       '@types/react': 18.0.21
       '@types/react-date-range': 1.4.4
       '@types/react-dom': 18.0.6
@@ -4164,8 +4168,8 @@ packages:
       '@types/istanbul-lib-report': 3.0.0
     dev: true
 
-  /@types/jest/29.1.2:
-    resolution: {integrity: sha512-y+nlX0h87U0R+wsGn6EBuoRWYyv3KFtwRNP3QWp9+k2tJ2/bqcGS3UxD7jgT+tiwJWWq3UsyV4Y+T6rsMT4XMg==}
+  /@types/jest/29.2.0:
+    resolution: {integrity: sha512-KO7bPV21d65PKwv3LLsD8Jn3E05pjNjRZvkm+YTacWhVmykAb07wW6IkZUmQAltwQafNcDUEUrMO2h3jeBSisg==}
     dependencies:
       expect: 29.2.0
       pretty-format: 29.2.0
@@ -4332,7 +4336,7 @@ packages:
   /@types/testing-library__jest-dom/5.14.5:
     resolution: {integrity: sha512-SBwbxYoyPIvxHbeHxTZX2Pe/74F/tX2/D3mMvzabdeJ25bBojfW0TyB8BHrbq/9zaaKICJZjLP+8r6AeZMFCuQ==}
     dependencies:
-      '@types/jest': 29.1.2
+      '@types/jest': 29.2.0
     dev: true
 
   /@types/unist/2.0.6:

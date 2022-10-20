@@ -32,7 +32,7 @@ export function CachingOptions({
       transition.submission.formData.get("type") === "updateTime");
 
   const toggledCaching = useCallback(
-    (isOn) => {
+    (isOn: boolean) => {
       if (!formRef.current) return;
       setEnabled(isOn);
       const formData = objectToFormData({

@@ -6,7 +6,8 @@ import type {
   ApiSchemaSecurityScheme,
   ApiSchemaSecuritySchemeType,
   ApiSchemaServer,
-} from "~/db.server";
+  Prisma,
+} from ".prisma/client";
 import type { OpenAPIV3_1 } from "openapi-types";
 import { z } from "zod";
 import { prisma } from "~/db.server";

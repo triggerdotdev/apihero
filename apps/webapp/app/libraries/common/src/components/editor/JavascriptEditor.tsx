@@ -1,8 +1,8 @@
 import { javascript } from "@codemirror/lang-javascript";
+import type { ViewUpdate } from "@codemirror/view";
 import type {
   ReactCodeMirrorProps,
   UseCodeMirror,
-  ViewUpdate,
 } from "@uiw/react-codemirror";
 import { useCodeMirror } from "@uiw/react-codemirror";
 import clsx from "clsx";
