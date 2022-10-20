@@ -1,4 +1,4 @@
-import type { Project, User, Workspace } from "~/db.server";
+import type { Project, User, Workspace } from ".prisma/client";
 import { prisma } from "~/db.server";
 import slug from "slug";
 

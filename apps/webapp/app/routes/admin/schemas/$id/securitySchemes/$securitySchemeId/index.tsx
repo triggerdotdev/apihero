@@ -1,10 +1,4 @@
-import {
-  Form,
-  Link,
-  useLoaderData,
-  useLocation,
-  useSubmit,
-} from "@remix-run/react";
+import { Form, Link, useLoaderData, useSubmit } from "@remix-run/react";
 import type { ActionFunction, LoaderFunction } from "@remix-run/server-runtime";
 import { json } from "@remix-run/server-runtime";
 import clsx from "clsx";
@@ -166,7 +160,7 @@ export const action: ActionFunction = async ({ params, request }) => {
       operations,
       securitySchemeId,
       operationIds,
-      operationScopes,
+      operationScopes
     );
 
     setSuccessMessage(session, "Saved security requirements");
@@ -225,23 +219,28 @@ async function getAllOperationsForSchema(
       return operations;
     }
 
-    const regex = new RegExp(query, 'gi');
+    const regex = new RegExp(query, "gi");
 
-    operations = operations.filter(operation => {
-      if (operation.description == null) return false;
-      const matches = [...operation.description.matchAll(regex)];
-      return matches.length > 0;
-    }).map((operation) => {
-      if (operation.description != null) {
-        const description = operation.description.replace(regex, "<mark>$&</mark>");
-        return {
-          ...operation,
-          description,
+    operations = operations
+      .filter((operation) => {
+        if (operation.description == null) return false;
+        const matches = [...operation.description.matchAll(regex)];
+        return matches.length > 0;
+      })
+      .map((operation) => {
+        if (operation.description != null) {
+          const description = operation.description.replace(
+            regex,
+            "<mark>$&</mark>"
+          );
+          return {
+            ...operation,
+            description,
+          };
         }
-      }
 
-      return operation;
-    });
+        return operation;
+      });
   }
 
   return operations;
@@ -291,7 +290,7 @@ function SelectOperationsFieldset({
   operationIds,
   scopeOptions,
   securityScheme,
-  url
+  url,
 }: {
   operations: LoaderData["operations"];
   operationIds: LoaderData["operationIds"];
@@ -305,7 +304,7 @@ function SelectOperationsFieldset({
   const checkboxRefs = useRef<HTMLInputElement[]>([]);
 
   const onChange = useCallback(
-    (operationId) => {
+    (operationId: string) => {
       if (selectedOperationIds.includes(operationId)) {
         setSelectedOperationIds(
           selectedOperationIds.filter((id) => id !== operationId)
@@ -340,7 +339,9 @@ function SelectOperationsFieldset({
     [submit]
   );
 
-  const [bulkScopes, setBulkScopes] = useState<NonNullable<LoaderData["scopeOptions"]>>([]);
+  const [bulkScopes, setBulkScopes] = useState<
+    NonNullable<LoaderData["scopeOptions"]>
+  >([]);
 
   return (
     <div>
@@ -389,13 +390,19 @@ function SelectOperationsFieldset({
 
         {scopeOptions && (
           <div className="mr-6 flex gap-2 items-center">
-            <label htmlFor="bulkScopes">Press button to add these scopes: </label>
+            <label htmlFor="bulkScopes">
+              Press button to add these scopes:{" "}
+            </label>
             <div className="w-96">
-              <ScopeDropdown name={"test"} selected={bulkScopes} setSelected={setBulkScopes} scopes={scopeOptions} />
+              <ScopeDropdown
+                name={"test"}
+                selected={bulkScopes}
+                setSelected={setBulkScopes}
+                scopes={scopeOptions}
+              />
             </div>
           </div>
         )}
-
       </div>
       <Form reloadDocument method="post" ref={formRef}>
         <fieldset className="mt-12 w-full">
@@ -490,25 +497,34 @@ function SelectOperationsFieldset({
   );
 }
 
-function SetOperationSecurity({ selectedOperationIds, operation, scopeOptions, securityScheme, bulkScopes, operationIds, onChange, checkboxRefs }:
-  {
-    selectedOperationIds: string[];
-    operationIds: string[];
-    bulkScopes: NonNullable<LoaderData["scopeOptions"]>;
-    operation: LoaderData["operations"]["0"];
-    scopeOptions: LoaderData["scopeOptions"];
-    securityScheme: LoaderData["securityScheme"];
-    onChange: (operationId: string) => void;
-    checkboxRefs: React.MutableRefObject<HTMLInputElement[]>;
-  }
-) {
+function SetOperationSecurity({
+  selectedOperationIds,
+  operation,
+  scopeOptions,
+  securityScheme,
+  bulkScopes,
+  operationIds,
+  onChange,
+  checkboxRefs,
+}: {
+  selectedOperationIds: string[];
+  operationIds: string[];
+  bulkScopes: NonNullable<LoaderData["scopeOptions"]>;
+  operation: LoaderData["operations"]["0"];
+  scopeOptions: LoaderData["scopeOptions"];
+  securityScheme: LoaderData["securityScheme"];
+  onChange: (operationId: string) => void;
+  checkboxRefs: React.MutableRefObject<HTMLInputElement[]>;
+}) {
   const localInputRef = useRef<HTMLInputElement>();
   const scopesForOpScheme = scopesForOperationAndScheme(
     operation,
     securityScheme
-  )
+  );
   const [selected, setSelected] = useState(
-    scopeOptions?.filter((scopeOptions) => scopesForOpScheme.includes(scopeOptions.id)) ?? []
+    scopeOptions?.filter((scopeOptions) =>
+      scopesForOpScheme.includes(scopeOptions.id)
+    ) ?? []
   );
 
   return (
@@ -531,7 +547,7 @@ function SetOperationSecurity({ selectedOperationIds, operation, scopeOptions, s
           }}
           className="flex-shrink-0 mr-1 max-h-10 self-end"
         >
-          Add {bulkScopes.map(s => s.name).join(", ")}
+          Add {bulkScopes.map((s) => s.name).join(", ")}
         </SecondaryButton>
       )}
       <div className="flex flex-grow">
@@ -565,12 +581,15 @@ function SetOperationSecurity({ selectedOperationIds, operation, scopeOptions, s
             onChange(operation.id);
           }}
           ref={(ref) => {
-            if (ref) { checkboxRefs.current.push(ref); localInputRef.current = ref; }
+            if (ref) {
+              checkboxRefs.current.push(ref);
+              localInputRef.current = ref;
+            }
           }}
         />
       </div>
     </div>
-  )
+  );
 }
 
 function RequirementScopesSelect({
@@ -578,19 +597,20 @@ function RequirementScopesSelect({
   requireAll,
   selected,
   name,
-  setSelected
+  setSelected,
 }: {
   scopes: Array<{ name: string; description: string; id: string }>;
   requireAll: boolean;
   name: string;
   selected: NonNullable<LoaderData["scopeOptions"]>;
-  setSelected: (selected: {
-    name: string;
-    description: string;
-    id: string;
-  }[]) => void
+  setSelected: (
+    selected: {
+      name: string;
+      description: string;
+      id: string;
+    }[]
+  ) => void;
 }) {
-
   return (
     <div className="">
       {selected.length > 1 && (
@@ -610,106 +630,128 @@ function RequirementScopesSelect({
         </div>
       )}
       <div>
-        <ScopeDropdown name={name} selected={selected} setSelected={setSelected} scopes={scopes} />
+        <ScopeDropdown
+          name={name}
+          selected={selected}
+          setSelected={setSelected}
+          scopes={scopes}
+        />
       </div>
-    </div >
+    </div>
   );
 }
 
-function ScopeDropdown({ name, selected, setSelected, scopes }: {
-  name: string, selected: { name: string; description: string; id: string; }[], setSelected: (selected: {
-    name: string;
-    description: string;
-    id: string;
-  }[]) => void, scopes: { name: string; description: string; id: string; }[]
+function ScopeDropdown({
+  name,
+  selected,
+  setSelected,
+  scopes,
+}: {
+  name: string;
+  selected: { name: string; description: string; id: string }[];
+  setSelected: (
+    selected: {
+      name: string;
+      description: string;
+      id: string;
+    }[]
+  ) => void;
+  scopes: { name: string; description: string; id: string }[];
 }) {
-  return <Listbox
-    name={name}
-    multiple={true}
-    value={selected}
-    onChange={setSelected}
-  >
-    {({ open }) => (
-      <>
-        <div className="relative mt-1">
-          <Listbox.Button className="relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm">
-            <span className="inline-flex w-full truncate">
-              <span className="truncate">
-                {selected.length > 0 ? (
-                  <>{selected.map((r) => r.name).join(", ")}</>
-                ) : (
-                  "Select scopes"
-                )}
+  return (
+    <Listbox
+      name={name}
+      multiple={true}
+      value={selected}
+      onChange={setSelected}
+    >
+      {({ open }) => (
+        <>
+          <div className="relative mt-1">
+            <Listbox.Button className="relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm">
+              <span className="inline-flex w-full truncate">
+                <span className="truncate">
+                  {selected.length > 0 ? (
+                    <>{selected.map((r) => r.name).join(", ")}</>
+                  ) : (
+                    "Select scopes"
+                  )}
+                </span>
               </span>
-            </span>
-            <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-              <SelectorIcon
-                className="h-5 w-5 text-gray-400"
-                aria-hidden="true" />
-            </span>
-          </Listbox.Button>
+              <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                <SelectorIcon
+                  className="h-5 w-5 text-gray-400"
+                  aria-hidden="true"
+                />
+              </span>
+            </Listbox.Button>
 
-          <Transition
-            show={open}
-            as={Fragment}
-            leave="transition ease-in duration-100"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-              {[...scopes].sort((a, b) => {
-                const nameA = a.name.toUpperCase();
-                const nameB = b.name.toUpperCase();
-                if (nameA < nameB) {
-                  return -1;
-                }
-                if (nameA > nameB) {
-                  return 1;
-                }
-                return 0;
-              }).map((scope) => (
-                <Listbox.Option
-                  key={scope.name}
-                  className={({ active }) => clsx(
-                    active ? "bg-indigo-600 text-white" : "text-gray-900",
-                    "relative cursor-default select-none py-2 pl-3 pr-9"
-                  )}
-                  value={scope}
-                >
-                  {({ selected, active }) => (
-                    <>
-                      <div className="flex">
-                        <span
-                          className={clsx(
-                            selected ? "font-semibold" : "font-normal",
-                            "truncate"
-                          )}
-                        >
-                          {scope.name}
-                        </span>
-                      </div>
+            <Transition
+              show={open}
+              as={Fragment}
+              leave="transition ease-in duration-100"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
+            >
+              <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                {[...scopes]
+                  .sort((a, b) => {
+                    const nameA = a.name.toUpperCase();
+                    const nameB = b.name.toUpperCase();
+                    if (nameA < nameB) {
+                      return -1;
+                    }
+                    if (nameA > nameB) {
+                      return 1;
+                    }
+                    return 0;
+                  })
+                  .map((scope) => (
+                    <Listbox.Option
+                      key={scope.name}
+                      className={({ active }) =>
+                        clsx(
+                          active ? "bg-indigo-600 text-white" : "text-gray-900",
+                          "relative cursor-default select-none py-2 pl-3 pr-9"
+                        )
+                      }
+                      value={scope}
+                    >
+                      {({ selected, active }) => (
+                        <>
+                          <div className="flex">
+                            <span
+                              className={clsx(
+                                selected ? "font-semibold" : "font-normal",
+                                "truncate"
+                              )}
+                            >
+                              {scope.name}
+                            </span>
+                          </div>
 
-                      {selected ? (
-                        <span
-                          className={clsx(
-                            active ? "text-white" : "text-indigo-600",
-                            "absolute inset-y-0 right-0 flex items-center pr-4"
-                          )}
-                        >
-                          <CheckIcon
-                            className="h-5 w-5"
-                            aria-hidden="true" />
-                        </span>
-                      ) : null}
-                    </>
-                  )}
-                </Listbox.Option>
-              ))}
-            </Listbox.Options>
-          </Transition>
-        </div>
-      </>
-    )}
-  </Listbox>;
+                          {selected ? (
+                            <span
+                              className={clsx(
+                                active ? "text-white" : "text-indigo-600",
+                                "absolute inset-y-0 right-0 flex items-center pr-4"
+                              )}
+                            >
+                              <CheckIcon
+                                className="h-5 w-5"
+                                aria-hidden="true"
+                              />
+                            </span>
+                          ) : null}
+                        </>
+                      )}
+                    </Listbox.Option>
+                  ))}
+              </Listbox.Options>
+            </Transition>
+          </div>
+        </>
+      )}
+    </Listbox>
+  );
 }
-

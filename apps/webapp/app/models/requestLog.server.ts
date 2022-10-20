@@ -1,4 +1,4 @@
-import type { HttpEndpoint, HTTPMethod, HttpRequestLog } from "~/db.server";
+import type { HttpEndpoint, HTTPMethod, HttpRequestLog } from ".prisma/client";
 import { prisma } from "~/db.server";
 import { dateFromDateString } from "~/libraries/common";
 

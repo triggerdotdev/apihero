@@ -1,4 +1,4 @@
-import type { HTTPMethod } from "~/db.server";
+import type { HTTPMethod } from ".prisma/client";
 import { prisma } from "~/db.server";
 
 export function getEndpoint(

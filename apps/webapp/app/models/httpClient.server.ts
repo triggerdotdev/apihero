@@ -1,4 +1,4 @@
-import type { HttpClient } from "~/db.server";
+import type { HttpClient } from ".prisma/client";
 import { prisma } from "~/db.server";
 
 export function createHttpClient({
