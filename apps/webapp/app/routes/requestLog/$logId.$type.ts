@@ -54,7 +54,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       throw new Error(response.statusText);
     }
 
-    const { location, id } = await response.json();
+    const { location } = await response.json();
     return redirect(location);
   } catch (error) {
     console.error(error);

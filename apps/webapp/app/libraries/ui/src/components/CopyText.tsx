@@ -18,7 +18,7 @@ export function CopyText({
     if (onCopied) {
       onCopied();
     }
-  }, [value]);
+  }, [value, onCopied]);
 
   return (
     <div onClick={onClick} className={`${className}`}>

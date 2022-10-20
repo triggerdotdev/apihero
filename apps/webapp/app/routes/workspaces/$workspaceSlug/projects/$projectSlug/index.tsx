@@ -204,8 +204,6 @@ type ClientsListProps = {
 };
 
 function ClientsList({ clients, endpointStats }: ClientsListProps) {
-  const data = useTypedLoaderData<typeof loader>();
-
   return (
     <>
       {clients.map((client) => {

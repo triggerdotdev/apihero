@@ -11,10 +11,10 @@ export function CopyTextButton({ value, className }: CopyTextButtonProps) {
   const [copied, setCopied] = useState(false);
   const onCopied = useCallback(() => {
     setCopied(true);
-    const timeout = setTimeout(() => {
+    setTimeout(() => {
       setCopied(false);
     }, 1500);
-  }, [value]);
+  }, [setCopied]);
   return (
     <CopyText className={`${className}`} value={value} onCopied={onCopied}>
       {copied ? (

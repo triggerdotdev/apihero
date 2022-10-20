@@ -1,4 +1,3 @@
-import { ExclamationCircleIcon } from "@heroicons/react/outline";
 import { ShieldCheckIcon } from "@heroicons/react/solid";
 import type {
   HttpClientAuthentication,

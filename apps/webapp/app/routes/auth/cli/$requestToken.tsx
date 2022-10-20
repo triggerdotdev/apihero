@@ -1,7 +1,7 @@
 import { useLoaderData } from "@remix-run/react";
 import type { LoaderFunction } from "@remix-run/server-runtime";
 import { json } from "@remix-run/server-runtime";
-import { Header, NavBar } from "~/libraries/ui";
+import { Header } from "~/libraries/ui";
 import { createAuthToken, getAuthToken } from "~/models/authToken.server";
 import { getRequestToken } from "~/models/requestToken.server";
 import { clearRedirectTo, commitSession } from "~/services/redirectTo.server";

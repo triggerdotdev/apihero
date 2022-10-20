@@ -403,35 +403,6 @@ async function createCommit(
   return commit;
 }
 
-async function createFileBlob(
-  repo: string,
-  fileName: string,
-  fileContent: string
-) {
-  const response = await fetch(
-    `https://api.github.com/repos/apihero-run/${repo}/git/blobs`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: GithubAuthorizationHeader,
-        Accept: GithubAcceptHeader,
-      },
-      body: JSON.stringify({
-        content: fileContent,
-        encoding: "utf-8",
-      }),
-    }
-  );
-
-  if (!response.ok) {
-    throw new Error(`Could not create blob for ${repo}/${fileName}`);
-  }
-
-  const { sha } = await response.json();
-
-  return sha;
-}
-
 async function createGatewayRelease({
   integrationSlug,
   releaseId,
