@@ -4,7 +4,7 @@ import type {
   HttpClientAuthentication,
   ApiSchemaSecurityScheme,
   Integration,
-} from "@prisma/client";
+} from ".prisma/client";
 import { Link } from "@remix-run/react";
 import { PrimaryButton, SecondaryButton } from "~/libraries/common";
 import { SmallTitle } from "../Primitives/SmallTitle";

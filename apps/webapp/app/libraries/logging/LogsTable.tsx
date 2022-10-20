@@ -1,5 +1,5 @@
 import type { Mapping } from "@apihero/openapi-spec-generator/lib/generate";
-import type { ApiSchemaParameter, HttpRequestLog } from "@prisma/client";
+import type { ApiSchemaParameter, HttpRequestLog } from ".prisma/client";
 import { LogRow } from "../request-response-viewer/src/LogViewer";
 
 type LogsTableProps = {

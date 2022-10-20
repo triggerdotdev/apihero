@@ -9,7 +9,7 @@ import type {
   ApiSchemaParameter,
   ApiSchemaResponseBodyContent,
   Prisma,
-} from "@prisma/client";
+} from ".prisma/client";
 import fetchHero from "@jsonhero/fetch-hero";
 
 const heroFetch = fetchHero(fetch, {

@@ -1,6 +1,6 @@
 import { marked } from "marked";
 import { CodeIcon } from "@heroicons/react/solid";
-import type { ApiSchemaParameter } from "@prisma/client";
+import type { ApiSchemaParameter } from ".prisma/client";
 import { CheckCircleIcon } from "@heroicons/react/outline";
 import { JSONEditor } from "~/libraries/common";
 import { useOperationData } from "../$operationId";

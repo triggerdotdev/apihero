@@ -1,4 +1,4 @@
-import type { Prisma } from "@prisma/client";
+import type { Prisma } from ".prisma/client";
 import { z } from "zod";
 
 const StringRecordSchema = z.record(z.string());

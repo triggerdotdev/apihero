@@ -1,5 +1,5 @@
 import { Tab } from "@headlessui/react";
-import type { HTTPMethod, HttpRequestLog } from "@prisma/client";
+import type { HTTPMethod, HttpRequestLog } from ".prisma/client";
 import { StyledTabs } from "~/libraries/common";
 import { SwitchPanelPositionButton } from "~/libraries/common/src/components/SwitchPanelPositionButton";
 import type { PanelPosition } from "~/libraries/common/src/hooks/usePanelPosition";
