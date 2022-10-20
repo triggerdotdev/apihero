@@ -5,7 +5,7 @@ import { EmailLinkStrategy } from "remix-auth-email-link";
 import type { Authenticator } from "remix-auth";
 import type { AuthUser } from "./authUser";
 import { createFirstWorkspace } from "~/models/workspace.server";
-import Service from "~/services.server";
+import { findOrCreateUser } from "~/models/user.server";
 
 export const sendEmail: SendEmailFunction<AuthUser> = async (options) => {
   let subject = "Log in to API Hero";
@@ -50,12 +50,10 @@ const emailStrategy = new EmailLinkStrategy(
     magicLinkVerify: boolean;
   }) => {
     try {
-      const { user, isNewUser } = await Service.userRepository.findOrCreateUser(
-        {
-          email,
-          authenticationMethod: "MAGIC_LINK",
-        }
-      );
+      const { user, isNewUser } = await findOrCreateUser({
+        email,
+        authenticationMethod: "MAGIC_LINK",
+      });
 
       await emailProvider.addToEmailList(user);
 

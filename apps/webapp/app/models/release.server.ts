@@ -1,4 +1,4 @@
-import { prisma } from "@apihero/database";
+import { prisma } from "~/db.server";
 import invariant from "tiny-invariant";
 import {
   findSchemaById,

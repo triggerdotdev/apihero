@@ -5,19 +5,11 @@ module.exports = {
   devServerPort: 8002,
   serverDependenciesToBundle: [
     "@apihero/internal-nobuild",
-    "@apihero/database",
-    "@apihero/business",
-    "@apihero/ui",
     "pretty-bytes",
     "marked",
     "@cfworker/json-schema",
   ],
   watchPaths: async () => {
-    return [
-      "../../packages/ui/src/**/*",
-      "../../packages/business/src/**/*",
-      "../../packages/database/src/**/*",
-      "../../packages/internal-nobuild/src/**/*",
-    ];
+    return ["../../packages/internal-nobuild/src/**/*"];
   },
 };

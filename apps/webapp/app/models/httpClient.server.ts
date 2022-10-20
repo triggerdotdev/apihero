@@ -1,5 +1,5 @@
-import type { HttpClient } from "@apihero/database";
-import { prisma } from "@apihero/database";
+import type { HttpClient } from "~/db.server";
+import { prisma } from "~/db.server";
 
 export function createHttpClient({
   projectId,

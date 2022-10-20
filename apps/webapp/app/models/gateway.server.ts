@@ -1,4 +1,4 @@
-import { prisma } from "@apihero/database";
+import { prisma } from "~/db.server";
 
 export async function findOperationData(
   integrationId: string,

@@ -6,10 +6,10 @@ import type {
   ApiSchemaSecurityScheme,
   ApiSchemaSecuritySchemeType,
   ApiSchemaServer,
-} from "@apihero/database";
+} from "~/db.server";
 import type { OpenAPIV3_1 } from "openapi-types";
 import { z } from "zod";
-import { prisma } from "@apihero/database";
+import { prisma } from "~/db.server";
 import type { ApiHeroExtensions } from "./integration.server";
 
 export { ApiSchema };
