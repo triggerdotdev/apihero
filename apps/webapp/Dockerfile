@@ -52,7 +52,7 @@ USER remixjs
 
 COPY --from=pruner --chown=remixjs:nodejs /app/out/full/ .
 COPY --from=production-deps --chown=remixjs:nodejs /app .
-COPY --from=builder --chown=remixjs:nodejs /app/apps/webapp/styles/tailwind.css ./apps/webapp/app/styles/tailwind.css
+COPY --from=builder --chown=remixjs:nodejs /app/apps/webapp/app/styles/tailwind.css ./apps/webapp/app/styles/tailwind.css
 COPY --from=builder --chown=remixjs:nodejs /app/apps/webapp/build/server.js ./apps/webapp/build/server.js
 COPY --from=builder --chown=remixjs:nodejs /app/apps/webapp/build ./apps/webapp/build
 COPY --from=builder --chown=remixjs:nodejs /app/apps/webapp/public ./apps/webapp/public
