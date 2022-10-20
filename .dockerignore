@@ -33,5 +33,5 @@ apps/**/public/build
 cypress/screenshots
 cypress/videos
 
-apps/webapp/app/styles/tailwind.css
+apps/**/styles/tailwind.css
 packages/**/styles/tailwind.css
