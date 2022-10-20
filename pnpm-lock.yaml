@@ -29,7 +29,7 @@ importers:
   apps/webapp:
     specifiers:
       '@apihero/internal-nobuild': '*'
-      '@apihero/openapi-spec-generator': ^0.1.2
+      '@apihero/openapi-spec-generator': ^0.1.6
       '@apihero/tailwind-config': '*'
       '@aws-sdk/client-s3': ^3.186.0
       '@aws-sdk/s3-request-presigner': ^3.186.0
@@ -160,7 +160,7 @@ importers:
       zod-to-json-schema: ^3.17.0
     dependencies:
       '@apihero/internal-nobuild': link:../../packages/internal-nobuild
-      '@apihero/openapi-spec-generator': 0.1.4
+      '@apihero/openapi-spec-generator': 0.1.6
       '@aws-sdk/client-s3': 3.188.0
       '@aws-sdk/s3-request-presigner': 3.188.0
       '@cfworker/json-schema': 1.12.5
@@ -397,13 +397,12 @@ packages:
       '@jridgewell/trace-mapping': 0.3.17
     dev: true
 
-  /@apihero/openapi-spec-generator/0.1.4:
-    resolution: {integrity: sha512-iDuuCO+bNmHEnDB1zseXMXXIsJ+1jytN/i4ag8ch6qPXUn1K1Sqh9mbMKeBQ8HZ3l7oWApJQLOd1TZEdD+T4Hw==}
+  /@apihero/openapi-spec-generator/0.1.6:
+    resolution: {integrity: sha512-NjmGf6PmZ+U42cst36Xg4zss1lAxChXq11/UFVf4Vay9VY78qPXUh2I0hIzpxNWkVP1EzG9G3YbjgbYhHkf5pw==}
     engines: {node: '16'}
     dependencies:
       camelcase: 5.3.1
       change-case: 4.1.2
-      json-schema-ref-parser: github.com/APIDevTools/json-schema-ref-parser/ead49449747970a8b68cbf22b340a67400a5c18c
       openapi-types: 12.0.2
       pluralize: 8.0.0
       prettier: 2.7.1
@@ -3144,10 +3143,6 @@ packages:
       '@jridgewell/resolve-uri': 3.1.0
       '@jridgewell/sourcemap-codec': 1.4.14
 
-  /@jsdevtools/ono/7.1.3:
-    resolution: {integrity: sha512-4JQNk+3mVzK3xh2rqd6RB4J46qUR19azEHBneZyTZM+c456qOrbbM/5xcR8huNCCcbVt7+UmizG6GuUvPvKUYg==}
-    dev: false
-
   /@jsonhero/codemirror-lang-inline-tokens/0.1.0:
     resolution: {integrity: sha512-nbvaQBSJbLjckdA2HbkiiXXTpAMrjyzDzxymFfAmgSNHNo+GC6e0RjQDWKyDKFEQZCd3s02SQ17ipFA5FVnkfg==}
     dependencies:
@@ -4185,6 +4180,7 @@ packages:
 
   /@types/json-schema/7.0.11:
     resolution: {integrity: sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==}
+    dev: true
 
   /@types/json5/0.0.29:
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
@@ -4725,6 +4721,7 @@ packages:
 
   /argparse/2.0.1:
     resolution: {integrity: sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==}
+    dev: true
 
   /aria-query/4.2.2:
     resolution: {integrity: sha512-o/HelwhuKpTj/frsOsbNLNgnNGVIFsVP/SW2BSF14gVl7kAfMOJ6/8wUAUvG1R1NHKrfG+2sHZTu0yauT1qBrA==}
@@ -5265,10 +5262,6 @@ packages:
     dependencies:
       function-bind: 1.1.1
       get-intrinsic: 1.1.3
-
-  /call-me-maybe/1.0.1:
-    resolution: {integrity: sha512-wCyFsDQkKPwwF8BDwOiWNx/9K45L/hvggQiDbve+viMNMQnWhrlYIuBk09offfwCRtCO9P6XwUttufzU11WCVw==}
-    dev: false
 
   /callsites/3.1.0:
     resolution: {integrity: sha512-P8BjAsXvZS+VIDUI11hHCQEv74YT67YUi5JJFNWIqL235sBmjX4+qx9Muvls5ivyNENctx46xQLQ3aTuE7ssaQ==}
@@ -8884,6 +8877,7 @@ packages:
     hasBin: true
     dependencies:
       argparse: 2.0.1
+    dev: true
 
   /jsbn/0.1.1:
     resolution: {integrity: sha512-UVU9dibq2JcFWxQPA6KCqj5O42VOmAY3zQUfEKxU0KpTGXwNoCjkX1e13eHNvw/xPynt6pU0rZ1htjWTNTSXsg==}
@@ -13215,15 +13209,3 @@ packages:
   /zwitch/2.0.2:
     resolution: {integrity: sha512-JZxotl7SxAJH0j7dN4pxsTV6ZLXoLdGME+PsjkL/DaBrVryK9kTGq06GfKrwcSOqypP+fdXGoCHE36b99fWVoA==}
     dev: true
-
-  github.com/APIDevTools/json-schema-ref-parser/ead49449747970a8b68cbf22b340a67400a5c18c:
-    resolution: {tarball: https://codeload.github.com/APIDevTools/json-schema-ref-parser/tar.gz/ead49449747970a8b68cbf22b340a67400a5c18c}
-    name: '@apidevtools/json-schema-ref-parser'
-    version: 0.0.0-dev
-    engines: {node: '>= 14'}
-    dependencies:
-      '@jsdevtools/ono': 7.1.3
-      '@types/json-schema': 7.0.11
-      call-me-maybe: 1.0.1
-      js-yaml: 4.1.0
-    dev: false
