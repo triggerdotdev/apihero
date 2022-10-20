@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from ".prisma/client";
 import invariant from "tiny-invariant";
 import { fieldEncryptionMiddleware } from "prisma-field-encryption";
 
@@ -64,4 +64,4 @@ function getClient() {
 }
 
 export { prisma };
-export type { PrismaClient } from "@prisma/client";
+export type { PrismaClient } from ".prisma/client";

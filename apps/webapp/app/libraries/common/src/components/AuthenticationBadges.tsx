@@ -1,7 +1,7 @@
 import type {
   ApiSchemaSecurityRequirement,
   ApiSchemaSecurityScheme,
-} from "@prisma/client";
+} from ".prisma/client";
 import { AuthenticationBadge } from "~/libraries/ui/src/components/client/AuthenticationBadge";
 
 export type AuthenticationBadgeProps = {

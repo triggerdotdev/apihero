@@ -1,5 +1,5 @@
 import { Switch } from "@headlessui/react";
-import type { HttpClient } from "@prisma/client";
+import type { HttpClient } from ".prisma/client";
 import { Form, useSubmit, useTransition } from "@remix-run/react";
 import classNames from "classnames";
 import { useCallback, useRef, useState } from "react";

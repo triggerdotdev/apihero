@@ -2,7 +2,7 @@ import type {
   ApiSchemaParameter,
   HttpRequestLog,
   Prisma,
-} from "@prisma/client";
+} from ".prisma/client";
 import classNames from "classnames";
 import prettyBytes from "pretty-bytes";
 import { StatusCode } from "~/libraries/ui/src/components/StatusCode";

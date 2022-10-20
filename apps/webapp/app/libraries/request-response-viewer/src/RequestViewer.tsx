@@ -1,5 +1,5 @@
 import { Tab } from "@headlessui/react";
-import type { Prisma } from "@prisma/client";
+import type { Prisma } from ".prisma/client";
 import { Link } from "react-router-dom";
 import {
   JSONEditor,

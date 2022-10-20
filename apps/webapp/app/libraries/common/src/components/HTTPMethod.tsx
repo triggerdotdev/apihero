@@ -1,15 +1,17 @@
-import type { HTTPMethod } from "@prisma/client";
+import type { HTTPMethod } from ".prisma/client";
 import classNames from "classnames";
 
 type HTTPMethodProps = {
   method: HTTPMethod;
   className?: string;
-}
+};
 
 export function HTTPMethodLabel({ method, className }: HTTPMethodProps) {
   return (
-    <span className={classNames(colorClassNameForMethod(method), className)}>{method}</span>
-  )
+    <span className={classNames(colorClassNameForMethod(method), className)}>
+      {method}
+    </span>
+  );
 }
 
 export function colorClassNameForMethod(method: HTTPMethod): string {

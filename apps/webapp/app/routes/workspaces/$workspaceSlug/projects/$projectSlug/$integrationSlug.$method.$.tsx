@@ -1,6 +1,6 @@
 import { ChevronRightIcon } from "@heroicons/react/solid";
 import { HomeIcon } from "@heroicons/react/solid";
-import type { HttpRequestLog } from "@prisma/client";
+import type { HttpRequestLog } from ".prisma/client";
 import { Link, useParams, useSubmit, useTransition } from "@remix-run/react";
 import type { LoaderArgs } from "@remix-run/server-runtime";
 import { useCallback, useEffect, useMemo, useState } from "react";

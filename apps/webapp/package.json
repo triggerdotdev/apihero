@@ -24,7 +24,10 @@
     "test:e2e:run": "cross-env PORT=8811 start-server-and-test start:mocks http://localhost:8811 \"npx cypress run\"",
     "test:e2e:ci": "pnpx cypress run",
     "typecheck": "tsc -b && tsc -b cypress",
-    "env": "pnpx infisical pull dev"
+    "env": "pnpx infisical pull dev",
+    "generate": "prisma generate",
+    "db:migrate:deploy": "prisma migrate deploy",
+    "db:migrate:dev": "prisma migrate dev"
   },
   "prettier": {},
   "eslintIgnore": [

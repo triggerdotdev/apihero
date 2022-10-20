@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import { Prisma } from ".prisma/client";
 import type { ActionFunction } from "@remix-run/server-runtime";
 import { json } from "@remix-run/server-runtime";
 import invariant from "tiny-invariant";
