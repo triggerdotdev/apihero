@@ -1,9 +1,5 @@
-import type {
-  HttpEndpoint,
-  HTTPMethod,
-  HttpRequestLog,
-} from "@apihero/database";
-import { prisma } from "@apihero/database";
+import type { HttpEndpoint, HTTPMethod, HttpRequestLog } from "~/db.server";
+import { prisma } from "~/db.server";
 import { dateFromDateString } from "~/libraries/common";
 
 export type CreateRequestLog = {

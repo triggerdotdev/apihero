@@ -18,12 +18,6 @@
     "baseUrl": ".",
     "paths": {
       "~/*": ["./app/*"],
-      "@apihero/ui/*": ["../../packages/ui/src/*"],
-      "@apihero/ui": ["../../packages/ui/src/index"],
-      "@apihero/business/*": ["../../packages/business/src/*"],
-      "@apihero/business": ["../../packages/business/src/index"],
-      "@apihero/database/*": ["../../packages/database/src/*"],
-      "@apihero/database": ["../../packages/database/src/index"],
       "@apihero/internal-nobuild": [
         "../../packages/internal-nobuild/src/index"
       ],

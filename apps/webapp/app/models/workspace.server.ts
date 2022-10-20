@@ -1,5 +1,5 @@
-import type { Project, User, Workspace } from "@apihero/database";
-import { prisma } from "@apihero/database";
+import type { Project, User, Workspace } from "~/db.server";
+import { prisma } from "~/db.server";
 import slug from "slug";
 
 export function getWorkspace({

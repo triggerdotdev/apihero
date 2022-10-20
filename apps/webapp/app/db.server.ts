@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import invariant from "tiny-invariant";
-import { fieldEncryptionMiddleware } from "@apihero/prisma-field-encryption";
+import { fieldEncryptionMiddleware } from "prisma-field-encryption";
 
 let prisma: PrismaClient;
 
