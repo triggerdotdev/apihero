@@ -8,7 +8,7 @@ REMIX_APP_PORT = "8080"
 PRIMARY_REGION = "cdg"
 
 [deploy]
-release_command = "pnpx --yes prisma migrate deploy --schema apps/webapp/prisma/schema.prisma"
+release_command = "pnpx prisma migrate deploy --schema apps/webapp/build/schema.prisma"
 
 [experimental]
 allowed_public_ports = [ ]
