@@ -2,7 +2,7 @@ import { CheckIcon } from "@heroicons/react/24/solid";
 import type {
   ApiSchemaSecurityScheme,
   HttpClientAuthentication,
-} from "@prisma/client";
+} from ".prisma/client";
 import { Form, useTransition } from "@remix-run/react";
 import { marked } from "marked";
 import { useEffect, useState } from "react";
