@@ -5,8 +5,8 @@
 Remix TypeScript monorepo with Turborepo pipelines, Prisma, PostgreSQL, Docker deploy to Fly.io, pnpm, TailwindCSS and Tsyringe for DI.
 
 ```
-git clone git@github.com:PhilDL/remix-gospel-stack.git
-cd remix-gospel-stack
+git clone git@github.com:PhilDL/apihero-webapp.git
+cd apihero-webapp
 ```
 
 > :minidisc: Unfortunately due to the fact that `pnpx create-remix` cli replace the `"*"` in your package.json, it messes up the monorepo workspace package references by replacing them to the current Remix version, meaning that **you can't** use this template with `create-remix` and the `--template` flag. So for now you will have to clone and install.
@@ -20,15 +20,15 @@ _This Package **uses `pnpm` as the package manager** of choice to manage workspa
 ### Monorepo architecture powered by [Turborepo](https://turborepo.org/) and pnpm workspaces:
 
 - `apps` Folder containing the applications
-  - [`webapp`](https://github.com/PhilDL/remix-gospel-stack/tree/main/apps/webapp): the [Remix.run](https://remix.run) app
-  - [`nextjs-app`](https://github.com/PhilDL/remix-gospel-stack/tree/main/apps/nextjs-app): a [Next.js](https://nextjs.org) app
+  - [`webapp`](https://github.com/PhilDL/apihero-webapp/tree/main/apps/webapp): the [Remix.run](https://remix.run) app
+  - [`nextjs-app`](https://github.com/PhilDL/apihero-webapp/tree/main/apps/nextjs-app): a [Next.js](https://nextjs.org) app
 - `packages` Folder containing examples
 
-  - [`database`](https://github.com/PhilDL/remix-gospel-stack/tree/main/packages/database): a [Prisma](https://prisma.io) wrapper ready to be used in other packages, or apps. Bundled with [tsup](https://tsup.egoist.dev/).
-  - [`business`](https://github.com/PhilDL/remix-gospel-stack/tree/main/packages/business): an example package using [Tsyringe](https://github.com/microsoft/tsyringe) to inject the Prisma `database` as a dependency and using a _repository pattern_ like example.
-  - [`internal-nobuild`](https://github.com/PhilDL/remix-gospel-stack/tree/main/packages/internal-nobuild): an example package that is pure TypeScript with no build steps. The `main` entrypoint to the package is directly `src/index.ts`. Remix takes care of compiling with its own build step (with esbuild). This packages also contains unit test with Vitest.
+  - [`database`](https://github.com/PhilDL/apihero-webapp/tree/main/packages/database): a [Prisma](https://prisma.io) wrapper ready to be used in other packages, or apps. Bundled with [tsup](https://tsup.egoist.dev/).
+  - [`business`](https://github.com/PhilDL/apihero-webapp/tree/main/packages/business): an example package using [Tsyringe](https://github.com/microsoft/tsyringe) to inject the Prisma `database` as a dependency and using a _repository pattern_ like example.
+  - [`internal-nobuild`](https://github.com/PhilDL/apihero-webapp/tree/main/packages/internal-nobuild): an example package that is pure TypeScript with no build steps. The `main` entrypoint to the package is directly `src/index.ts`. Remix takes care of compiling with its own build step (with esbuild). This packages also contains unit test with Vitest.
     Remix uses `tsconfig.json` paths to reference to that project and its types. _I would recommend these types of **internal** packages when you don't plan on publishing the package._
-  - [`ui`](https://github.com/PhilDL/remix-gospel-stack/tree/main/packages/ui): a dummy React UI library (which contains a single `<Button>` component), build with tsup.
+  - [`ui`](https://github.com/PhilDL/apihero-webapp/tree/main/packages/ui): a dummy React UI library (which contains a single `<Button>` component), build with tsup.
 
 - `config-packages`:
   - Eslint packages with different preset configs.
@@ -130,8 +130,8 @@ Prior to your first deployment, you'll need to do a few things:
 - Create two apps on Fly, one for staging and one for production:
 
   ```sh
-  fly apps create remix-gospel-stack
-  fly apps create remix-gospel-stack-staging
+  fly apps create apihero-webapp
+  fly apps create apihero-webapp-staging
   ```
 
   > **Note:** Once you've successfully created an app, double-check the `fly.toml` file to ensure that the `app` key is the name of the production app you created. This Stack [automatically appends a unique suffix at init](https://github.com/remix-run/blues-stack/blob/4c2f1af416b539187beb8126dd16f6bc38f47639/remix.init/index.js#L29) which may not match the apps you created on Fly. You will likely see [404 errors in your Github Actions CI logs](https://community.fly.io/t/404-failure-with-deployment-with-remix-blues-stack/4526/3) if you have this mismatch.
@@ -152,11 +152,11 @@ Prior to your first deployment, you'll need to do a few things:
 - Create a database for both your staging and production environments. Run the following:
 
   ```sh
-  fly postgres create --name remix-gospel-stack-db
-  fly postgres attach --app remix-gospel-stack remix-gospel-stack-db
+  fly postgres create --name apihero-webapp-db
+  fly postgres attach --app apihero-webapp apihero-webapp-db --database-name apihero --database-user apihero
 
-  fly postgres create --name remix-gospel-stack-staging-db
-  fly postgres attach --app remix-gospel-stack-staging remix-gospel-stack-staging-db
+  fly postgres create --name apihero-webapp-staging-db
+  fly postgres attach --app apihero-webapp-staging apihero-webapp-staging-db
   ```
 
   > **Note:** You'll get the same warning for the same reason when attaching the staging database that you did in the `fly set secret` step above. No worries. Proceed!
@@ -215,7 +215,7 @@ Learn more about the power of Turborepo:
 
 ## Support
 
-If you found the template useful, please consider giving it a [Star ⭐](https://github.com/PhilDL/remix-gospel-stack). Thanks you!
+If you found the template useful, please consider giving it a [Star ⭐](https://github.com/PhilDL/apihero-webapp). Thanks you!
 
 ## Disclaimer
 
