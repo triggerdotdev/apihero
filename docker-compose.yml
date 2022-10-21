@@ -24,22 +24,6 @@ services:
       - database:/var/lib/postgresql-docker/data
     networks:
       - app_network
-  # If you want to run the remix app also inside Docker
-  #
-  # webapp:
-  #   environment:
-  #     DATABASE_URL: postgresql://postgres:postgres@db:5432/postgres
-  #   container_name: webapp
-  #   build:
-  #     context: .
-  #     dockerfile: ./apps/webapp/Dockerfile
-  #   restart: always
-  #   depends_on:
-  #     - db
-  #   ports:
-  #     - 3000:3000
-  #   networks:
-  #     - app_network
 
 networks:
   app_network:
