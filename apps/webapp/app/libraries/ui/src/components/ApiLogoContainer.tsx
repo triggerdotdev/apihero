@@ -1,4 +1,4 @@
-import { CheckCircleIcon } from "@heroicons/react/solid";
+import { CheckCircleIcon } from "@heroicons/react/24/solid";
 
 export type ApiLogoProps = {
   ApiLogo: string;

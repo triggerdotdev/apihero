@@ -1,4 +1,4 @@
-import { BookOpenIcon } from "@heroicons/react/solid";
+import { BookOpenIcon } from "@heroicons/react/24/solid";
 import { Link, Outlet } from "@remix-run/react";
 import { Header } from "~/libraries/ui";
 

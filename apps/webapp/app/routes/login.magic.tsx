@@ -7,8 +7,8 @@ import {
   getUserSession,
 } from "~/services/sessionStorage.server";
 import { authenticator } from "~/services/auth.server";
-import { ArrowLeftIcon } from "@heroicons/react/solid";
-import { InboxInIcon } from "@heroicons/react/outline";
+import { ArrowLeftIcon } from "@heroicons/react/24/solid";
+import { InboxArrowDownIcon } from "@heroicons/react/24/outline";
 import { z } from "zod";
 
 export async function loader({ request }: LoaderArgs) {
@@ -68,7 +68,7 @@ export default function LoginMagicLinkPage() {
               <Logo className="mb-4 h-10 w-auto lg:mb-6 lg:mt-8 lg:h-14" />
               {magicLinkSent ? (
                 <>
-                  <InboxInIcon className="mt-0 h-12 w-12 text-blue-500" />
+                  <InboxArrowDownIcon className="mt-0 h-12 w-12 text-blue-500" />
                   <h3 className="mb-2 text-xl">We've sent you a magic link!</h3>
                   <p className="max-w-sm text-base text-slate-500">
                     We sent you an email which contains a magic link that will

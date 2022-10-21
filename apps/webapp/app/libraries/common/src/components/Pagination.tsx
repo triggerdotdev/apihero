@@ -1,8 +1,5 @@
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  RefreshIcon,
-} from "@heroicons/react/solid";
+import { ArrowPathIcon } from "@heroicons/react/24/outline";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
 import { useCallback, useEffect, useState } from "react";
@@ -73,7 +70,7 @@ export function RefreshButton({
         }}
         disabled={disabled}
       >
-        <RefreshIcon className="mr-1 h-4 w-4" />
+        <ArrowPathIcon className="mr-1 h-4 w-4" />
         Refresh
       </PaginationButton>
     </div>

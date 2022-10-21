@@ -2,8 +2,7 @@ import {
   ChevronDownIcon,
   ChevronRightIcon,
   LockClosedIcon,
-} from "@heroicons/react/solid";
-import { Link, useParams } from "@remix-run/react";
+} from "@heroicons/react/24/solid";
 import type { ActionArgs, LoaderArgs } from "@remix-run/server-runtime";
 import { useState } from "react";
 import { typedjson, useTypedLoaderData } from "remix-typedjson";
@@ -12,7 +11,6 @@ import invariant from "tiny-invariant";
 import { z } from "zod";
 import { AuthenticationBadges } from "~/libraries/common/src/components/AuthenticationBadges";
 import { HTTPMethodLabel } from "~/libraries/common/src/components/HTTPMethod";
-import { Footer, Header } from "~/libraries/ui";
 import { SecurityEditor } from "~/libraries/ui/src/components/client/AuthenticationEditor";
 import { ExtraLargeTitle } from "~/libraries/ui/src/components/Primitives/ExtraLargeTitle";
 import Resizable from "~/libraries/ui/src/components/Resizable";
@@ -165,18 +163,12 @@ export async function action({ request, params }: ActionArgs) {
 
 export default function Page() {
   const data = useTypedLoaderData<typeof loader>();
-  const { workspaceSlug, projectSlug } = useParams();
 
   return (
     <>
-      <Header>
-        <Link to={`/workspaces/${workspaceSlug}/projects/${projectSlug}`}>
-          <h2>{data.client.project.title}</h2>
-        </Link>
-      </Header>
-      <main className="flex h-[calc(100%-72px)] flex-grow bg-slate-200">
-        <article className="flex flex-grow flex-col gap-4 overflow-y-auto p-4">
-          <h3 className="text-2xl font-bold">
+      <main className="flex w-full flex-grow bg-slate-50">
+        <article className="flex h-[calc(100vh-72px)] w-full flex-col gap-4 overflow-y-auto p-6">
+          <h3 className="text-2xl font-semibold capitalize text-slate-800">
             {data.client.integration.name} authentication
           </h3>
 
@@ -198,46 +190,48 @@ export default function Page() {
         </article>
         <Resizable
           position="right"
-          initialSize={600}
-          minimumSize={270}
-          maximumSize={950}
+          initialSize={450}
+          minimumSize={300}
+          maximumSize={700}
         >
-          <div className="flex h-full min-h-0 flex-1 flex-col overflow-y-auto bg-slate-800">
+          <div className="flex h-[calc(100vh-72px)] min-h-0 flex-1 flex-col overflow-y-auto bg-white">
             <div className="flex flex-col pt-5 pb-4">
               <div className="flex flex-shrink-0 items-center px-4">
-                <ExtraLargeTitle className="text-slate-200">
+                <ExtraLargeTitle className="text-slate-600">
                   Your endpoints
                 </ExtraLargeTitle>
               </div>
               <div
-                className="mt-3 mb-5 flex-1 space-y-1 bg-slate-800 px-4"
+                className="mt-3 mb-5 flex-1 space-y-1 px-4"
                 aria-label="Sidebar"
               >
                 <div className="mt-1 flex flex-col gap-2 space-y-1 px-2">
                   {data.client.endpoints.map(({ operation }) => (
                     <div key={operation.id}>
                       {operation.summary && (
-                        <p className="text-base text-white">
+                        <p className="font-base text-base text-slate-600">
                           {operation.summary}
                         </p>
                       )}
-                      <h3 className="font-medium text-slate-400">
+                      <h3 className="text-slate-600">
                         <HTTPMethodLabel
                           method={operation.method}
-                          className="text-sm"
+                          className="text-sm font-medium"
                         />
-                        <span className="ml-2">{operation.path.path}</span>
+                        <span className="ml-2 font-medium">
+                          {operation.path.path}
+                        </span>
                       </h3>
 
-                      <div className="mt-1 flex items-center gap-1">
+                      <div className="mt-1 flex items-start gap-1">
                         {operation.securityOptional ? (
-                          <p className="whitespace-nowrap text-xs text-slate-400">
+                          <p className="whitespace-nowrap py-1 text-xs text-slate-600">
                             Security optional:
                           </p>
                         ) : (
                           <div className="flex items-center gap-0.5">
-                            <LockClosedIcon className="h-3 w-3 text-white" />
-                            <p className="whitespace-nowrap text-xs text-white">
+                            <LockClosedIcon className="h-3 w-3 text-slate-600" />
+                            <p className="whitespace-nowrap text-xs text-slate-600">
                               Security required:
                             </p>
                           </div>
@@ -252,13 +246,13 @@ export default function Page() {
               </div>
             </div>
             <div className="flex flex-shrink-0 items-center px-4">
-              <ExtraLargeTitle className="text-slate-200">
+              <ExtraLargeTitle className="text-slate-600">
                 All endpoints
               </ExtraLargeTitle>
             </div>
 
             <div
-              className="mt-5 mb-8 flex-1 space-y-1 bg-slate-800 px-4"
+              className="mt-5 mb-8 flex-1 space-y-1 px-4"
               aria-label="Sidebar"
             >
               {data.client.integration.currentSchema?.tags.map((tag) => (
@@ -268,7 +262,6 @@ export default function Page() {
           </div>
         </Resizable>
       </main>
-      <Footer />
     </>
   );
 }
@@ -287,40 +280,40 @@ function TagGroup({ tag }: Tag) {
   return (
     <div>
       <button
-        className="flex w-full text-sm text-slate-200"
+        className="flex w-full text-sm text-slate-500 transition hover:text-slate-600"
         onClick={() => setIsOpen((s) => !s)}
       >
         {isOpen ? (
-          <ChevronDownIcon className="mr-1 h-5 w-5 text-slate-300" />
+          <ChevronDownIcon className="mr-1 h-5 w-5" />
         ) : (
-          <ChevronRightIcon className="mr-1 h-5 w-5 text-slate-300" />
+          <ChevronRightIcon className="mr-1 h-5 w-5" />
         )}
         <h2 className="grow text-left font-semibold uppercase tracking-wider">
           {tag.name}
         </h2>
-        <span className="block text-slate-300">{tag._count.operations}</span>
+        <span className="block text-slate-400">{tag._count.operations}</span>
       </button>
       {isOpen && (
         <div className="mt-1 flex flex-col gap-2 space-y-2 px-2 pl-6">
           {tag.operations.map((operation) => (
             <div key={operation.id}>
               {operation.summary && (
-                <p className="text-base text-white">{operation.summary}</p>
+                <p className="text-base text-slate-600">{operation.summary}</p>
               )}
-              <h3 className="font-medium text-slate-400">
+              <h3 className="font-medium text-slate-600">
                 <HTTPMethodLabel
                   method={operation.method}
                   className="text-sm"
                 />
                 <span className="ml-2">{operation.path.path}</span>
               </h3>
-              <div className="mt-1 flex gap-1">
+              <div className="mt-1 flex items-center gap-1">
                 {operation.securityOptional ? (
-                  <p className="text-xs text-white">Security optional:</p>
+                  <p className="text-xs text-slate-600">Security optional:</p>
                 ) : (
                   <div className="flex items-center gap-0.5">
-                    <LockClosedIcon className="h-3 w-3 text-white" />
-                    <p className="text-xs text-white">Security required:</p>
+                    <LockClosedIcon className="h-3 w-3 text-slate-600" />
+                    <p className="text-xs text-slate-600">Security required:</p>
                   </div>
                 )}
                 <AuthenticationBadges

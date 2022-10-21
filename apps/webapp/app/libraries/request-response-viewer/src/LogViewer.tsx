@@ -6,7 +6,7 @@ import type {
 import classNames from "classnames";
 import prettyBytes from "pretty-bytes";
 import { StatusCode } from "~/libraries/ui/src/components/StatusCode";
-import { CheckIcon } from "@heroicons/react/solid";
+import { CheckIcon } from "@heroicons/react/24/solid";
 import type { Mapping } from "@apihero/openapi-spec-generator/lib/generate";
 
 const dateFormatter = new Intl.DateTimeFormat("en-US", {

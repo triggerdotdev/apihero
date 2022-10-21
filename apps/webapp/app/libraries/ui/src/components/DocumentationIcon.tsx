@@ -1,4 +1,4 @@
-import DocumentTextIcon from "@heroicons/react/solid/DocumentTextIcon";
+import DocumentTextIcon from "@heroicons/react/24/solid/DocumentTextIcon";
 
 type DocumentationIconProps = {
   onClick?: () => void;
