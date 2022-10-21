@@ -21,6 +21,7 @@
     "generate": "turbo run generate",
     "lint": "turbo run lint",
     "docker:db": "docker-compose -f docker-compose.yml up -d",
+    "docker:db:stop": "docker-compose -f docker-compose.yml down",
     "docker:build": "turbo run docker:build",
     "docker:build:webapp": "docker build -t apihero -f ./apps/webapp/Dockerfile .",
     "docker:run:webapp": "docker run -it --init --rm -p 3000:3000 --env-file .env.docker --env DATABASE_URL='postgresql://postgres:postgres@db:5432/postgres' --network=app_network apihero",
