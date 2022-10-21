@@ -1,4 +1,7 @@
-import { CheckCircleIcon, ExclamationCircleIcon } from "@heroicons/react/solid";
+import {
+  CheckCircleIcon,
+  ExclamationCircleIcon,
+} from "@heroicons/react/24/solid";
 
 export type DataAvgDurationProps = {
   avgDuration: number;

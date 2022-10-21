@@ -1,5 +1,5 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { PlusIcon } from "@heroicons/react/solid";
+import { PlusIcon } from "@heroicons/react/24/solid";
 import { Link } from "@remix-run/react";
 
 export function EmptyState({

@@ -1,4 +1,4 @@
-import { CheckCircleIcon } from "@heroicons/react/outline";
+import { CheckCircleIcon } from "@heroicons/react/24/outline";
 import { Link, useLoaderData } from "@remix-run/react";
 import type { LoaderFunction } from "@remix-run/server-runtime";
 import invariant from "tiny-invariant";

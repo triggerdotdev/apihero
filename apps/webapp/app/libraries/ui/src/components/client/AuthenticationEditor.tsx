@@ -1,7 +1,8 @@
+import { CheckIcon } from "@heroicons/react/24/solid";
 import type {
   ApiSchemaSecurityScheme,
   HttpClientAuthentication,
-} from ".prisma/client";
+} from "@prisma/client";
 import { Form, useTransition } from "@remix-run/react";
 import { marked } from "marked";
 import { useEffect, useState } from "react";
@@ -55,6 +56,7 @@ export function SecurityEditor({
             <div className="mt-3 flex items-center gap-3">
               {authentication ? (
                 <>
+                  <AddedButton />
                   <SecondaryButton onClick={() => setIsEditing(true)}>
                     Edit
                   </SecondaryButton>
@@ -273,4 +275,13 @@ function BearerAuthenticationPreview({
 // Return at most 12 characters
 function obfuscateToken(token: string) {
   return token.replace(/./g, "*").slice(0, 12);
+}
+
+function AddedButton() {
+  return (
+    <div className="flex items-center gap-1 rounded-md border border-emerald-200 bg-emerald-100 px-3 py-2 pr-4 text-sm">
+      <CheckIcon className="h-4 w-4 text-emerald-700" />
+      <p className="text-emerald-700">Added</p>
+    </div>
+  );
 }

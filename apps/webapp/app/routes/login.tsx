@@ -1,4 +1,4 @@
-import { MailIcon } from "@heroicons/react/solid";
+import { EnvelopeIcon } from "@heroicons/react/24/solid";
 import type { LoaderFunction, MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, Link, useLoaderData } from "@remix-run/react";
@@ -69,7 +69,7 @@ export default function LoginPage() {
               className="mb-4 flex items-center justify-center gap-1 text-sm text-slate-500 transition hover:text-slate-800"
               to="/login/magic"
             >
-              <MailIcon className="h-4 w-4" />
+              <EnvelopeIcon className="h-4 w-4" />
               Continue with email
             </Link>
           }

@@ -7,7 +7,7 @@ import { useTypedActionData } from "remix-typedjson";
 import { ErrorDisplay } from "~/components/ErrorDisplay";
 import { PrimaryButton } from "~/libraries/common";
 import { objectToFormData } from "~/libraries/common/src/utilities/formData";
-import type { ActionData } from "~/routes/workspaces/$workspaceSlug/projects/$projectSlug";
+import type { ActionData } from "~/routes/__app/workspaces/$workspaceSlug/projects/$projectSlug";
 import { SmallTitle } from "../Primitives/SmallTitle";
 
 export function CachingOptions({

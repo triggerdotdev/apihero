@@ -1,4 +1,7 @@
-import { ArrowCircleDownIcon, CheckCircleIcon } from "@heroicons/react/solid";
+import {
+  ArrowDownCircleIcon,
+  CheckCircleIcon,
+} from "@heroicons/react/24/solid";
 
 export type DataUptimeProps = {
   uptime: number;
@@ -13,7 +16,7 @@ export function DataUptime({ uptime }: DataUptimeProps) {
       {uptime <= 99.9 ? (
         <>
           <div className="flex gap-1 rounded-full bg-rose-100 px-3 py-1 pl-1">
-            <ArrowCircleDownIcon className="h-5 w-5 text-rose-500" />
+            <ArrowDownCircleIcon className="h-5 w-5 text-rose-500" />
             <p className=" text-sm font-bold text-rose-800">
               {Math.ceil(uptime)}%
             </p>

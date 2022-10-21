@@ -1,5 +1,5 @@
 import { Menu, Transition } from "@headlessui/react";
-import { PlusIcon } from "@heroicons/react/solid";
+import { PlusIcon } from "@heroicons/react/24/solid";
 import classnames from "classnames";
 
 const filterMenuItems = [

@@ -7,7 +7,7 @@ import { SwitchPanelIconRight } from "~/libraries/ui/src/components/Icons/Switch
 import type { PanelPosition } from "../hooks/usePanelPosition";
 import { SwitchPanelIconLeft } from "~/libraries/ui/src/components/Icons/SwitchPanelIconLeft";
 import { SwitchPanelIconTop } from "~/libraries/ui/src/components/Icons/SwitchPanelIconTop";
-import { CheckIcon } from "@heroicons/react/solid";
+import { CheckIcon } from "@heroicons/react/24/solid";
 
 type SwitchPanelPositionButtonProps = {
   options: PanelPosition[];

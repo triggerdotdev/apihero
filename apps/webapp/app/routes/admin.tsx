@@ -2,11 +2,11 @@
 import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import {
-  DatabaseIcon,
+  CircleStackIcon,
   HomeIcon,
   ServerIcon,
-  XIcon,
-} from "@heroicons/react/outline";
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
 import { Outlet } from "@remix-run/react";
 import type { LoaderArgs } from "@remix-run/server-runtime";
 import { getUser, requireUserId } from "~/services/session.server";
@@ -16,7 +16,7 @@ import { redirect, typedjson, useTypedLoaderData } from "remix-typedjson";
 const navigation = [
   { name: "Home", href: "/admin", icon: HomeIcon },
   { name: "Integrations", href: "/admin/integrations", icon: ServerIcon },
-  { name: "Schemas", href: "/admin/schemas", icon: DatabaseIcon },
+  { name: "Schemas", href: "/admin/schemas", icon: CircleStackIcon },
 ];
 
 export async function loader({ request }: LoaderArgs) {
@@ -85,7 +85,7 @@ export default function Page() {
                         onClick={() => setMobileMenuOpen(false)}
                       >
                         <span className="sr-only">Close sidebar</span>
-                        <XIcon
+                        <XMarkIcon
                           className="h-6 w-6 text-white"
                           aria-hidden="true"
                         />

@@ -1,5 +1,5 @@
-import { ChevronRightIcon } from "@heroicons/react/solid";
-import { HomeIcon } from "@heroicons/react/solid";
+import { ChevronRightIcon } from "@heroicons/react/24/solid";
+import { HomeIcon } from "@heroicons/react/24/solid";
 import type { HttpRequestLog } from ".prisma/client";
 import { Link, useParams, useSubmit, useTransition } from "@remix-run/react";
 import type { LoaderArgs } from "@remix-run/server-runtime";
@@ -166,16 +166,12 @@ export default function Page() {
       <Header>
         <div className="flex flex-row items-center ">
           <Link to={`/workspaces/${workspaceSlug}/projects/${projectSlug}`}>
-            <div className="flex flex-row px-1 text-blue-500 hover:rounded-md hover:bg-blue-50">
-              <HomeIcon className="flex w-4 pr-1 " />
-              <h2 className="font-bold capitalize ">{data.project?.title}</h2>
-            </div>
+            <h2 className="flex px-2 py-0.5 capitalize text-blue-500 transition hover:rounded-sm hover:bg-blue-50 hover:text-blue-600">
+              {data.project?.title}
+            </h2>
           </Link>
-          <ChevronRightIcon className="h-4 w-4" />
-
-          <h2>
-            <span className="ml-1">{data.endpoint.operation.summary}</span>
-          </h2>
+          <span className="-ml-1">/</span>
+          <h2 className="ml-1">{data.endpoint.operation.summary}</h2>
 
           {/* <EndpointSelector
             currentEndpoint={data.client?.endpoint}

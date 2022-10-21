@@ -1,4 +1,4 @@
-import { CalendarIcon, ChevronDownIcon } from "@heroicons/react/solid";
+import { CalendarIcon, ChevronDownIcon } from "@heroicons/react/24/solid";
 import { useSubmit } from "@remix-run/react";
 import classNames from "classnames";
 import { useCallback, useState } from "react";
