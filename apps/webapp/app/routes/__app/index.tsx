@@ -81,7 +81,7 @@ function WorkspaceBlankStateGettingStarted() {
                       Get started with React
                     </a>
                     <a
-                      href="https://docs.apihero.run/react-quick-start"
+                      href="https://docs.apihero.run/node-quick-start"
                       target="_blank"
                       className="underline transition hover:bg-slate-50 hover:text-blue-600"
                       rel="noreferrer"
