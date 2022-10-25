@@ -39,7 +39,7 @@ export async function action({ request }: ActionArgs) {
 
 export default function IndexRoute() {
   return (
-    <div className="flex flex-shrink flex-grow items-center justify-between bg-slate-50">
+    <div className="flex h-full flex-grow items-center justify-between bg-slate-50">
       <WorkspaceBlankStateGettingStarted />
     </div>
   );
@@ -58,39 +58,41 @@ function WorkspaceBlankStateGettingStarted() {
       ) : (
         <>
           <div className="max-w-3xl p-6">
-            <h3 className="mb-5 text-2xl font-bold text-slate-700 xl:font-medium">
+            <h3 className="mb-5 text-3xl font-bold text-slate-700 xl:font-medium">
               Get started with API Hero
             </h3>
+            <p className="text-xl">
+              Connect to 3rd party APIs in seconds,
+              <span className="font-bold"> directly from your frontend. </span>
+            </p>
 
-            <ul className="mb-10 flex flex-col gap-6">
+            <ul className="mb-10 mt-4 flex flex-col gap-6">
               <li className="flex items-baseline gap-2">
-                <p className="text-xl font-bold">1.</p>
-                <div>
-                  <p className="mb-2">
-                    Watch this overview video to get started or check out the
-                    documentation{" "}
+                <div className="flex flex-col">
+                  <p className="flex flex-col mb-2 gap-4">
+                    In either a new or existing project, follow our guides below
+                    to add API Hero using the API Hero CLI.
                     <a
-                      href="https://docs.apihero.run"
+                      href="https://docs.apihero.run/react-quick-start"
                       target="_blank"
                       className="underline transition hover:bg-slate-50 hover:text-blue-600"
                       rel="noreferrer"
                     >
-                      here
+                      Get started with React
                     </a>
-                    .
+                    <a
+                      href="https://docs.apihero.run/react-quick-start"
+                      target="_blank"
+                      className="underline transition hover:bg-slate-50 hover:text-blue-600"
+                      rel="noreferrer"
+                    >
+                      Get started with Node
+                    </a>
                   </p>
-                  <iframe
-                    src="https://www.youtube.com/embed/l2BGiZ4IbRY"
-                    title="Get started with API Hero YouTube video player"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    className="aspect-video w-full"
-                  />
                 </div>
               </li>
-              <li className="flex items-baseline gap-2">
-                <p className="text-xl font-bold">2.</p>
+              <li className="flex flex-col items-baseline gap-2">
+                <p className="text-xl font-bold">OR</p>
                 <div className="flex w-full flex-col gap-2">
                   <p>Install API Hero and either the Github or Twitter APIs</p>
                   <pre className="flex w-full items-center justify-between gap-4 rounded bg-slate-200 px-4 py-3 text-xs xl:text-base">
@@ -103,101 +105,12 @@ function WorkspaceBlankStateGettingStarted() {
                   </pre>
                 </div>
               </li>
-              <li className="flex items-baseline gap-2">
-                <p className="text-xl font-bold">3.</p>
-                <p>
-                  Call your first API by following the documentation{" "}
-                  <a
-                    href="https://docs.apihero.run"
-                    target="_blank"
-                    className="underline transition hover:bg-slate-50 hover:text-blue-600"
-                    rel="noreferrer"
-                  >
-                    here
-                  </a>
-                  .
-                </p>
-              </li>
+
+              <p className="pt-8">
+                Once API Hero is setup correctly you will have a new API Hero
+                project and can monitor your API traffic via this web app.
+              </p>
             </ul>
-            <hr className="my-8 h-px border-0 bg-slate-300" />
-            <h3 className="mb-5 text-2xl font-bold text-slate-700 xl:font-medium">
-              Need help?
-            </h3>
-            <p className="mb-8">
-              If you have any questions feel free to schedule a call with one of
-              us below, or email us at{" "}
-              <a className="underline" href="mailto:hello@apihero.run">
-                hello@apihero.run
-              </a>
-              . We're more than happy to help!
-            </p>
-            <ul className="flex gap-4">
-              <li className={founderAvatars}>
-                <a
-                  href="https://cal.com/team/apihero/product-feedback"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <img
-                    className="rounded-full"
-                    src={MattAvatar}
-                    alt="Matt Aitken, founder of API Hero"
-                  />
-                </a>
-                <span className="">Matt</span>
-              </li>
-              <li className={founderAvatars}>
-                <a
-                  href="https://cal.com/team/apihero/product-feedback"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <img
-                    className="rounded-full"
-                    src={EricAvatar}
-                    alt="Eric Allam, founder of API Hero"
-                  />
-                </a>
-                <span className="">Eric</span>
-              </li>
-              <li className={founderAvatars}>
-                <a
-                  href="https://cal.com/team/apihero/product-feedback"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <img
-                    className="rounded-full"
-                    src={JamesAvatar}
-                    alt="James Ritchie, founder of API Hero"
-                  />
-                </a>
-                <span className="">James</span>
-              </li>
-              <li className={founderAvatars}>
-                <a
-                  href="https://cal.com/team/apihero/product-feedback"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <img
-                    className="rounded-full"
-                    src={DanAvatar}
-                    alt="Dan Patel, founder of API Hero"
-                  />
-                </a>
-                <span className="">Dan</span>
-              </li>
-            </ul>
-            <a
-              href="https://cal.com/team/apihero/product-feedback"
-              target="_blank"
-              rel="noreferrer"
-              className="mt-8 inline-flex items-center rounded bg-blue-500 py-3 px-4 text-white transition hover:bg-blue-600"
-            >
-              <CalendarIcon className="mr-2 h-5 w-5 text-white" />
-              Schedule a call
-            </a>
           </div>
           <InfoPanel />
         </>

@@ -48,7 +48,7 @@ export default function LoginPage() {
   const data = useLoaderData<LoaderData>();
   return (
     <div className="flex sm:flex-row flex-col">
-      <div className="flex flex-col flex-none items-center justify-center w-full sm:w-96 bg-gradient-to-b from-[#314caf] via-[#13266c] to-[#3422a7] p-8">
+      <div className="flex flex-col flex-none items-center justify-center w-full sm:w-96 lg:w-1/3 bg-gradient-to-b from-[#314caf] via-[#13266c] to-[#3422a7] p-8">
         <h2 className="mb-2 text-2xl font-bold tracking-tight text-slate-200 lg:text-4xl pb-8">
           APIs as they were meant to be
         </h2>
