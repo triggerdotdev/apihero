@@ -13,7 +13,7 @@ import { useHotkeys } from "react-hotkeys-hook";
 
 import { Fragment } from "react";
 import { Listbox, Transition } from "@headlessui/react";
-import { CheckIcon, SelectorIcon } from "@heroicons/react/solid";
+import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/24/solid";
 import { classNamesForTagName } from "~/components/tags";
 import { marked } from "marked";
 import jsonQuery from "json-query";
@@ -345,10 +345,10 @@ function SelectOperationsFieldset({
 
   return (
     <div>
-      <div className="mt-12 flex justify-between items-center">
+      <div className="mt-12 flex items-center justify-between">
         <Form method="get" reloadDocument>
           <fieldset className="w-full">
-            <div className="flex gap-2 items-end">
+            <div className="flex items-end gap-2">
               <div className="sm:col-span-6">
                 <label
                   htmlFor="tag"
@@ -389,7 +389,7 @@ function SelectOperationsFieldset({
         </Form>
 
         {scopeOptions && (
-          <div className="mr-6 flex gap-2 items-center">
+          <div className="mr-6 flex items-center gap-2">
             <label htmlFor="bulkScopes">
               Press button to add these scopes:{" "}
             </label>
@@ -419,7 +419,7 @@ function SelectOperationsFieldset({
           <div className="mt-4 divide-y divide-gray-200 border-t border-b border-gray-200">
             {operations.map((operation) => (
               <div key={operation.id} className="flex">
-                <div className="relative flex-col items-start py-4 flex-grow">
+                <div className="relative flex-grow flex-col items-start py-4">
                   <div className="min-w-0 flex-1 text-sm">
                     <label
                       htmlFor={`operation-${operation.id}`}
@@ -528,7 +528,7 @@ function SetOperationSecurity({
   );
 
   return (
-    <div className="flex mt-4">
+    <div className="mt-4 flex">
       {bulkScopes.length > 0 && (
         <SecondaryButton
           onClick={(e) => {
@@ -545,7 +545,7 @@ function SetOperationSecurity({
             }
             e.preventDefault();
           }}
-          className="flex-shrink-0 mr-1 max-h-10 self-end"
+          className="mr-1 max-h-10 flex-shrink-0 self-end"
         >
           Add {bulkScopes.map((s) => s.name).join(", ")}
         </SecondaryButton>
@@ -679,7 +679,7 @@ function ScopeDropdown({
                 </span>
               </span>
               <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                <SelectorIcon
+                <ChevronUpDownIcon
                   className="h-5 w-5 text-gray-400"
                   aria-hidden="true"
                 />

@@ -1,4 +1,4 @@
-import { ClipboardCopyIcon } from "@heroicons/react/outline";
+import { ClipboardIcon } from "@heroicons/react/24/outline";
 import { useLoaderData } from "@remix-run/react";
 import type { LoaderFunction } from "@remix-run/server-runtime";
 import type { OpenAPIV3_1 } from "openapi-types";
@@ -63,7 +63,7 @@ export default function SchemaOperationClientRoute() {
                 });
             }}
           >
-            <ClipboardCopyIcon className="mr-[2px] h-4 w-4" />
+            <ClipboardIcon className="mr-[2px] h-4 w-4" />
             <p className={`font-sans text-base`}>Copy Spec Doc</p>
           </button>
         </div>
@@ -83,7 +83,7 @@ export default function SchemaOperationClientRoute() {
                   });
             }}
           >
-            <ClipboardCopyIcon className="mr-[2px] h-4 w-4" />
+            <ClipboardIcon className="mr-[2px] h-4 w-4" />
             <p className={`font-sans text-base`}>Copy Code</p>
           </button>
         </div>

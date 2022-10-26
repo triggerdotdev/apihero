@@ -9,14 +9,14 @@ import type { LoaderFunction, MetaFunction } from "@remix-run/server-runtime";
 import invariant from "tiny-invariant";
 import { findOperationById } from "~/models/apiSchema.server";
 import {
-  ExternalLinkIcon,
   IdentificationIcon,
   LinkIcon,
   PencilIcon,
   TagIcon,
-} from "@heroicons/react/solid";
-import { ChevronRightIcon } from "@heroicons/react/solid";
+} from "@heroicons/react/24/solid";
+import { ChevronRightIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
+import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
 
 export type LoaderData = {
   operation: Awaited<ReturnType<typeof findOperationById>>;
@@ -156,7 +156,7 @@ function OperationLayout({
                     </div>
                     {operation.externalDocsUrl && (
                       <div className="mt-2 flex items-center text-sm text-gray-500">
-                        <ExternalLinkIcon
+                        <ArrowTopRightOnSquareIcon
                           className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
                           aria-hidden="true"
                         />

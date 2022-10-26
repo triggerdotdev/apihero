@@ -7,7 +7,7 @@ import {
   HashtagIcon,
   LinkIcon,
   PencilIcon,
-} from "@heroicons/react/solid";
+} from "@heroicons/react/24/solid";
 import { Menu, Transition } from "@headlessui/react";
 import invariant from "tiny-invariant";
 import type { LoaderArgs, MetaFunction } from "@remix-run/server-runtime";

@@ -1,5 +1,9 @@
 import { Menu, Transition } from "@headlessui/react";
-import { CalendarIcon, ChatAltIcon, MailIcon } from "@heroicons/react/solid";
+import {
+  CalendarIcon,
+  ChatBubbleLeftEllipsisIcon,
+  EnvelopeIcon,
+} from "@heroicons/react/24/solid";
 import MattAvatar from "~/assets/images/founders/matt.jpg";
 
 export function FeedbackMenu() {
@@ -7,7 +11,7 @@ export function FeedbackMenu() {
     <Menu as="div" className="relative z-50 ml-1">
       <div>
         <Menu.Button className="group flex items-center justify-center gap-1 rounded border border-slate-200 bg-white py-1 px-2 text-sm text-slate-700 shadow-sm transition hover:bg-slate-50 hover:text-blue-600">
-          <ChatAltIcon className="h-4 w-4 transition group-hover:text-blue-600" />
+          <ChatBubbleLeftEllipsisIcon className="h-4 w-4 transition group-hover:text-blue-600" />
           <span>Let’s talk</span>
         </Menu.Button>
       </div>
@@ -53,7 +57,7 @@ export function FeedbackMenu() {
                 className="inline-flex items-center whitespace-nowrap rounded bg-blue-500 py-3 px-4 text-white transition hover:bg-blue-600"
                 href="mailto:hello@apihero.run"
               >
-                <MailIcon className="mr-2 h-5 w-5 text-white" />
+                <EnvelopeIcon className="mr-2 h-5 w-5 text-white" />
                 Send Matt an email
               </a>
             </Menu.Item>

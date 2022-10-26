@@ -47,7 +47,7 @@ importers:
       '@codemirror/view': ^0.20.7
       '@faker-js/faker': ^7.5.0
       '@headlessui/react': ^1.6.4
-      '@heroicons/react': ^1.0.6
+      '@heroicons/react': ^2.0.12
       '@jsonhero/codemirror-lang-inline-tokens': ^0.1.0
       '@jsonhero/fetch-hero': ^0.2.2
       '@keyv/redis': ^2.3.7
@@ -176,7 +176,7 @@ importers:
       '@codemirror/state': 0.20.1
       '@codemirror/view': 0.20.7
       '@headlessui/react': 1.7.3_biqbaboplfbrettd7655fr4n2y
-      '@heroicons/react': 1.0.6_react@18.2.0
+      '@heroicons/react': 2.0.12_react@18.2.0
       '@jsonhero/codemirror-lang-inline-tokens': 0.1.0
       '@jsonhero/fetch-hero': 0.2.2
       '@keyv/redis': 2.5.1
@@ -3038,8 +3038,8 @@ packages:
       react-dom: 18.2.0_react@18.2.0
     dev: false
 
-  /@heroicons/react/1.0.6_react@18.2.0:
-    resolution: {integrity: sha512-JJCXydOFWMDpCP4q13iEplA503MQO3xLoZiKum+955ZCtHINWnx26CUxVxxFQu/uLb4LW3ge15ZpzIkXKkJ8oQ==}
+  /@heroicons/react/2.0.12_react@18.2.0:
+    resolution: {integrity: sha512-FZxKh3i9aKIDxyALTgIpSF2t6V6/eZfF5mRu41QlwkX3Oxzecdm1u6dpft6PQGxIBwO7TKYWaMAYYL8mp/EaOg==}
     peerDependencies:
       react: '>= 16'
     dependencies:

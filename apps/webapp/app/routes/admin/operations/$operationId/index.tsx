@@ -1,7 +1,7 @@
 import { marked } from "marked";
-import { CodeIcon } from "@heroicons/react/solid";
+import { CodeBracketIcon } from "@heroicons/react/24/solid";
 import type { ApiSchemaParameter } from ".prisma/client";
-import { CheckCircleIcon } from "@heroicons/react/outline";
+import { CheckCircleIcon } from "@heroicons/react/24/outline";
 import { JSONEditor } from "~/libraries/common";
 import { useOperationData } from "../$operationId";
 
@@ -107,7 +107,7 @@ function OperationPage({
             <div>
               <div className="mt-8 flex items-center">
                 <span className="flex h-5 w-5 items-center justify-center rounded-full bg-indigo-500 text-white">
-                  <CodeIcon className="h-5 w-5" aria-hidden="true" />
+                  <CodeBracketIcon className="h-5 w-5" aria-hidden="true" />
                 </span>
 
                 <span className="text-md ml-2 font-medium leading-5 text-indigo-600"></span>

@@ -1,4 +1,4 @@
-import { UserCircleIcon } from "@heroicons/react/solid";
+import { UserCircleIcon } from "@heroicons/react/24/solid";
 import classNames from "classnames";
 import type { User } from "~/models/user.server";
 

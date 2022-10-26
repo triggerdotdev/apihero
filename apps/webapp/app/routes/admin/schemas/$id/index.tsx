@@ -1,4 +1,4 @@
-import { CloudIcon } from "@heroicons/react/outline";
+import { CloudIcon } from "@heroicons/react/24/outline";
 import { useApiSchemaMatchData } from "../$id";
 
 export default function ApiSchemaDetailsRoute() {

@@ -1,4 +1,4 @@
-import { ChevronRightIcon, HomeIcon } from "@heroicons/react/solid";
+import { ChevronRightIcon, HomeIcon } from "@heroicons/react/24/solid";
 import { NavLink, useMatches } from "@remix-run/react";
 
 export function Breadcrumb() {

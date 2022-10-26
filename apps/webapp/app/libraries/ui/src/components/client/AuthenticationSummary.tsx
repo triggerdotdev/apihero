@@ -1,4 +1,4 @@
-import { ShieldCheckIcon } from "@heroicons/react/solid";
+import { ShieldCheckIcon } from "@heroicons/react/24/solid";
 import type {
   HttpClientAuthentication,
   ApiSchemaSecurityScheme,

@@ -1,4 +1,4 @@
-import { DownloadIcon } from "@heroicons/react/outline";
+import { ArrowDownTrayIcon } from "@heroicons/react/24/outline";
 import { useLoaderData } from "@remix-run/react";
 import type { LoaderFunction } from "@remix-run/server-runtime";
 import clsx from "clsx";
@@ -85,7 +85,7 @@ function Tabs({
                 rel="noreferrer"
                 className="flex items-center"
               >
-                <DownloadIcon className="mr-[2px] h-4 w-4" />
+                <ArrowDownTrayIcon className="mr-[2px] h-4 w-4" />
                 <p className={`font-sans text-base`}>Download</p>
               </a>
             </div>
@@ -108,7 +108,7 @@ function Tabs({
                 rel="noreferrer"
                 className="flex items-center"
               >
-                <DownloadIcon className="mr-[2px] h-4 w-4" />
+                <ArrowDownTrayIcon className="mr-[2px] h-4 w-4" />
                 <p className={`font-sans text-base`}>Download</p>
               </a>
             </div>

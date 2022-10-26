@@ -1,4 +1,4 @@
-import { DocumentTextIcon } from "@heroicons/react/solid";
+import { DocumentTextIcon } from "@heroicons/react/24/solid";
 import { Link } from "@remix-run/react";
 import { useUser } from "~/libraries/common";
 import { FeedbackMenu } from "./FeedbackMenu";

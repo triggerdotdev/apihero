@@ -35,22 +35,7 @@ export function InfoPanel() {
             <ApiLogoContainer ApiLogo={TwitterLogo} isSupported />
           </li>
         </ul>
-        <h3 className="mt-6 mb-2 text-xs font-medium uppercase tracking-wider text-slate-400">
-          Up next
-        </h3>
-        <ul className="mb-6 flex flex-wrap gap-2">
-          <ApiLogoContainer ApiLogo={GoogleLogo} />
-          <ApiLogoContainer ApiLogo={SalesForceLogo} />
-          <ApiLogoContainer ApiLogo={StripeLogo} />
-          <ApiLogoContainer ApiLogo={TwilioLogo} />
-          <ApiLogoContainer ApiLogo={XeroLogo} />
-          <ApiLogoContainer ApiLogo={HubspotLogo} />
-          <ApiLogoContainer ApiLogo={ShopifyLogo} />
-          <ApiLogoContainer ApiLogo={ZendeskLogo} />
-          <ApiLogoContainer ApiLogo={SkyscannerLogo} />
-          <ApiLogoContainer ApiLogo={SlackLogo} />
-          <ApiLogoContainer ApiLogo={SendgridLogo} />
-        </ul>
+
         <p className="text-slate-600">
           Let us know which APIs we should support next and we’ll email you as
           soon they’re available.

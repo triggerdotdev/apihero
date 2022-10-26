@@ -1,6 +1,5 @@
 import type { ActionFunction, LoaderArgs } from "@remix-run/server-runtime";
 import invariant from "tiny-invariant";
-import { Footer, Header } from "~/libraries/ui";
 import { getProjectFromSlugs } from "~/models/project.server";
 import { requireUserId } from "~/services/session.server";
 import { AuthenticationSummary } from "~/libraries/ui/src/components/client/AuthenticationSummary";
@@ -12,7 +11,7 @@ import {
   ChevronRightIcon,
   LockClosedIcon,
   PlusCircleIcon,
-} from "@heroicons/react/solid";
+} from "@heroicons/react/24/solid";
 import { HTTPMethodLabel } from "~/libraries/common/src/components/HTTPMethod";
 import { DataUptime } from "~/libraries/ui/src/components/DataUptime";
 import { DataErrorCount } from "~/libraries/ui/src/components/DataErrorCount";
@@ -24,7 +23,8 @@ import { CachingOptions } from "~/libraries/ui/src/components/client/CachingOpti
 import { z } from "zod";
 import { setCache as updateCacheSettings } from "~/models/httpClient.server";
 import { syncIntegrationsSettingsWithGateway } from "~/models/gateway.server";
-import { ExternalLinkIcon } from "@heroicons/react/outline";
+import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
+import { CopyTextButton } from "~/libraries/ui/src/components/CopyTextButton";
 type LoaderData = UseDataFunctionReturn<typeof loader>;
 
 export const loader = async ({ request, params }: LoaderArgs) => {
@@ -152,48 +152,43 @@ export default function Page() {
   const data = useTypedLoaderData<typeof loader>();
 
   return (
-    <div className="flex h-screen flex-col">
-      <Header>
-        <div className="flex items-center gap-4">{data.project.title} </div>
-      </Header>
-      <div className="flex flex-shrink flex-grow overflow-auto bg-slate-50">
-        <main className="m-auto h-full max-w-[2000px]">
-          <div className="flex items-center justify-between pt-10 pb-8">
-            <div className="flex items-center">
-              <p className="text-sm font-medium text-slate-600">
-                Project Key: &nbsp;{" "}
-              </p>
-              <div className="flex select-all rounded border bg-white py-1 px-2 text-sm text-slate-600">
-                {data.project.id}
-              </div>
-            </div>
-            <p className="text-sm text-slate-600">
-              View our{" "}
-              <a
-                href="https://docs.apihero.run"
-                target="_blank"
-                className="underline transition hover:text-blue-500"
-                rel="noreferrer"
-              >
-                getting started
-              </a>{" "}
-              guide
+    <div className="flex h-full w-full flex-col bg-slate-50 px-10 py-6">
+      <main className="m-auto h-full w-full">
+        <div className="flex items-center justify-between pb-8">
+          <div className="flex items-center">
+            <p className="text-sm font-medium text-slate-600">
+              Project Key: &nbsp;{" "}
             </p>
+            <div className="flex items-center gap-2.5 rounded border bg-white py-1 pl-3 pr-1 text-sm text-slate-600">
+              {data.project.id}
+              <CopyTextButton value={data.project.id} />
+            </div>
           </div>
+          <p className="text-sm text-slate-600">
+            View our{" "}
+            <a
+              href="https://docs.apihero.run"
+              target="_blank"
+              className="underline transition hover:text-blue-500"
+              rel="noreferrer"
+            >
+              getting started
+            </a>{" "}
+            guide
+          </p>
+        </div>
 
-          {data.project.httpClients ? (
-            <>
-              <ClientsList
-                clients={data.project.httpClients}
-                endpointStats={data.project.endpointStats}
-              />
-            </>
-          ) : (
-            <BlankState />
-          )}
-        </main>
-      </div>
-      <Footer />
+        {data.project.httpClients ? (
+          <>
+            <ClientsList
+              clients={data.project.httpClients}
+              endpointStats={data.project.endpointStats}
+            />
+          </>
+        ) : (
+          <BlankState />
+        )}
+      </main>
     </div>
   );
 }
@@ -255,7 +250,7 @@ function ClientsList({ clients, endpointStats }: ClientsListProps) {
                             className="group flex items-center justify-between rounded-lg bg-white p-6 pt-5 shadow transition hover:shadow-md"
                           >
                             <div className="w-full">
-                              <div className="mb-2 flex items-start justify-between font-medium text-slate-400">
+                              <div className="mb-2 flex flex-wrap items-start justify-between font-medium text-slate-400">
                                 <div className="flex flex-col">
                                   <h3 className="mb-1 text-2xl tracking-tight text-slate-700">
                                     {endpoint.operation.summary}
@@ -311,7 +306,7 @@ function ClientsList({ clients, endpointStats }: ClientsListProps) {
                   )}
                 </ul>
               </div>
-              <div className="flex max-w-md flex-col gap-6">
+              <div className="flex max-w-lg flex-col gap-6">
                 <AuthenticationSummary
                   active={client.authentications}
                   integration={client.integration}
@@ -388,7 +383,7 @@ function NoEndpointsBlankState() {
           Follow the Getting Started guide to add your first endpoint.
         </p>
       </div>
-      <ExternalLinkIcon className="h-7 w-7 text-slate-500 transition group-hover:text-slate-700" />
+      <ArrowTopRightOnSquareIcon className="h-7 w-7 text-slate-500 transition group-hover:text-slate-700" />
     </a>
   );
 }

@@ -1,5 +1,9 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { BriefcaseIcon, HashtagIcon, PencilIcon } from "@heroicons/react/solid";
+import {
+  BriefcaseIcon,
+  HashtagIcon,
+  PencilIcon,
+} from "@heroicons/react/24/solid";
 import type { LoaderArgs, MetaFunction } from "@remix-run/server-runtime";
 import { Link, NavLink, Outlet, useMatches } from "@remix-run/react";
 import clsx from "clsx";
