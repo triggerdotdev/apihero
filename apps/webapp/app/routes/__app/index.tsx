@@ -62,8 +62,7 @@ function WorkspaceBlankStateGettingStarted() {
               Get started with API Hero
             </h3>
             <p className="text-xl">
-              Connect to 3rd party APIs in seconds,
-              <span className="font-bold"> directly from your frontend. </span>
+              You're now ready to connect to 3rd party APIs in seconds.
             </p>
 
             <ul className="mb-10 mt-4 flex flex-col gap-6">
