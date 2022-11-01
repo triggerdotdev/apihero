@@ -9,9 +9,17 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "happy-dom",
+    setupFiles: ["./test/vitest.expect.ts"],
     // setupFiles: ["./test/setup-test-env.ts"],
-    include: ["./**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
+    include: ["./test/**/*.node.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
     watchExclude: [".*\\/node_modules\\/.*", ".*\\/build\\/.*"],
-    exclude: ["node_modules", "dist", ".idea", ".git", ".cache", "**/*integration.test.ts"],
+    exclude: [
+      "node_modules",
+      "dist",
+      ".idea",
+      ".git",
+      ".cache",
+      "**/*integration.test.ts",
+    ],
   },
 });

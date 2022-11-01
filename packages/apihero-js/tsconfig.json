@@ -1,0 +1,15 @@
+{
+  "extends": "@apihero/tsconfig/node18.json",
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "tsup.config.ts",
+    "../interceptors-js/src/types.ts"
+  ],
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  },
+  "exclude": ["node_modules"]
+}
