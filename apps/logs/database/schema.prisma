@@ -1,0 +1,42 @@
+datasource db {   
+  provider = "postgresql"   
+  url      = env("LOGS_DATABASE_URL") 
+}
+
+model Log {
+  id         String     @id
+
+  project_id  String
+
+  method     HTTPMethod @default(GET)
+  status_code Int
+  base_url    String
+  path       String
+  search     String     @default("")
+
+  request_body     Json?
+  request_headers  Json?
+  response_body    Json?
+  response_headers Json?
+
+  is_cache_hit   Boolean
+  response_size Int     @default(0)
+
+  request_duration Float @default(0)
+  gateway_duration Float @default(0)
+
+  created_at DateTime @default(now())
+
+  @@unique([id,  created_at])
+}
+
+enum HTTPMethod {
+  GET
+  HEAD
+  POST
+  PUT
+  PATCH
+  OPTIONS
+  DELETE
+  TRACE
+}
