@@ -25,7 +25,7 @@ const httpMethodSchema = z.union([
 
 const httpHeaderSchema = z.record(z.string());
 
-const logSchema = z.object({
+export const logSchema = z.object({
   id: z.string(),
   projectId: z.string(),
   method: httpMethodSchema,
