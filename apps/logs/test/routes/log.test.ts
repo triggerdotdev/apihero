@@ -13,7 +13,7 @@ test("create log fail without authentication", async (t) => {
   t.equal(res.statusCode, 401);
 });
 
-test("create log succeeds", async (t) => {
+test("create log fails with invalid body", async (t) => {
   const app = await build(t);
 
   const res = await app.inject({
@@ -22,9 +22,12 @@ test("create log succeeds", async (t) => {
     headers: {
       authorization: `Bearer ${process.env.LOGS_API_AUTHENTICATION_TOKEN}`,
     },
+    body: {
+      projectId: "project-1",
+    },
   });
 
-  t.equal(res.statusCode, 200);
+  t.equal(res.statusCode, 400);
 });
 
 // test("get logs", async (t) => {
