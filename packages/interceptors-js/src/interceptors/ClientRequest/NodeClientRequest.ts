@@ -82,6 +82,12 @@ export class NodeClientRequest extends ClientRequest {
       connectionUrl = modifiedRequest.url;
     }
 
+    if (modifiedRequest && modifiedRequest.headers) {
+      options.log("connecting with modified headers:", modifiedRequest.headers);
+
+      requestOptions.headers = modifiedRequest.headers;
+    }
+
     super(requestOptions, callback);
 
     this.log = options.log.extend(
@@ -199,9 +205,19 @@ export class NodeClientRequest extends ClientRequest {
         return this;
       }
 
-      this.once("socket", (socket) => {
-        this.log("socket connected: ", socket);
-      });
+      // Write the request body chunks in the order of ".write()" calls.
+      // Note that no request body has been written prior to this point
+      // in order to prevent the Socket to communicate with a potentially
+      // existing server.
+      this.log("writing request chunks...", this.chunks);
+
+      for (const { chunk, encoding } of this.chunks) {
+        if (encoding) {
+          super.write(chunk, encoding);
+        } else {
+          super.write(chunk);
+        }
+      }
 
       this.once("error", (error) => {
         this.log("original request error:", error);
