@@ -1,12 +1,12 @@
 import { test } from "tap";
 import { build } from "../helper";
 
-test("default root route", async (t) => {
+test("log is loaded", async (t) => {
   const app = await build(t);
 
   const res = await app.inject({
-    url: "/",
+    url: "/log",
   });
 
-  t.same(res.statusCode, 404);
+  t.equal(res.payload, "this is a fucking example");
 });
