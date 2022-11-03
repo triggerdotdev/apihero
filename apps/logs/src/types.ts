@@ -44,4 +44,11 @@ export const logSchema = z.object({
   createdAt: dateSchema,
 });
 
-type Log = z.infer<typeof logSchema>;
+export type Log = z.infer<typeof logSchema>;
+
+export const createLogBodySchema = logSchema.omit({
+  id: true,
+  createdAt: true,
+});
+
+export type CreateLogBody = z.infer<typeof createLogBodySchema>;
