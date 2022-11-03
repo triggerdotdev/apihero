@@ -1,0 +1,79 @@
+import { IsomorphicRequest } from "@apihero/interceptors-js";
+import { ClientRequestInterceptor } from "@apihero/interceptors-js/lib/interceptors/ClientRequest";
+import { isMatch } from "matcher";
+import debug from "debug";
+import { SetupProxyOptions, PolicyRule } from "../types";
+
+const log = debug("apihero");
+
+export interface ProxyInstance {
+  start(): Promise<void>;
+  stop(): Promise<void>;
+}
+
+export function setupProxy(options: SetupProxyOptions): ProxyInstance {
+  const interceptor = new ClientRequestInterceptor();
+
+  interceptor.on("request", (request) => {
+    if (
+      (options.allow && !isAllowed(request, options.allow)) ||
+      (options.deny && isAllowed(request, options.deny))
+    ) {
+      log("request not proxied", request.url.href);
+      return;
+    }
+
+    request.requestWith({
+      headers: {
+        ...Object.fromEntries(request.headers.entries()),
+        "x-apihero-project-key": options.projectKey,
+      },
+    });
+  });
+
+  interceptor.on("connect", (request) => {
+    if (
+      (options.allow && !isAllowed(request, options.allow)) ||
+      (options.deny && isAllowed(request, options.deny))
+    ) {
+      log("request not proxied", request.url.href);
+      return;
+    }
+
+    const newUrl = new URL(request.url.pathname, options.url);
+
+    log(`proxying ${request.url.href} to ${newUrl.href}`);
+
+    request.connectWith({
+      url: newUrl,
+      headers: {
+        ...Object.fromEntries(request.headers.entries()),
+        "x-apihero-origin": request.url.origin,
+      },
+    });
+  });
+
+  return {
+    start: async () => {
+      interceptor.apply();
+    },
+    stop: async () => {
+      interceptor.dispose();
+    },
+  };
+}
+
+function isAllowed(
+  request: IsomorphicRequest,
+  allow: Array<PolicyRule>
+): boolean {
+  return allow.some((rule) => {
+    if (typeof rule === "string") {
+      return isMatch(request.url.href, rule);
+    }
+
+    return (
+      rule.method === request.method && isMatch(request.url.href, rule.url)
+    );
+  });
+}
