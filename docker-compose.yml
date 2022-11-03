@@ -25,7 +25,7 @@ services:
     networks:
       - app_network
   logs:
-    image: postgres:latest
+    image: timescale/timescaledb:latest-pg14
     restart: always
     environment:
       - POSTGRES_USER=postgres
