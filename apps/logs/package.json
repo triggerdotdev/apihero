@@ -23,6 +23,7 @@
     "@fastify/autoload": "^5.0.0",
     "@fastify/postgres": "^5.1.0",
     "@fastify/sensible": "^5.0.0",
+    "cuid": "^2.1.8",
     "fastify": "^4.0.0",
     "fastify-cli": "^5.5.1",
     "fastify-plugin": "^4.0.0",
