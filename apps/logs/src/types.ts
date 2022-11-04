@@ -50,13 +50,6 @@ export const CreateLogRequestBody = Log.omit({
   createdAt: true,
 });
 
-const logsToken = process.env.LOGS_API_AUTHENTICATION_TOKEN;
-invariant(logsToken, "LOGS_API_AUTHENTICATION_TOKEN is required");
-
-const CreateLogRequestHeaders = z.object({
-  authorization: z.literal(`Bearer ${logsToken}`),
-});
-
 const CreateLogReply = z.discriminatedUnion("success", [
   z.object({
     success: z.literal(true),
@@ -64,13 +57,12 @@ const CreateLogReply = z.discriminatedUnion("success", [
   }),
   z.object({
     success: z.literal(false),
-    error: z.unknown(),
+    error: z.any(),
   }),
 ]);
 
 export const models = {
   Log,
   CreateLogRequestBody,
-  CreateLogRequestHeaders,
   CreateLogReply,
 };
