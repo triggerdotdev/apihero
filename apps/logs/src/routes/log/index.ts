@@ -2,7 +2,7 @@ import { FastifyPluginAsync } from "fastify";
 import invariant from "tiny-invariant";
 import { createLogBodySchema } from "../../types";
 import cuid = require("cuid");
-import { databaseToLog } from "../../utilities/log";
+import { databaseToLog } from "../../utilities/log-conversion";
 
 const logsToken = process.env.LOGS_API_AUTHENTICATION_TOKEN;
 invariant(logsToken, "LOGS_API_AUTHENTICATION_TOKEN is required");
