@@ -1,5 +1,6 @@
 import { test } from "tap";
 import { CreateLogBody } from "../../src/types";
+import { deleteLogs } from "../../src/utilities/test-utilities";
 import { build } from "../helper";
 
 test("create log fail without authentication", async (t) => {
@@ -88,7 +89,7 @@ test("create log succeeds with valid body", async (t) => {
   t.same(log.gatewayDuration, requestBody.gatewayDuration);
 
   //clean up
-  await app.pg.query(`DELETE FROM "Log" WHERE id = $1`, [log.id]);
+  await deleteLogs([log.id]);
 });
 
 // test("get logs", async (t) => {

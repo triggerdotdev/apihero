@@ -2,9 +2,9 @@
 const helper = require("fastify-cli/helper.js");
 import * as path from "path";
 import * as tap from "tap";
-import fp from "fastify-plugin";
-import { app as mainApp } from "../src/app";
 import Fastify from "fastify";
+import fastifyPostgres from "@fastify/postgres";
+import { Client } from "pg";
 
 export type Test = typeof tap["Test"]["prototype"];
 
@@ -31,7 +31,9 @@ async function build(t: Test) {
   await app.ready();
 
   // Tear down our app after we are done
-  t.teardown(() => void app.close());
+  t.teardown(async () => {
+    await app.close();
+  });
 
   return app;
 }
