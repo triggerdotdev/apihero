@@ -2,6 +2,7 @@ import { FastifyPluginAsync } from "fastify";
 import invariant from "tiny-invariant";
 import { createLogBodySchema } from "../../types";
 import cuid = require("cuid");
+import { databaseToLog } from "../../utilities/log";
 
 const logsToken = process.env.LOGS_API_AUTHENTICATION_TOKEN;
 invariant(logsToken, "LOGS_API_AUTHENTICATION_TOKEN is required");
@@ -46,11 +47,9 @@ const log: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
 
     try {
       const queryResult = await fastify.pg.query(query, values);
-      console.log(queryResult);
-
-      return { success: true, log: queryResult };
+      const log = databaseToLog(queryResult.rows[0]);
+      return { success: true, log };
     } catch (error) {
-      console.log(error);
       return { success: false, error: error };
     }
   });
