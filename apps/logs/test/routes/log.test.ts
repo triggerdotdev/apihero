@@ -23,7 +23,7 @@ test("create log fails with invalid body", async (t) => {
     headers: {
       authorization: `Bearer ${process.env.LOGS_API_AUTHENTICATION_TOKEN}`,
     },
-    body: {
+    payload: {
       projectId: "project-1",
     },
   });
@@ -34,7 +34,7 @@ test("create log fails with invalid body", async (t) => {
 test("create log succeeds with valid body", async (t) => {
   const app = await build(t);
 
-  const body: CreateLogBody = {
+  const requestBody: CreateLogBody = {
     projectId: "project-1",
     method: "GET",
     statusCode: 200,
@@ -63,10 +63,32 @@ test("create log succeeds with valid body", async (t) => {
     headers: {
       authorization: `Bearer ${process.env.LOGS_API_AUTHENTICATION_TOKEN}`,
     },
-    body,
+    payload: requestBody,
   });
 
   t.equal(res.statusCode, 200);
+
+  const responseBody = JSON.parse(res.body);
+
+  t.equal(responseBody.success, true);
+
+  const log = responseBody.log;
+  t.same(log.projectId, requestBody.projectId);
+  t.same(log.method, requestBody.method);
+  t.same(log.statusCode, requestBody.statusCode);
+  t.same(log.baseUrl, requestBody.baseUrl);
+  t.same(log.path, requestBody.path);
+  t.same(log.search, requestBody.search);
+  t.same(log.requestHeaders, requestBody.requestHeaders);
+  t.same(log.responseHeaders, requestBody.responseHeaders);
+  t.same(log.responseBody, requestBody.responseBody);
+  t.same(log.isCacheHit, requestBody.isCacheHit);
+  t.same(log.responseSize, requestBody.responseSize);
+  t.same(log.requestDuration, requestBody.requestDuration);
+  t.same(log.gatewayDuration, requestBody.gatewayDuration);
+
+  //clean up
+  await app.pg.query(`DELETE FROM "Log" WHERE id = $1`, [log.id]);
 });
 
 // test("get logs", async (t) => {
