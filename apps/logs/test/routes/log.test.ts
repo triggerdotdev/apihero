@@ -1,5 +1,6 @@
 import { test } from "tap";
-import { CreateLogBody } from "../../src/types";
+import { z } from "zod";
+import { CreateLogRequestBody } from "../../src/types";
 import { deleteLogs } from "../../src/utilities/test-utilities";
 import { build } from "../helper";
 
@@ -35,7 +36,7 @@ test("create log fails with invalid body", async (t) => {
 test("create log succeeds with valid body", async (t) => {
   const app = await build(t);
 
-  const requestBody: CreateLogBody = {
+  const requestBody: z.infer<typeof CreateLogRequestBody> = {
     projectId: "project-1",
     method: "GET",
     statusCode: 200,

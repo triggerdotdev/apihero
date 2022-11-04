@@ -27,6 +27,7 @@
     "fastify": "^4.0.0",
     "fastify-cli": "^5.5.1",
     "fastify-plugin": "^4.0.0",
+    "fastify-zod": "^1.2.0",
     "pg": "^8.8.0",
     "tiny-invariant": "^1.2.0",
     "zod": "^3.19.1"

@@ -1,3 +1,4 @@
+import invariant from "tiny-invariant";
 import { z } from "zod";
 
 const literalSchema = z.union([z.string(), z.number(), z.boolean(), z.null()]);
@@ -25,7 +26,7 @@ const httpMethodSchema = z.union([
 
 const httpHeaderSchema = z.record(z.string());
 
-export const logSchema = z.object({
+export const Log = z.object({
   id: z.string(),
   projectId: z.string(),
   method: httpMethodSchema,
@@ -44,11 +45,32 @@ export const logSchema = z.object({
   createdAt: dateSchema,
 });
 
-export type Log = z.infer<typeof logSchema>;
-
-export const createLogBodySchema = logSchema.omit({
+export const CreateLogRequestBody = Log.omit({
   id: true,
   createdAt: true,
 });
 
-export type CreateLogBody = z.infer<typeof createLogBodySchema>;
+const logsToken = process.env.LOGS_API_AUTHENTICATION_TOKEN;
+invariant(logsToken, "LOGS_API_AUTHENTICATION_TOKEN is required");
+
+const CreateLogRequestHeaders = z.object({
+  authorization: z.literal(`Bearer ${logsToken}`),
+});
+
+const CreateLogReply = z.discriminatedUnion("success", [
+  z.object({
+    success: z.literal(true),
+    log: Log,
+  }),
+  z.object({
+    success: z.literal(false),
+    error: z.unknown(),
+  }),
+]);
+
+export const models = {
+  Log,
+  CreateLogRequestBody,
+  CreateLogRequestHeaders,
+  CreateLogReply,
+};
