@@ -1,30 +1,30 @@
 import { z } from "zod";
-import { Log, logSchema } from "../types";
+import { Log } from "../types";
 
 const DatabaseLogSchema = z.object({
-  id: logSchema.shape.id,
-  project_id: logSchema.shape.projectId,
-  method: logSchema.shape.method,
-  status_code: logSchema.shape.statusCode,
-  base_url: logSchema.shape.baseUrl,
-  path: logSchema.shape.path,
-  search: logSchema.shape.search,
-  request_headers: logSchema.shape.requestHeaders,
-  request_body: logSchema.shape.requestBody,
-  response_headers: logSchema.shape.responseHeaders,
-  response_body: logSchema.shape.responseBody,
-  is_cache_hit: logSchema.shape.isCacheHit,
-  response_size: logSchema.shape.responseSize,
-  request_duration: logSchema.shape.requestDuration,
-  gateway_duration: logSchema.shape.gatewayDuration,
-  created_at: logSchema.shape.createdAt,
+  id: Log.shape.id,
+  project_id: Log.shape.projectId,
+  method: Log.shape.method,
+  status_code: Log.shape.statusCode,
+  base_url: Log.shape.baseUrl,
+  path: Log.shape.path,
+  search: Log.shape.search,
+  request_headers: Log.shape.requestHeaders,
+  request_body: Log.shape.requestBody,
+  response_headers: Log.shape.responseHeaders,
+  response_body: Log.shape.responseBody,
+  is_cache_hit: Log.shape.isCacheHit,
+  response_size: Log.shape.responseSize,
+  request_duration: Log.shape.requestDuration,
+  gateway_duration: Log.shape.gatewayDuration,
+  created_at: Log.shape.createdAt,
 });
 
 function parseDatabaseLog(data: any) {
   return DatabaseLogSchema.safeParse(data);
 }
 
-export function databaseToLog(input: any): Log {
+export function databaseToLog(input: any): z.infer<typeof Log> {
   const parseResult = parseDatabaseLog(input);
 
   if (!parseResult.success) {

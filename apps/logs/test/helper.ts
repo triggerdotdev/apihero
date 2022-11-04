@@ -3,8 +3,6 @@ const helper = require("fastify-cli/helper.js");
 import * as path from "path";
 import * as tap from "tap";
 import Fastify from "fastify";
-import fastifyPostgres from "@fastify/postgres";
-import { Client } from "pg";
 
 export type Test = typeof tap["Test"]["prototype"];
 
