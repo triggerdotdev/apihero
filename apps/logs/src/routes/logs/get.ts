@@ -57,6 +57,7 @@ const logs: FastifyPluginAsync = async (app, opts): Promise<void> => {
         return;
       }
 
+      //get the correct project id
       let query = `SELECT * FROM "Log" WHERE project_id = :projectId`;
       const queryParams: Record<string, string | number> = {
         projectId: request.params.projectId,
@@ -66,6 +67,16 @@ const logs: FastifyPluginAsync = async (app, opts): Promise<void> => {
       if (request.query.api !== undefined) {
         query += ` AND base_url LIKE '%' || :api || '%'`;
         queryParams.api = request.query.api;
+      }
+
+      //status codes
+      if (request.query.status !== undefined) {
+        query += ` AND status_code IN (${request.query.status
+          .map((_, i) => `:status${i}`)
+          .join(",")})`;
+        request.query.status.forEach((status, i) => {
+          queryParams[`status${i}`] = status;
+        });
       }
 
       //date range
