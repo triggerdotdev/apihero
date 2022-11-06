@@ -80,6 +80,9 @@ export const GetLogsQuery = z
           z.array(z.string())
         )
         .optional(),
+      cached: z
+        .preprocess((arg) => arg !== undefined && arg === "true", z.boolean())
+        .optional(),
       page: z
         .preprocess(
           (arg) => arg !== undefined && parseInt(arg as string),
