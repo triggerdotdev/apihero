@@ -50,19 +50,13 @@ export const CreateLogRequestBody = Log.omit({
   createdAt: true,
 });
 
-const CreateLogReply = z.discriminatedUnion("success", [
-  z.object({
-    success: z.literal(true),
-    log: Log,
-  }),
-  z.object({
-    success: z.literal(false),
-    error: z.any(),
-  }),
-]);
+export const ErrorObject = z.object({
+  statusCode: z.number(),
+  error: z.string(),
+  message: z.string().optional(),
+});
 
 export const models = {
   Log,
   CreateLogRequestBody,
-  CreateLogReply,
 };

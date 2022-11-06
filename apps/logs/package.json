@@ -8,11 +8,11 @@
   },
   "scripts": {
     "test": "npm run build:ts && tsc -p test/tsconfig.json && tap --ts \"test/**/*.test.ts\"",
-    "start": "npm run build:ts && fastify start -l info dist/app.js",
+    "start": "npm run build:ts && node dist/app.js",
     "build:ts": "tsc",
     "watch:ts": "tsc -w",
     "dev": "npm run build:ts && concurrently -k -p \"[{name}]\" -n \"TypeScript,App\" -c \"yellow.bold,cyan.bold\" \"npm:watch:ts\" \"npm:dev:start\"",
-    "dev:start": "fastify start --ignore-watch=.ts$ -w -l info -P dist/app.js",
+    "dev:start": "npx infisical dev node dist/app.js",
     "db:migrate:deploy": "prisma migrate deploy",
     "db:migrate:dev": "prisma migrate dev"
   },
@@ -27,7 +27,7 @@
     "fastify": "^4.0.0",
     "fastify-cli": "^5.5.1",
     "fastify-plugin": "^4.0.0",
-    "fastify-zod": "^1.2.0",
+    "fastify-type-provider-zod": "^1.1.7",
     "pg": "^8.8.0",
     "tiny-invariant": "^1.2.0",
     "zod": "^3.19.1"
