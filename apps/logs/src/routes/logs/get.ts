@@ -66,7 +66,13 @@ const logs: FastifyPluginAsync = async (app, opts): Promise<void> => {
       //api
       if (request.query.api !== undefined) {
         query += ` AND base_url LIKE '%' || :api || '%'`;
-        queryParams.api = request.query.api;
+        queryParams.api = request.query.api.replaceAll("*", "%");
+      }
+
+      //path
+      if (request.query.path !== undefined) {
+        query += ` AND path LIKE '%' || :path || '%'`;
+        queryParams.path = request.query.path.replaceAll("*", "%");
       }
 
       //status codes

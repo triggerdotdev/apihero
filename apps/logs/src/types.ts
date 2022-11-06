@@ -70,6 +70,7 @@ export const GetLogsQuery = z
   .and(
     z.object({
       api: z.string().optional(),
+      path: z.string().optional(),
       status: z
         .preprocess(
           (arg) =>
