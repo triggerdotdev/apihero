@@ -48,6 +48,7 @@ export const Log = z.object({
 export const CreateLogRequestBody = Log.omit({
   id: true,
   createdAt: true,
+  projectId: true,
 });
 
 export const ErrorObject = z.object({
