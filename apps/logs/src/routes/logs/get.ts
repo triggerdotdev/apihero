@@ -62,6 +62,12 @@ const logs: FastifyPluginAsync = async (app, opts): Promise<void> => {
         projectId: request.params.projectId,
       };
 
+      //api
+      if (request.query.api !== undefined) {
+        query += ` AND base_url LIKE '%' || :api || '%'`;
+        queryParams.api = request.query.api;
+      }
+
       //date range
       if ("days" in request.query) {
         query += ` AND time >= NOW() - INTERVAL '1 days' * :days`;

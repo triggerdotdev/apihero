@@ -69,6 +69,7 @@ export const GetLogsQuery = z
   .default({ days: 7 })
   .and(
     z.object({
+      api: z.string().optional(),
       page: z
         .preprocess(
           (arg) => arg !== undefined && parseInt(arg as string),
