@@ -59,7 +59,10 @@ export const GetLogsQuery = z
       end: z.string(),
     }),
     z.object({
-      days: z.preprocess((arg) => parseInt(arg as string), z.number()),
+      days: z.preprocess(
+        (arg) => arg !== undefined && parseInt(arg as string),
+        z.number()
+      ),
     }),
   ])
   .optional()
@@ -67,7 +70,10 @@ export const GetLogsQuery = z
   .and(
     z.object({
       page: z
-        .preprocess((arg) => parseInt(arg as string), z.number())
+        .preprocess(
+          (arg) => arg !== undefined && parseInt(arg as string),
+          z.number()
+        )
         .optional()
         .default(1),
     })
