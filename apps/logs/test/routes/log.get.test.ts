@@ -1,6 +1,6 @@
 import { test } from "tap";
 import { z } from "zod";
-import { CreateLogRequestBody } from "../../src/types";
+import { CreateLogRequestBody, GetLogsSuccessResponse } from "../../src/types";
 import { deleteLogs } from "../../src/utilities/test-utilities";
 import { build } from "../helper";
 
@@ -19,7 +19,7 @@ test("get logs fail without authentication", async (t) => {
   t.equal(res.statusCode, 400);
 });
 
-test("create log fail with wrong authentication", async (t) => {
+test("get log fail with wrong authentication", async (t) => {
   const app = await build(t);
 
   const res = await app.inject({
@@ -35,6 +35,29 @@ test("create log fail with wrong authentication", async (t) => {
   });
 
   t.equal(res.statusCode, 403);
+});
+
+test("get logs, no results", async (t) => {
+  const app = await build(t);
+
+  const res = await app.inject({
+    url,
+    query: {
+      days: "7",
+      page: "1",
+    },
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${process.env.LOGS_API_AUTHENTICATION_TOKEN}`,
+    },
+  });
+
+  t.equal(res.statusCode, 200);
+
+  const responseBody = JSON.parse(res.body);
+  const body = GetLogsSuccessResponse.parse(responseBody);
+
+  t.equal(body.logs.length, 0);
 });
 
 // test("create log fails with invalid body", async (t) => {
