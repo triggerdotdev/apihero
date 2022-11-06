@@ -3,7 +3,12 @@ import { FastifyPluginAsync } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 import invariant from "tiny-invariant";
 import { z } from "zod";
-import { Log, ErrorObject, GetLogsQuery } from "../../types";
+import {
+  Log,
+  ErrorObject,
+  GetLogsQuery,
+  GetLogsSuccessResponse,
+} from "../../types";
 import { databaseToLog } from "../../utilities/log-conversion";
 import { namedParameters } from "../../utilities/named-sql";
 
@@ -25,12 +30,7 @@ const logs: FastifyPluginAsync = async (app, opts): Promise<void> => {
       }),
       querystring: GetLogsQuery,
       response: {
-        200: z.object({
-          success: z.literal(true),
-          logs: z.array(Log),
-          results: z.number(),
-          page: z.number(),
-        }),
+        200: GetLogsSuccessResponse,
         "4xx": ErrorObject,
         "5xx": ErrorObject,
       },
@@ -58,7 +58,7 @@ const logs: FastifyPluginAsync = async (app, opts): Promise<void> => {
       }
 
       let query = `SELECT * FROM "Log" WHERE project_id = :projectId`;
-      const queryParams: Record<string, string | number | Date> = {
+      const queryParams: Record<string, string | number> = {
         projectId: request.params.projectId,
       };
 
@@ -74,8 +74,10 @@ const logs: FastifyPluginAsync = async (app, opts): Promise<void> => {
 
       //order and limit
       query += ` ORDER BY time DESC LIMIT :pageSize OFFSET :page`;
-      queryParams.pageSize = pageSize;
+      queryParams.pageSize = pageSize + 1;
       queryParams.page = (request.query.page - 1) * pageSize;
+
+      const origin = `${request.protocol}://${request.hostname}`;
 
       try {
         console.log(query, queryParams);
@@ -84,11 +86,31 @@ const logs: FastifyPluginAsync = async (app, opts): Promise<void> => {
         console.log(parameterisedQuery);
 
         const queryResult = await app.pg.query(parameterisedQuery);
+        const logs = queryResult.rows
+          .map((l) => databaseToLog(l))
+          .slice(0, pageSize);
+
         reply.send({
-          success: true,
-          logs: queryResult.rows.map((l) => databaseToLog(l)),
-          results: queryResult.rows.length,
+          logs,
           page: request.query.page,
+          next:
+            queryResult.rows.length > pageSize
+              ? getPageUrl(
+                  origin,
+                  request.params.projectId,
+                  request.query,
+                  request.query.page + 1
+                )
+              : undefined,
+          previous:
+            request.query.page > 1
+              ? getPageUrl(
+                  origin,
+                  request.params.projectId,
+                  request.query,
+                  request.query.page - 1
+                )
+              : undefined,
         });
       } catch (error) {
         reply.status(500).send({
@@ -100,5 +122,24 @@ const logs: FastifyPluginAsync = async (app, opts): Promise<void> => {
     },
   });
 };
+
+function getPageUrl(
+  origin: string,
+  projectId: string,
+  query: z.infer<typeof GetLogsQuery>,
+  page: number
+): string {
+  //query to URL search params
+  const searchParams = new URLSearchParams();
+  if ("days" in query) {
+    searchParams.set("days", query.days.toString());
+  } else {
+    searchParams.set("start", query.start);
+    searchParams.set("end", query.end);
+  }
+  searchParams.set("page", page.toString());
+
+  return `${origin}/logs/${projectId}?${searchParams.toString()}`;
+}
 
 export default logs;
