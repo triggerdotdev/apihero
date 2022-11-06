@@ -24,6 +24,7 @@ const validRequestBody: z.infer<typeof CreateLogRequestBody> = {
   responseSize: 100,
   requestDuration: 100,
   gatewayDuration: 120,
+  time: new Date(),
 };
 
 const projectId = "test-project";

@@ -25,9 +25,9 @@ model Log {
   request_duration Float @default(0)
   gateway_duration Float @default(0)
 
-  created_at DateTime @default(now())
+  time DateTime
 
-  @@unique([id,  created_at])
+  @@unique([id,  time])
 }
 
 enum HTTPMethod {
