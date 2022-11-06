@@ -4,6 +4,29 @@ import { CreateLogRequestBody } from "../../src/types";
 import { deleteLogs } from "../../src/utilities/test-utilities";
 import { build } from "../helper";
 
+const validRequestBody: z.infer<typeof CreateLogRequestBody> = {
+  projectId: "project-1",
+  method: "GET",
+  statusCode: 200,
+  baseUrl: "https://example.com",
+  path: "/",
+  search: "",
+  requestHeaders: {
+    "user-agent": "test",
+  },
+
+  responseHeaders: {
+    "content-type": "application/json",
+  },
+  responseBody: {
+    foo: "bar",
+  },
+  isCacheHit: false,
+  responseSize: 100,
+  requestDuration: 100,
+  gatewayDuration: 120,
+};
+
 test("create log fail without authentication", async (t) => {
   const app = await build(t);
 
@@ -11,9 +34,25 @@ test("create log fail without authentication", async (t) => {
     url: "/logs",
     method: "POST",
     headers: {},
+    payload: validRequestBody,
   });
 
   t.equal(res.statusCode, 400);
+});
+
+test("create log fail with wrong authentication", async (t) => {
+  const app = await build(t);
+
+  const res = await app.inject({
+    url: "/logs",
+    method: "POST",
+    headers: {
+      Authorization: `Bearer incorrect`,
+    },
+    payload: validRequestBody,
+  });
+
+  t.equal(res.statusCode, 403);
 });
 
 test("create log fails with invalid body", async (t) => {
@@ -23,7 +62,7 @@ test("create log fails with invalid body", async (t) => {
     url: "/logs",
     method: "POST",
     headers: {
-      authorization: `Bearer ${process.env.LOGS_API_AUTHENTICATION_TOKEN}`,
+      Authorization: `Bearer ${process.env.LOGS_API_AUTHENTICATION_TOKEN}`,
     },
     payload: {
       projectId: "project-1",
@@ -36,36 +75,13 @@ test("create log fails with invalid body", async (t) => {
 test("create log succeeds with valid body", async (t) => {
   const app = await build(t);
 
-  const requestBody: z.infer<typeof CreateLogRequestBody> = {
-    projectId: "project-1",
-    method: "GET",
-    statusCode: 200,
-    baseUrl: "https://example.com",
-    path: "/",
-    search: "",
-    requestHeaders: {
-      "user-agent": "test",
-    },
-
-    responseHeaders: {
-      "content-type": "application/json",
-    },
-    responseBody: {
-      foo: "bar",
-    },
-    isCacheHit: false,
-    responseSize: 100,
-    requestDuration: 100,
-    gatewayDuration: 120,
-  };
-
   const res = await app.inject({
     url: "/logs",
     method: "POST",
     headers: {
-      authorization: `Bearer ${process.env.LOGS_API_AUTHENTICATION_TOKEN}`,
+      Authorization: `Bearer ${process.env.LOGS_API_AUTHENTICATION_TOKEN}`,
     },
-    payload: requestBody,
+    payload: validRequestBody,
   });
 
   t.equal(res.statusCode, 200);
@@ -75,19 +91,19 @@ test("create log succeeds with valid body", async (t) => {
   t.equal(responseBody.success, true);
 
   const log = responseBody.log;
-  t.same(log.projectId, requestBody.projectId);
-  t.same(log.method, requestBody.method);
-  t.same(log.statusCode, requestBody.statusCode);
-  t.same(log.baseUrl, requestBody.baseUrl);
-  t.same(log.path, requestBody.path);
-  t.same(log.search, requestBody.search);
-  t.same(log.requestHeaders, requestBody.requestHeaders);
-  t.same(log.responseHeaders, requestBody.responseHeaders);
-  t.same(log.responseBody, requestBody.responseBody);
-  t.same(log.isCacheHit, requestBody.isCacheHit);
-  t.same(log.responseSize, requestBody.responseSize);
-  t.same(log.requestDuration, requestBody.requestDuration);
-  t.same(log.gatewayDuration, requestBody.gatewayDuration);
+  t.same(log.projectId, validRequestBody.projectId);
+  t.same(log.method, validRequestBody.method);
+  t.same(log.statusCode, validRequestBody.statusCode);
+  t.same(log.baseUrl, validRequestBody.baseUrl);
+  t.same(log.path, validRequestBody.path);
+  t.same(log.search, validRequestBody.search);
+  t.same(log.requestHeaders, validRequestBody.requestHeaders);
+  t.same(log.responseHeaders, validRequestBody.responseHeaders);
+  t.same(log.responseBody, validRequestBody.responseBody);
+  t.same(log.isCacheHit, validRequestBody.isCacheHit);
+  t.same(log.responseSize, validRequestBody.responseSize);
+  t.same(log.requestDuration, validRequestBody.requestDuration);
+  t.same(log.gatewayDuration, validRequestBody.gatewayDuration);
 
   //clean up
   await deleteLogs([log.id]);
