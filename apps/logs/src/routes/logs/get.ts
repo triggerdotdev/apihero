@@ -59,7 +59,7 @@ const logs: FastifyPluginAsync = async (app, opts): Promise<void> => {
 
       //get the correct project id
       let query = `SELECT * FROM "Log" WHERE project_id = :projectId`;
-      const queryParams: Record<string, string | number> = {
+      const queryParams: Record<string, string | number | boolean> = {
         projectId: request.params.projectId,
       };
 
@@ -75,11 +75,10 @@ const logs: FastifyPluginAsync = async (app, opts): Promise<void> => {
         queryParams.path = request.query.path.replaceAll("*", "%");
       }
 
-      //status codes
+      //status codes, including wildcards like 2**, 3**
       if (request.query.status !== undefined) {
         let statusCodes: number[] = [];
-        //for each query status code add it to the array
-        //if it has a wildcard * in then add all the relevant numbers
+
         request.query.status.forEach((status) => {
           if (status.includes("*")) {
             const startAt = parseInt(status[0]) * 100;
@@ -97,6 +96,12 @@ const logs: FastifyPluginAsync = async (app, opts): Promise<void> => {
         statusCodes.forEach((status, i) => {
           queryParams[`status${i}`] = status;
         });
+      }
+
+      //caching
+      if (request.query.cached !== undefined) {
+        query += ` AND is_cache_hit = :cached`;
+        queryParams.cached = request.query.cached;
       }
 
       //date range
