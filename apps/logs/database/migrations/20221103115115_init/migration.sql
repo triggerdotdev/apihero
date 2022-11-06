@@ -21,11 +21,11 @@ CREATE TABLE "Log" (
     "response_size" INTEGER NOT NULL DEFAULT 0,
     "request_duration" DOUBLE PRECISION NOT NULL DEFAULT 0,
     "gateway_duration" DOUBLE PRECISION NOT NULL DEFAULT 0,
-    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP
+    "time" TIMESTAMP(3) NOT NULL
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Log_id_created_at_key" ON "Log"("id", "created_at");
+CREATE UNIQUE INDEX "Log_id_time_key" ON "Log"("id", "time");
 
 -- CreateHyperTable
-SELECT create_hypertable('"Log"', 'created_at');
+SELECT create_hypertable('"Log"', 'time');

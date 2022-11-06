@@ -17,7 +17,7 @@ const DatabaseLogSchema = z.object({
   response_size: Log.shape.responseSize,
   request_duration: Log.shape.requestDuration,
   gateway_duration: Log.shape.gatewayDuration,
-  created_at: Log.shape.createdAt,
+  time: Log.shape.time,
 });
 
 function parseDatabaseLog(data: any) {
@@ -51,6 +51,6 @@ export function databaseToLog(input: any): z.infer<typeof Log> {
     responseSize: databaseLog.response_size,
     requestDuration: databaseLog.request_duration,
     gatewayDuration: databaseLog.gateway_duration,
-    createdAt: databaseLog.created_at,
+    time: databaseLog.time,
   };
 }

@@ -3,7 +3,7 @@ import { FastifyPluginAsync } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 import invariant from "tiny-invariant";
 import { z } from "zod";
-import { CreateLogRequestBody, Log, ErrorObject } from "../../types";
+import { Log, ErrorObject, GetLogsQuery } from "../../types";
 import { databaseToLog } from "../../utilities/log-conversion";
 
 const logsToken = process.env.LOGS_API_AUTHENTICATION_TOKEN;
@@ -20,7 +20,7 @@ const logs: FastifyPluginAsync = async (app, opts): Promise<void> => {
       headers: z.object({
         authorization: z.string(),
       }),
-      querystring: z.object({}),
+      querystring: GetLogsQuery,
       response: {
         200: z.object({
           success: z.literal(true),
@@ -54,12 +54,16 @@ const logs: FastifyPluginAsync = async (app, opts): Promise<void> => {
         return;
       }
 
-      const query = `SELECT * FROM "Log" WHERE project_id = $1`;
+      let query = `SELECT * FROM "Log" WHERE project_id = $1`;
+      const queryParams: (string | number)[] = [request.params.projectId];
+
+      if ("days" in request.query.date) {
+        query += ` AND time >= NOW() - INTERVAL '1 days' * $2`;
+        queryParams.push(request.query.date.days);
+      }
 
       try {
-        const queryResult = await app.pg.query(query, [
-          request.params.projectId,
-        ]);
+        const queryResult = await app.pg.query(query, queryParams);
         reply.send({
           success: true,
           logs: queryResult.rows.map((l) => databaseToLog(l)),

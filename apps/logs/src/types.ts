@@ -42,12 +42,11 @@ export const Log = z.object({
   responseSize: z.number(),
   requestDuration: z.number(),
   gatewayDuration: z.number(),
-  createdAt: dateSchema,
+  time: dateSchema,
 });
 
 export const CreateLogRequestBody = Log.omit({
   id: true,
-  createdAt: true,
   projectId: true,
 });
 
@@ -55,6 +54,21 @@ export const ErrorObject = z.object({
   statusCode: z.number(),
   error: z.string(),
   message: z.string().optional(),
+});
+
+export const GetLogsQuery = z.object({
+  date: z
+    .union([
+      z.object({
+        start: dateSchema,
+        end: dateSchema,
+      }),
+      z.object({
+        days: z.number(),
+      }),
+    ])
+    .optional()
+    .default({ days: 7 }),
 });
 
 export const models = {
