@@ -12,8 +12,11 @@ invariant(logsToken, "LOGS_API_AUTHENTICATION_TOKEN is required");
 const logs: FastifyPluginAsync = async (app, opts): Promise<void> => {
   app.withTypeProvider<ZodTypeProvider>().route({
     method: "POST",
-    url: "/",
+    url: "/:projectId",
     schema: {
+      params: z.object({
+        projectId: z.string(),
+      }),
       headers: z.object({
         authorization: z.string(),
       }),
@@ -37,12 +40,24 @@ const logs: FastifyPluginAsync = async (app, opts): Promise<void> => {
         return;
       }
 
+      if (
+        request.params.projectId === undefined ||
+        request.params.projectId === ""
+      ) {
+        reply.status(400).send({
+          statusCode: 400,
+          error: "Bad Request",
+          message: "projectId is required",
+        });
+        return;
+      }
+
       const id = cuid();
       const query = `INSERT INTO "Log" (id, project_id, method, status_code, base_url, path, search, request_headers, request_body, response_headers, response_body, is_cache_hit, response_size, request_duration, gateway_duration) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15) RETURNING *`;
 
       const values = [
         id,
-        request.body.projectId,
+        request.params.projectId,
         request.body.method,
         request.body.statusCode,
         request.body.baseUrl,

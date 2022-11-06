@@ -5,7 +5,6 @@ import { deleteLogs } from "../../src/utilities/test-utilities";
 import { build } from "../helper";
 
 const validRequestBody: z.infer<typeof CreateLogRequestBody> = {
-  projectId: "project-1",
   method: "GET",
   statusCode: 200,
   baseUrl: "https://example.com",
@@ -27,11 +26,14 @@ const validRequestBody: z.infer<typeof CreateLogRequestBody> = {
   gatewayDuration: 120,
 };
 
+const projectId = "test-project";
+const url = `logs/${projectId}`;
+
 test("create log fail without authentication", async (t) => {
   const app = await build(t);
 
   const res = await app.inject({
-    url: "/logs",
+    url,
     method: "POST",
     headers: {},
     payload: validRequestBody,
@@ -44,7 +46,7 @@ test("create log fail with wrong authentication", async (t) => {
   const app = await build(t);
 
   const res = await app.inject({
-    url: "/logs",
+    url,
     method: "POST",
     headers: {
       Authorization: `Bearer incorrect`,
@@ -59,7 +61,7 @@ test("create log fails with invalid body", async (t) => {
   const app = await build(t);
 
   const res = await app.inject({
-    url: "/logs",
+    url,
     method: "POST",
     headers: {
       Authorization: `Bearer ${process.env.LOGS_API_AUTHENTICATION_TOKEN}`,
@@ -72,11 +74,26 @@ test("create log fails with invalid body", async (t) => {
   t.equal(res.statusCode, 400);
 });
 
+test("create log fails with invalid project id", async (t) => {
+  const app = await build(t);
+
+  const res = await app.inject({
+    url: `/logs/`,
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${process.env.LOGS_API_AUTHENTICATION_TOKEN}`,
+    },
+    payload: validRequestBody,
+  });
+
+  t.equal(res.statusCode, 400);
+});
+
 test("create log succeeds with valid body", async (t) => {
   const app = await build(t);
 
   const res = await app.inject({
-    url: "/logs",
+    url,
     method: "POST",
     headers: {
       Authorization: `Bearer ${process.env.LOGS_API_AUTHENTICATION_TOKEN}`,
@@ -91,7 +108,7 @@ test("create log succeeds with valid body", async (t) => {
   t.equal(responseBody.success, true);
 
   const log = responseBody.log;
-  t.same(log.projectId, validRequestBody.projectId);
+  t.same(log.projectId, projectId);
   t.same(log.method, validRequestBody.method);
   t.same(log.statusCode, validRequestBody.statusCode);
   t.same(log.baseUrl, validRequestBody.baseUrl);
