@@ -88,7 +88,7 @@ const logs: FastifyPluginAsync = async (app, opts): Promise<void> => {
           success: true,
           logs: queryResult.rows.map((l) => databaseToLog(l)),
           results: queryResult.rows.length,
-          page: 1,
+          page: request.query.page,
         });
       } catch (error) {
         reply.status(500).send({
