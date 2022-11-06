@@ -70,6 +70,15 @@ export const GetLogsQuery = z
   .and(
     z.object({
       api: z.string().optional(),
+      status: z
+        .preprocess(
+          (arg) =>
+            arg !== undefined &&
+            typeof arg === "string" &&
+            arg.split(",").map((s) => parseInt(s)),
+          z.array(z.number())
+        )
+        .optional(),
       page: z
         .preprocess(
           (arg) => arg !== undefined && parseInt(arg as string),
