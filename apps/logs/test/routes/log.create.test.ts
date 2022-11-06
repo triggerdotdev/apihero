@@ -126,13 +126,3 @@ test("create log succeeds with valid body", async (t) => {
   //clean up
   await deleteLogs([log.id]);
 });
-
-// test("get logs", async (t) => {
-//   const app = await build(t);
-
-//   const res = await app.inject({
-//     url: "/log",
-//   });
-
-//   t.equal(res.payload, "this is a fucking example");
-// });
