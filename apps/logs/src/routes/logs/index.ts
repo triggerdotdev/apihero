@@ -34,6 +34,7 @@ const logs: FastifyPluginAsync = async (app, opts): Promise<void> => {
           error: "Forbidden",
           message: "Incorrect authorization",
         });
+        return;
       }
 
       const id = cuid();
