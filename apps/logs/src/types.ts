@@ -76,8 +76,8 @@ export const GetLogsQuery = z
           (arg) =>
             arg !== undefined &&
             typeof arg === "string" &&
-            arg.split(",").map((s) => parseInt(s)),
-          z.array(z.number())
+            arg.split(",").map((s) => s.trim()),
+          z.array(z.string())
         )
         .optional(),
       page: z

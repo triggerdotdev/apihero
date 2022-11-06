@@ -77,10 +77,24 @@ const logs: FastifyPluginAsync = async (app, opts): Promise<void> => {
 
       //status codes
       if (request.query.status !== undefined) {
-        query += ` AND status_code IN (${request.query.status
+        let statusCodes: number[] = [];
+        //for each query status code add it to the array
+        //if it has a wildcard * in then add all the relevant numbers
+        request.query.status.forEach((status) => {
+          if (status.includes("*")) {
+            const startAt = parseInt(status[0]) * 100;
+            for (let i = startAt; i < startAt + 100; i++) {
+              statusCodes.push(i);
+            }
+          } else {
+            statusCodes.push(parseInt(status));
+          }
+        });
+
+        query += ` AND status_code IN (${statusCodes
           .map((_, i) => `:status${i}`)
           .join(",")})`;
-        request.query.status.forEach((status, i) => {
+        statusCodes.forEach((status, i) => {
           queryParams[`status${i}`] = status;
         });
       }
