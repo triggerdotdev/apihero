@@ -5,9 +5,12 @@ import invariant from "tiny-invariant";
 import { z } from "zod";
 import { Log, ErrorObject, GetLogsQuery } from "../../types";
 import { databaseToLog } from "../../utilities/log-conversion";
+import { namedParameters } from "../../utilities/named-sql";
 
 const logsToken = process.env.LOGS_API_AUTHENTICATION_TOKEN;
 invariant(logsToken, "LOGS_API_AUTHENTICATION_TOKEN is required");
+
+const pageSize = 10;
 
 const logs: FastifyPluginAsync = async (app, opts): Promise<void> => {
   app.withTypeProvider<ZodTypeProvider>().route({
@@ -54,24 +57,33 @@ const logs: FastifyPluginAsync = async (app, opts): Promise<void> => {
         return;
       }
 
-      let query = `SELECT * FROM "Log" WHERE project_id = $1`;
-      const queryParams: (string | number | Date)[] = [
-        request.params.projectId,
-      ];
+      let query = `SELECT * FROM "Log" WHERE project_id = :projectId`;
+      const queryParams: Record<string, string | number | Date> = {
+        projectId: request.params.projectId,
+      };
 
+      //date range
       if ("days" in request.query) {
-        query += ` AND time >= NOW() - INTERVAL '1 days' * $2`;
-        queryParams.push(request.query.days);
+        query += ` AND time >= NOW() - INTERVAL '1 days' * :days`;
+        queryParams.days = request.query.days;
       } else {
-        query += ` AND time >= $2 AND time <= $3`;
-        queryParams.push(request.query.start);
-        queryParams.push(request.query.end);
+        query += ` AND time >= :start AND time <= :end`;
+        queryParams.start = request.query.start;
+        queryParams.end = request.query.end;
       }
 
-      console.log(request.query);
+      //order and limit
+      query += ` ORDER BY time DESC LIMIT :pageSize OFFSET :page`;
+      queryParams.pageSize = pageSize;
+      queryParams.page = (request.query.page - 1) * pageSize;
 
       try {
-        const queryResult = await app.pg.query(query, queryParams);
+        console.log(query, queryParams);
+
+        const parameterisedQuery = namedParameters(query, queryParams);
+        console.log(parameterisedQuery);
+
+        const queryResult = await app.pg.query(parameterisedQuery);
         reply.send({
           success: true,
           logs: queryResult.rows.map((l) => databaseToLog(l)),

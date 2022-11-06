@@ -67,7 +67,15 @@ export const GetLogsQuery = z
     }),
   ])
   .optional()
-  .default({ days: 7 });
+  .default({ days: 7 })
+  .and(
+    z.object({
+      page: z
+        .preprocess((arg) => parseInt(arg as string), z.number())
+        .optional()
+        .default(1),
+    })
+  );
 
 export const models = {
   Log,
