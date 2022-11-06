@@ -5,10 +5,11 @@ import { deleteLogs } from "../../src/utilities/test-utilities";
 import { build } from "../helper";
 
 const projectId = "test-project";
-const url = `logs/${projectId}`;
 
 test("get logs fail without authentication", async (t) => {
   const app = await build(t);
+
+  const url = `logs/${projectId}`;
 
   const res = await app.inject({
     url,
@@ -21,6 +22,8 @@ test("get logs fail without authentication", async (t) => {
 
 test("get log fail with wrong authentication", async (t) => {
   const app = await build(t);
+
+  const url = `logs/${projectId}`;
 
   const res = await app.inject({
     url,
@@ -40,6 +43,8 @@ test("get log fail with wrong authentication", async (t) => {
 test("get logs, no results", async (t) => {
   const app = await build(t);
 
+  const url = `logs/${projectId}-none`;
+
   const res = await app.inject({
     url,
     query: {
@@ -58,6 +63,57 @@ test("get logs, no results", async (t) => {
   const body = GetLogsSuccessResponse.parse(responseBody);
 
   t.equal(body.logs.length, 0);
+});
+
+test("create logs, get logs", async (t) => {
+  const app = await build(t);
+
+  const url = `logs/${projectId}-some`;
+
+  //create logs
+  const logInput = [
+    { api: "api-1.com", date: new Date() },
+    { api: "api-2.com", date: new Date() },
+    { api: "api-1.com", date: new Date() },
+    { api: "api-3.com", date: new Date() },
+  ];
+  const createdLogs = await Promise.all(
+    logInput.map(
+      async (log) =>
+        await app.inject({
+          url,
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${process.env.LOGS_API_AUTHENTICATION_TOKEN}`,
+          },
+          payload: createLog(log.api, log.date),
+        })
+    )
+  );
+
+  const res = await app.inject({
+    url,
+    query: {
+      days: "7",
+      page: "1",
+    },
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${process.env.LOGS_API_AUTHENTICATION_TOKEN}`,
+    },
+  });
+
+  //delete created logs
+  const createdLogIds = createdLogs.map((log) => JSON.parse(log.body).log.id);
+  console.log(createdLogIds);
+  await deleteLogs(createdLogIds);
+
+  t.equal(res.statusCode, 200);
+
+  const responseBody = JSON.parse(res.body);
+  const body = GetLogsSuccessResponse.parse(responseBody);
+
+  t.equal(body.logs.length, createdLogs.length);
 });
 
 // test("create log fails with invalid body", async (t) => {

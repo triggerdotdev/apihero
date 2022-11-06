@@ -80,10 +80,7 @@ const logs: FastifyPluginAsync = async (app, opts): Promise<void> => {
       const origin = `${request.protocol}://${request.hostname}`;
 
       try {
-        console.log(query, queryParams);
-
         const parameterisedQuery = namedParameters(query, queryParams);
-        console.log(parameterisedQuery);
 
         const queryResult = await app.pg.query(parameterisedQuery);
         const logs = queryResult.rows
