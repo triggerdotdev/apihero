@@ -8,19 +8,19 @@ test("create log fail without authentication", async (t) => {
   const app = await build(t);
 
   const res = await app.inject({
-    url: "/log",
+    url: "/logs",
     method: "POST",
     headers: {},
   });
 
-  t.equal(res.statusCode, 401);
+  t.equal(res.statusCode, 400);
 });
 
 test("create log fails with invalid body", async (t) => {
   const app = await build(t);
 
   const res = await app.inject({
-    url: "/log",
+    url: "/logs",
     method: "POST",
     headers: {
       authorization: `Bearer ${process.env.LOGS_API_AUTHENTICATION_TOKEN}`,
@@ -60,7 +60,7 @@ test("create log succeeds with valid body", async (t) => {
   };
 
   const res = await app.inject({
-    url: "/log",
+    url: "/logs",
     method: "POST",
     headers: {
       authorization: `Bearer ${process.env.LOGS_API_AUTHENTICATION_TOKEN}`,
