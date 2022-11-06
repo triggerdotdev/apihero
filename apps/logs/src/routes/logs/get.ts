@@ -55,12 +55,20 @@ const logs: FastifyPluginAsync = async (app, opts): Promise<void> => {
       }
 
       let query = `SELECT * FROM "Log" WHERE project_id = $1`;
-      const queryParams: (string | number)[] = [request.params.projectId];
+      const queryParams: (string | number | Date)[] = [
+        request.params.projectId,
+      ];
 
-      if ("days" in request.query.date) {
+      if ("days" in request.query) {
         query += ` AND time >= NOW() - INTERVAL '1 days' * $2`;
-        queryParams.push(request.query.date.days);
+        queryParams.push(request.query.days);
+      } else {
+        query += ` AND time >= $2 AND time <= $3`;
+        queryParams.push(request.query.start);
+        queryParams.push(request.query.end);
       }
+
+      console.log(request.query);
 
       try {
         const queryResult = await app.pg.query(query, queryParams);

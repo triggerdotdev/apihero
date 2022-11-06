@@ -56,20 +56,18 @@ export const ErrorObject = z.object({
   message: z.string().optional(),
 });
 
-export const GetLogsQuery = z.object({
-  date: z
-    .union([
-      z.object({
-        start: dateSchema,
-        end: dateSchema,
-      }),
-      z.object({
-        days: z.number(),
-      }),
-    ])
-    .optional()
-    .default({ days: 7 }),
-});
+export const GetLogsQuery = z
+  .union([
+    z.object({
+      start: dateSchema,
+      end: dateSchema,
+    }),
+    z.object({
+      days: z.preprocess((arg) => parseInt(arg as string), z.number()),
+    }),
+  ])
+  .optional()
+  .default({ days: 7 });
 
 export const models = {
   Log,
