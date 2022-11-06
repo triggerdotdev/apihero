@@ -8,10 +8,6 @@ const jsonSchema: z.ZodType<Json> = z.lazy(() =>
   z.union([literalSchema, z.array(jsonSchema), z.record(jsonSchema)])
 );
 
-const dateSchema = z.preprocess((arg) => {
-  if (typeof arg == "string" || arg instanceof Date) return new Date(arg);
-}, z.date());
-
 const httpMethodSchema = z.union([
   z.literal("GET"),
   z.literal("POST"),
@@ -42,7 +38,7 @@ export const Log = z.object({
   responseSize: z.number(),
   requestDuration: z.number(),
   gatewayDuration: z.number(),
-  time: dateSchema,
+  time: z.string(),
 });
 
 export const CreateLogRequestBody = Log.omit({
@@ -59,8 +55,8 @@ export const ErrorObject = z.object({
 export const GetLogsQuery = z
   .union([
     z.object({
-      start: dateSchema,
-      end: dateSchema,
+      start: z.string(),
+      end: z.string(),
     }),
     z.object({
       days: z.preprocess((arg) => parseInt(arg as string), z.number()),
@@ -77,7 +73,9 @@ export const GetLogsQuery = z
     })
   );
 
-export const models = {
-  Log,
-  CreateLogRequestBody,
-};
+export const GetLogsSuccessResponse = z.object({
+  logs: z.array(Log),
+  page: z.number(),
+  next: z.string().optional(),
+  previous: z.string().optional(),
+});
