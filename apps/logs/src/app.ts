@@ -14,8 +14,8 @@ import { FastifyInstance } from "fastify";
 import AutoLoad, { AutoloadPluginOptions } from "@fastify/autoload";
 import { join } from "path";
 
-const databaseUrl = process.env.LOGS_DATABASE_URL;
-invariant(databaseUrl, "LOGS_DATABASE_URL is required");
+const databaseUrl = process.env.DATABASE_URL;
+invariant(databaseUrl, "DATABASE_URL is required");
 
 export type AppOptions = {
   // Place your custom options for app below here.
@@ -29,7 +29,7 @@ export default async function (app: FastifyInstance, opts: AppOptions) {
   app.setSerializerCompiler(serializerCompiler);
 
   app.register(postgres, {
-    connectionString: process.env.LOGS_DATABASE_URL,
+    connectionString: process.env.DATABASE_URL,
   });
 
   app.register(AutoLoad, {

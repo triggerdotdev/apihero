@@ -2,7 +2,7 @@ import { Client } from "pg";
 
 export async function deleteLogs(ids: string[]) {
   const client = new Client({
-    connectionString: process.env.LOGS_DATABASE_URL,
+    connectionString: process.env.DATABASE_URL,
   });
 
   await client.connect();
