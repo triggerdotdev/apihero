@@ -1,17 +1,8 @@
-import { MegaphoneIcon } from "@heroicons/react/24/outline";
-import {
-  AtSymbolIcon,
-  BookOpenIcon,
-  DocumentTextIcon,
-  PhoneIcon,
-} from "@heroicons/react/24/outline";
-import { Link, Outlet, useMatches } from "@remix-run/react";
+import { Outlet, useMatches } from "@remix-run/react";
 import type { LoaderArgs } from "@remix-run/server-runtime";
 import { typedjson, useTypedLoaderData } from "remix-typedjson";
 import type { UseDataFunctionReturn } from "remix-typedjson/dist/remix";
 import { Footer, Header } from "~/libraries/ui";
-import { ProjectSettingsMenu } from "~/libraries/ui/src/components/ProjectSettingsMenu";
-import Resizable from "~/libraries/ui/src/components/Resizable";
 import { getWorkspaces } from "~/models/workspace.server";
 import { clearRedirectTo, commitSession } from "~/services/redirectTo.server";
 import { requireUserId } from "~/services/session.server";
@@ -45,33 +36,6 @@ export async function loader({ request }: LoaderArgs) {
     }
   );
 }
-
-const helpLinks = "group flex items-center gap-2 text-sm text-slate-500";
-const helpIcon = "h-5 w-5 text-slate-600 transition group-hover:text-blue-500";
-const helpLinkSpan = "transition group-hover:text-blue-500";
-
-const helpAndResources = [
-  {
-    name: "Documentation",
-    href: "https://docs.apihero.run/",
-    icon: <DocumentTextIcon className={helpIcon} />,
-  },
-  {
-    name: "Request a feature",
-    href: "mailto:hello@apihero.run",
-    icon: <MegaphoneIcon className={helpIcon} />,
-  },
-  {
-    name: "Schedule a call",
-    href: "https://cal.com/team/apihero/product-feedback",
-    icon: <PhoneIcon className={helpIcon} />,
-  },
-  {
-    name: "Send us an email",
-    href: "mailto:hello@apihero.run",
-    icon: <AtSymbolIcon className={helpIcon} />,
-  },
-];
 
 export default function AppLayout() {
   const { workspaces } = useTypedLoaderData<typeof loader>();

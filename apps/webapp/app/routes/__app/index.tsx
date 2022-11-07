@@ -4,6 +4,8 @@ import invariant from "tiny-invariant";
 import { deleteProject } from "~/models/project.server";
 import { requireUserId } from "~/services/session.server";
 import { useUserWorkspacesData } from "~/routes/__app";
+import Dashboard from "./workspaces/$workspaceSlug/projects/$projectSlug/home/dashboard";
+import ProjectMenu from "./workspaces/$workspaceSlug/projects/$projectSlug";
 
 export async function action({ request }: ActionArgs) {
   if (request.method != "DELETE") {
@@ -34,35 +36,13 @@ export default function IndexRoute() {
   return (
     <div className="flex flex-shrink flex-grow items-center justify-between bg-slate-50">
       {hasProjects ? (
-        <div>
-          <OnboardingStep2 />
-          <p>Main dashboard</p>
+        <div className="flex h-full w-full">
+          <ProjectMenu />
+          <Dashboard />
         </div>
       ) : (
         <></>
       )}
-    </div>
-  );
-}
-
-function OnboardingStep1() {
-  return (
-    <div className="h-full w-full max-w-2xl flex-col justify-between xl:flex xl:max-w-none xl:flex-row">
-      <p className="text-slate-700">
-        Onboarding step 1 - shows Getting Started panel and fake low opacity
-        dashboard
-      </p>
-    </div>
-  );
-}
-
-function OnboardingStep2() {
-  return (
-    <div className="h-full w-full max-w-2xl flex-col justify-between xl:flex xl:max-w-none xl:flex-row">
-      <p className="text-slate-700">
-        Onboarding step 2 – just the Getting Started panel with 2 ticked off
-        items
-      </p>
     </div>
   );
 }
