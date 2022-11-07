@@ -12,8 +12,8 @@ import {
 import { databaseToLog } from "../../utilities/log-conversion";
 import { namedParameters } from "../../utilities/named-sql";
 
-const logsToken = process.env.LOGS_API_AUTHENTICATION_TOKEN;
-invariant(logsToken, "LOGS_API_AUTHENTICATION_TOKEN is required");
+const logsToken = process.env.API_AUTHENTICATION_TOKEN;
+invariant(logsToken, "API_AUTHENTICATION_TOKEN is required");
 
 const pageSize = 10;
 

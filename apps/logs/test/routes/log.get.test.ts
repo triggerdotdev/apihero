@@ -53,7 +53,7 @@ test("get logs, no results", async (t) => {
     },
     method: "GET",
     headers: {
-      Authorization: `Bearer ${process.env.LOGS_API_AUTHENTICATION_TOKEN}`,
+      Authorization: `Bearer ${process.env.API_AUTHENTICATION_TOKEN}`,
     },
   });
 
@@ -84,7 +84,7 @@ test("create logs, get logs", async (t) => {
           url,
           method: "POST",
           headers: {
-            Authorization: `Bearer ${process.env.LOGS_API_AUTHENTICATION_TOKEN}`,
+            Authorization: `Bearer ${process.env.API_AUTHENTICATION_TOKEN}`,
           },
           payload: createLog(log.api, log.date),
         })
@@ -99,7 +99,7 @@ test("create logs, get logs", async (t) => {
     },
     method: "GET",
     headers: {
-      Authorization: `Bearer ${process.env.LOGS_API_AUTHENTICATION_TOKEN}`,
+      Authorization: `Bearer ${process.env.API_AUTHENTICATION_TOKEN}`,
     },
   });
 

@@ -65,7 +65,7 @@ test("create log fails with invalid body", async (t) => {
     url,
     method: "POST",
     headers: {
-      Authorization: `Bearer ${process.env.LOGS_API_AUTHENTICATION_TOKEN}`,
+      Authorization: `Bearer ${process.env.API_AUTHENTICATION_TOKEN}`,
     },
     payload: {
       projectId: "project-1",
@@ -82,7 +82,7 @@ test("create log fails with invalid project id", async (t) => {
     url: `/logs/`,
     method: "POST",
     headers: {
-      Authorization: `Bearer ${process.env.LOGS_API_AUTHENTICATION_TOKEN}`,
+      Authorization: `Bearer ${process.env.API_AUTHENTICATION_TOKEN}`,
     },
     payload: validRequestBody,
   });
@@ -97,7 +97,7 @@ test("create log succeeds with valid body", async (t) => {
     url,
     method: "POST",
     headers: {
-      Authorization: `Bearer ${process.env.LOGS_API_AUTHENTICATION_TOKEN}`,
+      Authorization: `Bearer ${process.env.API_AUTHENTICATION_TOKEN}`,
     },
     payload: validRequestBody,
   });
