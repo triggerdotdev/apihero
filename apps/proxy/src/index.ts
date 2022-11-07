@@ -1,11 +1,13 @@
+import { DESTINATION_HEADER_NAME } from "@apihero/constants-js";
+
 export default {
   async fetch(request: Request) {
     // Get the x-destination-origin header
-    const origin = request.headers.get("x-destination-origin");
+    const origin = request.headers.get(DESTINATION_HEADER_NAME);
 
     // If the header is not present, return the request
     if (!origin) {
-      throw new Error("x-destination-origin header is required");
+      throw new Error(`${DESTINATION_HEADER_NAME} header is required`);
     }
 
     const sourceUrl = new URL(request.url);
@@ -27,7 +29,7 @@ export default {
 function stripHeaders(headers: Headers): Headers {
   const result = new Headers();
   for (const [key, value] of headers) {
-    if (key !== "x-destination-origin") {
+    if (key !== DESTINATION_HEADER_NAME) {
       result.set(key, value);
     }
   }

@@ -1,6 +1,7 @@
+import { describe } from "vitest";
+
 declare global {
-  function getMiniflareBindings(): Bindings;
-  function setupMiniflareIsolatedStorage(): void;
+  function setupMiniflareIsolatedStorage(): typeof describe;
 }
 
 export {};

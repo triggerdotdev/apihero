@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "@apihero/interceptors-js": "*",
+    "@apihero/constants-js": "*",
     "@open-draft/until": "^2.0.0",
     "chalk": "^5.1.2",
     "debug": "^4.3.4",
