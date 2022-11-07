@@ -46,19 +46,17 @@ WORKDIR /app
 RUN corepack enable
 ENV NODE_ENV production
 RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 remixjs
-RUN chown -R remixjs:nodejs /app
-USER remixjs
+RUN adduser --system --uid 1001 fastify
+RUN chown -R fastify:nodejs /app
+USER fastify
 
-COPY --from=pruner --chown=remixjs:nodejs /app/out/full/ .
-COPY --from=production-deps --chown=remixjs:nodejs /app .
-COPY --from=builder --chown=remixjs:nodejs /app/apps/logs/app/styles/tailwind.css ./apps/logs/app/styles/tailwind.css
-COPY --from=builder --chown=remixjs:nodejs /app/apps/logs/build/server.js ./apps/logs/build/server.js
-COPY --from=builder --chown=remixjs:nodejs /app/apps/logs/build ./apps/logs/build
-COPY --from=builder --chown=remixjs:nodejs /app/apps/logs/public ./apps/logs/public
-COPY --from=builder --chown=remixjs:nodejs /app/apps/logs/prisma/schema.prisma ./apps/logs/build/schema.prisma
-COPY --from=builder --chown=remixjs:nodejs /app/apps/logs/prisma/migrations ./apps/logs/build/migrations
-COPY --from=builder --chown=remixjs:nodejs /app/apps/logs/node_modules/.prisma/client/libquery_engine-debian-openssl-1.1.x.so.node ./apps/logs/build/libquery_engine-debian-openssl-1.1.x.so.node
+COPY --from=pruner --chown=fastify:nodejs /app/out/full/ .
+COPY --from=production-deps --chown=fastify:nodejs /app .
+COPY --from=builder --chown=fastify:nodejs /app/apps/logs/dist/app.js ./apps/logs/dist/app.js
+COPY --from=builder --chown=fastify:nodejs /app/apps/logs/dist ./apps/logs/dist
+COPY --from=builder --chown=fastify:nodejs /app/apps/logs/public ./apps/logs/public
+COPY --from=builder --chown=fastify:nodejs /app/apps/logs/prisma/schema.prisma ./apps/logs/dist/schema.prisma
+COPY --from=builder --chown=fastify:nodejs /app/apps/logs/prisma/migrations ./apps/logs/dist/migrations
+COPY --from=builder --chown=fastify:nodejs /app/apps/logs/node_modules/.prisma/client/libquery_engine-debian-openssl-1.1.x.so.node ./apps/logs/build/libquery_engine-debian-openssl-1.1.x.so.node
 
-# release_command = "pnpx prisma migrate deploy --schema apps/logs/prisma/schema.prisma"
-CMD ["pnpm", "--filter", "webapp", "run", "start"]
+CMD ["pnpm", "--filter", "logs", "run", "start"]

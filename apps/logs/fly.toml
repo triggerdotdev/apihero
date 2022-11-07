@@ -1,17 +1,19 @@
-app = "apihero-webapp"
+app = "apihero-logs"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = [ ]
 
 [env]
-REMIX_APP_PORT = "8080"
+NODE_ENV = "production"
+PORT = 8080
+SERVER_HOSTNAME = "0.0.0.0"
 PRIMARY_REGION = "mia"
 
 [deploy]
-release_command = "pnpx prisma migrate deploy --schema apps/webapp/build/schema.prisma"
+release_command = "pnpx prisma migrate deploy --schema apps/logs/dist/schema.prisma"
 
 [experimental]
-allowed_public_ports = [ ]
+allowed_public_ports = ["8080"]
 auto_rollback = true
 
 [[services]]
@@ -44,7 +46,7 @@ script_checks = [ ]
   interval = "10s"
   grace_period = "5s"
   method = "get"
-  path = "/healthcheck"
+  path = "/health/check"
   protocol = "http"
   timeout = "2s"
   tls_skip_verify = false
