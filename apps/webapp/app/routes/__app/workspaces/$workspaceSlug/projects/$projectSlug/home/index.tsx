@@ -2,29 +2,18 @@ import type { ActionFunction, LoaderArgs } from "@remix-run/server-runtime";
 import invariant from "tiny-invariant";
 import { getProjectFromSlugs } from "~/models/project.server";
 import { requireUserId } from "~/services/session.server";
-import { AuthenticationSummary } from "~/libraries/ui/src/components/client/AuthenticationSummary";
 import { getSecurityRequirementsForIntegration } from "~/models/security.server";
 import { typedjson, useTypedLoaderData } from "remix-typedjson";
 import type { UseDataFunctionReturn } from "remix-typedjson/dist/remix";
-import { NavLink } from "@remix-run/react";
-import {
-  ChevronRightIcon,
-  LockClosedIcon,
-  PlusCircleIcon,
-} from "@heroicons/react/24/solid";
-import { HTTPMethodLabel } from "~/libraries/common/src/components/HTTPMethod";
-import { DataUptime } from "~/libraries/ui/src/components/DataUptime";
-import { DataErrorCount } from "~/libraries/ui/src/components/DataErrorCount";
-import { DataAvgDuration } from "~/libraries/ui/src/components/DataAvgDuration";
-import { AuthenticationBadges } from "~/libraries/common/src/components/AuthenticationBadges";
 import type { EndpointStats } from "~/models/httpEndpoint.server";
 import { getStatsById } from "~/models/httpEndpoint.server";
-import { CachingOptions } from "~/libraries/ui/src/components/client/CachingOptions";
 import { z } from "zod";
 import { setCache as updateCacheSettings } from "~/models/httpClient.server";
 import { syncIntegrationsSettingsWithGateway } from "~/models/gateway.server";
-import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
 import { CopyTextButton } from "~/libraries/ui/src/components/CopyTextButton";
+import { Outlet } from "@remix-run/react";
+import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
+import { Button } from "~/libraries/ui/src/components/Buttons/Button";
 type LoaderData = UseDataFunctionReturn<typeof loader>;
 
 export const loader = async ({ request, params }: LoaderArgs) => {
@@ -152,41 +141,84 @@ export default function Page() {
   const data = useTypedLoaderData<typeof loader>();
 
   return (
-    <div className="flex h-full w-full flex-col bg-slate-50 px-10 py-6">
-      <main className="m-auto h-full w-full">
-        <div className="flex items-center justify-between pb-8">
-          <div className="flex items-center">
-            <p className="text-sm font-medium text-slate-600">Project Key:</p>
+    <main className="h-full w-full bg-slate-50 p-4">
+      {data.project.httpClients ? (
+        <>
+          <OnboardingIncomplete />
+        </>
+      ) : (
+        <>
+          <OnboardingComplete />
+          <Outlet />
+        </>
+      )}
+    </main>
+  );
+}
+
+function OnboardingIncomplete() {
+  const data = useTypedLoaderData<typeof loader>();
+
+  return (
+    <div className="w-full flex gap-2">
+      <div className="w-full bg-slate-100 border border-slate-200 rounded-md">
+        <ul>
+          <li className="flex flex-col">
+            <p className="text-sm text-slate-700">
+              Copy paste the code into your project:
+            </p>
             <div className="flex items-center gap-2.5 rounded border bg-white py-1 pl-3 pr-1 text-sm text-slate-600">
               {data.project.id}
               <CopyTextButton value={data.project.id} />
             </div>
-          </div>
-          <p className="text-sm text-slate-600">
-            View our
-            <a
-              href="https://docs.apihero.run"
-              target="_blank"
-              className="underline transition hover:text-blue-500"
-              rel="noreferrer"
-            >
-              getting started
-            </a>
-            guide
-          </p>
-        </div>
+          </li>
+        </ul>
+      </div>
+      <div className="bg-blue-50 w-80 border border-blue-100 rounded-md text-slate-700 p-4">
+        <h3 className="text-xl font-semibold mb-2">No project yet?</h3>
+        <p className="mb-1 text-sm">
+          Check out a live demo to see API Hero in action.
+        </p>
+        <Button
+          color="slate"
+          variant="solid"
+          href="/"
+          target="_blank"
+          className="mb-4"
+        >
+          <ArrowTopRightOnSquareIcon className="h-4 w-4 -ml-1" />
+          View in Code Sandbox
+        </Button>
+        <p className="mb-1 text-sm">
+          Or read more about how it all works in our documentation.
+        </p>
+        <Button
+          color="slate"
+          variant="solid"
+          href="https://docs.apihero.run"
+          target="_blank"
+        >
+          <ArrowTopRightOnSquareIcon className="h-4 w-4 -ml-1" />
+          Documentation
+        </Button>
+      </div>
+    </div>
+  );
+}
 
-        {/* {data.project.httpClients ? (
-          <>
-            <ClientsList
-              clients={data.project.httpClients}
-              endpointStats={data.project.endpointStats}
-            />
-          </>
-        ) : (
-          <BlankState />
-        )} */}
-      </main>
+function OnboardingComplete() {
+  return (
+    <div className="flex flex-col items-center justify-center h-full">
+      <div className="flex items-center justify-center"></div>
+      <div className="text-center">
+        <p className="text-xl font-medium text-slate-600">
+          You have no HTTP clients yet
+        </p>
+        <p className="text-sm text-slate-400 mt-2">
+          HTTP clients are the entry point to your API. You can create one by
+          clicking the button below.
+        </p>
+      </div>
     </div>
   );
 }
