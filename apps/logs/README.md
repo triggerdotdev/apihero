@@ -26,9 +26,13 @@ fly apps create apihero-logs-staging
 
   ```sh
   fly postgres create --name apihero-logs-db
+  fly pg config update --shared-preload-libraries timescaledb --app apihero-logs-db
+  fly postgres restart --app apihero-logs-db
   fly postgres attach --app apihero-logs apihero-logs-db
 
   fly postgres create --name apihero-logs-db-staging
+  fly pg config update --shared-preload-libraries timescaledb --app apihero-logs-db-staging
+  fly postgres restart --app apihero-logs-db-staging
   fly postgres attach --app apihero-logs-staging apihero-logs-db-staging
   ```
 
