@@ -54,9 +54,7 @@ COPY --from=pruner --chown=fastify:nodejs /app/out/full/ .
 COPY --from=production-deps --chown=fastify:nodejs /app .
 COPY --from=builder --chown=fastify:nodejs /app/apps/logs/dist/app.js ./apps/logs/dist/app.js
 COPY --from=builder --chown=fastify:nodejs /app/apps/logs/dist ./apps/logs/dist
-COPY --from=builder --chown=fastify:nodejs /app/apps/logs/public ./apps/logs/public
-COPY --from=builder --chown=fastify:nodejs /app/apps/logs/prisma/schema.prisma ./apps/logs/dist/schema.prisma
-COPY --from=builder --chown=fastify:nodejs /app/apps/logs/prisma/migrations ./apps/logs/dist/migrations
-COPY --from=builder --chown=fastify:nodejs /app/apps/logs/node_modules/.prisma/client/libquery_engine-debian-openssl-1.1.x.so.node ./apps/logs/build/libquery_engine-debian-openssl-1.1.x.so.node
+COPY --from=builder --chown=fastify:nodejs /app/apps/logs/database/schema.prisma ./apps/logs/dist/schema.prisma
+COPY --from=builder --chown=fastify:nodejs /app/apps/logs/database/migrations ./apps/logs/dist/migrations
 
 CMD ["pnpm", "--filter", "logs", "run", "start"]
