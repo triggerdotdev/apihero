@@ -34,9 +34,13 @@ export default function Settings() {
   return (
     <div className="flex flex-shrink flex-grow items-center justify-between bg-slate-50">
       {hasProjects ? (
-        <div className="flex h-full w-full">Settings</div>
+        <div className="bg-slate-50 w-full flex items-center justify-center">
+          Settings
+        </div>
       ) : (
-        <>Settings</>
+        <div className="bg-slate-50 w-full flex items-center justify-center">
+          Settings
+        </div>
       )}
     </div>
   );
