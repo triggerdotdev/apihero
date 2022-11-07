@@ -1,0 +1,52 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "@apihero/interceptors-js current node test",
+      "runtimeVersion": "18.8.0",
+      "autoAttachChildProcesses": true,
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**"],
+      "program": "${workspaceFolder}/packages/interceptors-js/node_modules/vitest/vitest.mjs",
+      "args": [
+        "run",
+        "${relativeFile}",
+        "-r",
+        "${workspaceFolder}/packages/interceptors-js",
+        "-c",
+        "${workspaceFolder}/packages/interceptors-js/vitest.node.config.ts",
+        "--run"
+      ],
+      "smartStep": true,
+      "console": "integratedTerminal"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "@apihero/interceptors-js current browser test",
+      "runtimeVersion": "18.8.0",
+      "autoAttachChildProcesses": true,
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**"],
+      "program": "${workspaceFolder}/packages/interceptors-js/node_modules/vitest/vitest.mjs",
+      "args": [
+        "run",
+        "${relativeFile}",
+        "-r",
+        "${workspaceFolder}/packages/interceptors-js",
+        "-c",
+        "${workspaceFolder}/packages/interceptors-js/vitest.browser.config.ts",
+        "--run"
+      ],
+      "smartStep": true,
+      "console": "integratedTerminal"
+    },
+    {
+      "type": "node-terminal",
+      "name": "Run Script: dev",
+      "request": "launch",
+      "command": "yarn run dev",
+      "cwd": "${workspaceFolder}"
+    }
+  ]
+}

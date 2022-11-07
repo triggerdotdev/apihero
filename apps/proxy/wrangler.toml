@@ -1,0 +1,13 @@
+name = "apihero-proxy"
+main = "dist/index.mjs"
+compatibility_date = "2022-09-30"
+routes = [
+	{ pattern = "proxy.apihero.run", custom_domain = true, zone_name = "apihero.run" }
+]
+
+[build]
+command = "node build.js"
+
+[miniflare]
+kv_persist = true
+cache_persist = true

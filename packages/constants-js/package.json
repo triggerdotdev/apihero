@@ -1,0 +1,13 @@
+{
+  "name": "@apihero/constants-js",
+  "version": "1.0.0",
+  "license": "MIT",
+  "main": "./index.js",
+  "module": "./index.mjs",
+  "types": "./index.d.ts",
+  "files": [
+    "index.js",
+    "index.mjs",
+    "index.d.ts"
+  ]
+}

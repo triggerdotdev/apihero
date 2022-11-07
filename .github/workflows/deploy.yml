@@ -2,8 +2,8 @@ name: 🚀 CI
 on:
   push:
     branches:
-      - main
       - dev
+      - legacy
   pull_request: {}
 permissions:
   actions: write
