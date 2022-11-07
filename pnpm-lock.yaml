@@ -73,6 +73,7 @@ importers:
 
   apps/proxy:
     specifiers:
+      '@apihero/constants-js': '*'
       '@cloudflare/workers-types': ^3.18.0
       '@types/itty-router-extras': ^0.4.0
       cuid: ^2.1.8
@@ -88,6 +89,7 @@ importers:
       wrangler: ^2.1.13
       zod: ^3.19.1
     dependencies:
+      '@apihero/constants-js': link:../../packages/constants-js
       cuid: 2.1.8
       itty-router: 2.6.6
       itty-router-extras: 0.4.2
@@ -421,6 +423,7 @@ importers:
 
   packages/apihero-js:
     specifiers:
+      '@apihero/constants-js': '*'
       '@apihero/interceptors-js': '*'
       '@apihero/tsconfig': '*'
       '@open-draft/until': ^2.0.0
@@ -453,6 +456,7 @@ importers:
       vitest: ^0.24.4
       webpack: ^5.74.0
     dependencies:
+      '@apihero/constants-js': link:../constants-js
       '@apihero/interceptors-js': link:../interceptors-js
       '@open-draft/until': 2.0.0
       chalk: 5.1.2
@@ -485,6 +489,9 @@ importers:
       vite-tsconfig-paths: 3.5.1_vite@3.1.8
       vitest: 0.24.4_happy-dom@6.0.4
       webpack: 5.74.0_esbuild@0.15.12
+
+  packages/constants-js:
+    specifiers: {}
 
   packages/interceptors-js:
     specifiers:

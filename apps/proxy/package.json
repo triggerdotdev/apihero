@@ -17,7 +17,8 @@
     "cuid": "^2.1.8",
     "itty-router": "^2.6.5",
     "itty-router-extras": "^0.4.2",
-    "zod": "^3.19.1"
+    "zod": "^3.19.1",
+    "@apihero/constants-js": "*"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^3.18.0",

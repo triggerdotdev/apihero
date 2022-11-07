@@ -3,7 +3,8 @@
   "include": [
     "src/**/*.ts",
     "tsup.config.ts",
-    "../interceptors-js/src/types.ts"
+    "../interceptors-js/src/types.ts",
+    "../constants-js/index.d.ts"
   ],
   "compilerOptions": {
     "experimentalDecorators": true,
