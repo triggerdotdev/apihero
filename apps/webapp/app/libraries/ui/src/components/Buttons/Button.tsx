@@ -1,10 +1,11 @@
+import { Link } from "@remix-run/react";
 import classNames from "classnames";
 
 const baseStyles = {
   solid:
-    "group inline-flex gap-2 items-center justify-center rounded py-2 px-4 text-sm focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2",
+    "group inline-flex gap-2 max-w-max items-center justify-center rounded py-2 px-4 text-sm focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2",
   outline:
-    "group inline-flex gap-2 ring-1 items-center justify-center rounded py-2 px-4 text-sm focus:outline-none",
+    "group inline-flex gap-2 max-w-max ring-1 items-center justify-center rounded py-2 px-4 text-sm focus:outline-none",
 };
 
 const variantStyles: {
@@ -30,6 +31,7 @@ export type ButtonProps = {
   children?: React.ReactNode;
   className?: string;
   href?: string;
+  to?: string;
   variant?: "solid" | "outline";
   color: "slate" | "blue" | "white";
   type?: string;
@@ -43,6 +45,7 @@ export function Button({
   color = "blue",
   className,
   href,
+  to,
   children,
   type,
   target,
@@ -61,6 +64,8 @@ export function Button({
       {children}
     </a>
   ) : (
-    <button className={classes} onClick={onClick} {...props} />
+    <button className={classes} onClick={onClick} {...props}>
+      {children}
+    </button>
   );
 }
