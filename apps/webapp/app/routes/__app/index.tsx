@@ -4,8 +4,6 @@ import invariant from "tiny-invariant";
 import { deleteProject } from "~/models/project.server";
 import { requireUserId } from "~/services/session.server";
 import { useUserWorkspacesData } from "~/routes/__app";
-import Dashboard from "./workspaces/$workspaceSlug/projects/$projectSlug/home/dashboard";
-import ProjectMenu from "./workspaces/$workspaceSlug/projects/$projectSlug";
 
 export async function action({ request }: ActionArgs) {
   if (request.method != "DELETE") {
@@ -36,12 +34,9 @@ export default function IndexRoute() {
   return (
     <div className="flex flex-shrink flex-grow items-center justify-between bg-slate-50">
       {hasProjects ? (
-        <div className="flex h-full w-full">
-          <ProjectMenu />
-          <Dashboard />
-        </div>
+        <div className="flex h-full w-full">App route with project</div>
       ) : (
-        <></>
+        <>App route without project</>
       )}
     </div>
   );
