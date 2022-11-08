@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "npm run build:ts && tsc -p test/tsconfig.json && tap --ts \"test/**/*.test.ts\"",
-    "start": "fastify start dist/app.js",
+    "start": "fastify start dist/app.js -l debug",
     "build": "npm run build:ts",
     "build:ts": "tsc",
     "watch:ts": "tsc -w",
@@ -16,7 +16,6 @@
     "dev:start": "fastify start dist/app.js --port 3001",
     "db:migrate:deploy": "prisma migrate deploy",
     "db:migrate:dev": "prisma migrate dev",
-    "docker:build": "cd ../.. && docker build -t remix-gospel-stack-logs -f ./apps/logs/Dockerfile .",
     "env:pull": "pnpm dlx infisical pull dev"
   },
   "keywords": [],
