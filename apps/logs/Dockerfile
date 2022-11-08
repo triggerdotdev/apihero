@@ -56,5 +56,7 @@ COPY --from=builder --chown=fastify:nodejs /app/apps/logs/dist/app.js ./apps/log
 COPY --from=builder --chown=fastify:nodejs /app/apps/logs/dist ./apps/logs/dist
 COPY --from=builder --chown=fastify:nodejs /app/apps/logs/database/schema.prisma ./apps/logs/dist/schema.prisma
 COPY --from=builder --chown=fastify:nodejs /app/apps/logs/database/migrations ./apps/logs/dist/migrations
+COPY --from=builder --chown=fastify:nodejs /app/apps/logs/database/migrations ./apps/logs/dist/migrations
+COPY --from=builder --chown=fastify:nodejs /app/apps/logs/node_modules ./apps/logs/node_modules
 
 CMD ["pnpm", "--filter", "logs", "run", "start"]
