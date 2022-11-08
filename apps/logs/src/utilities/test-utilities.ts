@@ -1,9 +1,8 @@
 import { Client } from "pg";
-import { writeDatabaseConnectionString } from "../app";
 
 export async function deleteLogs(ids: string[]) {
   const client = new Client({
-    connectionString: writeDatabaseConnectionString(),
+    connectionString: process.env.DATABASE_URL,
   });
 
   await client.connect();

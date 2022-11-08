@@ -77,7 +77,7 @@ const logs: FastifyPluginAsync = async (app, opts): Promise<void> => {
       ];
 
       try {
-        const queryResult = await app.pg.write.query(query, values);
+        const queryResult = await app.pg.query(query, values);
         const log = databaseToLog(queryResult.rows[0]);
         reply.send({ success: true, log });
       } catch (error) {

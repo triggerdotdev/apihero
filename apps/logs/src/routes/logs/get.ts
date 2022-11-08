@@ -123,7 +123,7 @@ const logs: FastifyPluginAsync = async (app, opts): Promise<void> => {
       try {
         const parameterisedQuery = namedParameters(query, queryParams);
 
-        const queryResult = await app.pg.read.query(parameterisedQuery);
+        const queryResult = await app.pg.query(parameterisedQuery);
         const logs = queryResult.rows
           .map((l) => databaseToLog(l))
           .slice(0, pageSize);
