@@ -13,7 +13,6 @@ import { syncIntegrationsSettingsWithGateway } from "~/models/gateway.server";
 import { CopyTextButton } from "~/libraries/ui/src/components/CopyTextButton";
 import { Outlet } from "@remix-run/react";
 import {
-  ArrowLeftCircleIcon,
   ArrowPathIcon,
   ArrowTopRightOnSquareIcon,
   BoltIcon,
@@ -166,12 +165,16 @@ function OnboardingIncomplete() {
   const numberedItem =
     "inline-flex text-slate-600 -mt-0.5 h-6 w-6 text-sm bg-white p-2 items-center justify-center rounded border border-slate-200";
   const data = useTypedLoaderData<typeof loader>();
+  const copyCode =
+    "apihero({ platform: “node”, projectKey: “" + data.project.id + "” });";
+  const codeConatiner =
+    "flex items-center font-mono justify-between gap-2.5 rounded-md border bg-slate-700 py-2 pl-3 pr-2 text-sm text-white";
   const codeExample = "Code sample to configure your monitoring";
 
   return (
     <div className="w-full flex gap-2">
       <div className="w-full bg-slate-100 p-4 border border-slate-200 rounded-md">
-        <div className="flex gap-2.5 items-center mb-4">
+        <div className="flex gap-2.5 items-center mb-4 ml-0.5">
           <svg
             width="20"
             height="20"
@@ -206,9 +209,9 @@ function OnboardingIncomplete() {
               <p className="text-sm text-slate-700">
                 Copy paste the code into your project.
               </p>
-              <div className="flex items-center gap-2.5 rounded border bg-slate-700 py-1 pl-3 pr-1 text-sm text-white">
-                {data.project.id}
-                <CopyTextButton value={data.project.id} />
+              <div className={codeConatiner}>
+                {copyCode}
+                <CopyTextButton value={copyCode} variantStyle="blue" />
               </div>
             </div>
           </li>
@@ -237,12 +240,9 @@ function OnboardingIncomplete() {
                 Configure what API traffic you want to monitor (optional). Use
                 the example below or view the docs.
               </p>
-              <div className="flex items-center font-mono justify-between gap-2.5 rounded border bg-slate-700 py-1 pl-3 pr-1 text-sm text-white">
+              <div className={codeConatiner}>
                 {codeExample}
-                <CopyTextButton
-                  value={codeExample}
-                  className="bg-blue-500 rounded text-white"
-                />
+                <CopyTextButton value={codeExample} variantStyle="blue" />
               </div>
               <Button
                 color="blue"
