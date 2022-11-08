@@ -22,8 +22,9 @@ const httpMethodSchema = z.union([
 
 const httpHeaderSchema = z.record(z.string());
 
-export const Log = z.object({
+export const LogSchema = z.object({
   id: z.string(),
+  requestId: z.string(),
   projectId: z.string(),
   method: httpMethodSchema,
   statusCode: z.number(),
@@ -41,18 +42,24 @@ export const Log = z.object({
   time: z.string(),
 });
 
-export const CreateLogRequestBody = Log.omit({
+export type Log = z.infer<typeof LogSchema>;
+
+export const CreateLogRequestBodySchema = LogSchema.omit({
   id: true,
   projectId: true,
 });
 
-export const ErrorObject = z.object({
+export type CreateLogRequestBody = z.infer<typeof CreateLogRequestBodySchema>;
+
+export const ErrorObjectSchema = z.object({
   statusCode: z.number(),
   error: z.string(),
   message: z.string().optional(),
 });
 
-export const GetLogsQuery = z
+export type ErrorObject = z.infer<typeof ErrorObjectSchema>;
+
+export const GetLogsQuerySchema = z
   .union([
     z.object({
       start: z.string(),
@@ -93,9 +100,15 @@ export const GetLogsQuery = z
     })
   );
 
-export const GetLogsSuccessResponse = z.object({
-  logs: z.array(Log),
+export type GetLogsQuery = z.infer<typeof GetLogsQuerySchema>;
+
+export const GetLogsSuccessResponseSchema = z.object({
+  logs: z.array(LogSchema),
   page: z.number(),
   next: z.string().optional(),
   previous: z.string().optional(),
 });
+
+export type GetLogsSuccessResponse = z.infer<
+  typeof GetLogsSuccessResponseSchema
+>;

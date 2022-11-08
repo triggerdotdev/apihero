@@ -1,6 +1,8 @@
 import { test } from "tap";
-import { z } from "zod";
-import { CreateLogRequestBody, GetLogsSuccessResponse } from "../../src/types";
+import {
+  CreateLogRequestBody,
+  GetLogsSuccessResponseSchema,
+} from "../../src/types";
 import { deleteLogs } from "../../src/utilities/test-utilities";
 import { build } from "../helper";
 
@@ -60,7 +62,7 @@ test("get logs, no results", async (t) => {
   t.equal(res.statusCode, 200);
 
   const responseBody = JSON.parse(res.body);
-  const body = GetLogsSuccessResponse.parse(responseBody);
+  const body = GetLogsSuccessResponseSchema.parse(responseBody);
 
   t.equal(body.logs.length, 0);
 });
@@ -72,10 +74,10 @@ test("create logs, get logs", async (t) => {
 
   //create logs
   const logInput = [
-    { api: "api-1.com", date: new Date() },
-    { api: "api-2.com", date: new Date() },
-    { api: "api-1.com", date: new Date() },
-    { api: "api-3.com", date: new Date() },
+    { api: "api-1.com", date: new Date(), id: "1" },
+    { api: "api-2.com", date: new Date(), id: "2" },
+    { api: "api-1.com", date: new Date(), id: "3" },
+    { api: "api-3.com", date: new Date(), id: "4" },
   ];
   const createdLogs = await Promise.all(
     logInput.map(
@@ -86,7 +88,7 @@ test("create logs, get logs", async (t) => {
           headers: {
             Authorization: `Bearer ${process.env.API_AUTHENTICATION_TOKEN}`,
           },
-          payload: createLog(log.api, log.date),
+          payload: createLog(`request-${log.id}`, log.api, log.date),
         })
     )
   );
@@ -111,15 +113,18 @@ test("create logs, get logs", async (t) => {
   t.equal(res.statusCode, 200);
 
   const responseBody = JSON.parse(res.body);
-  const body = GetLogsSuccessResponse.parse(responseBody);
+  const body = GetLogsSuccessResponseSchema.parse(responseBody);
 
   t.equal(body.logs.length, createdLogs.length);
 });
 
-type CreateBodyType = z.infer<typeof CreateLogRequestBody>;
-
-function createLog(api: string, date: Date): CreateBodyType {
+function createLog(
+  requestId: string,
+  api: string,
+  date: Date
+): CreateLogRequestBody {
   return {
+    requestId,
     method: "GET",
     statusCode: 200,
     baseUrl: `https://${api}`,

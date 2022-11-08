@@ -1,13 +1,12 @@
-import cuid from "cuid";
 import { FastifyPluginAsync } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 import invariant from "tiny-invariant";
 import { z } from "zod";
 import {
-  Log,
-  ErrorObject,
+  ErrorObjectSchema,
+  GetLogsQuerySchema,
+  GetLogsSuccessResponseSchema,
   GetLogsQuery,
-  GetLogsSuccessResponse,
 } from "../../types";
 import { databaseToLog } from "../../utilities/log-conversion";
 import { namedParameters } from "../../utilities/named-sql";
@@ -28,11 +27,11 @@ const logs: FastifyPluginAsync = async (app, opts): Promise<void> => {
       headers: z.object({
         authorization: z.string(),
       }),
-      querystring: GetLogsQuery,
+      querystring: GetLogsQuerySchema,
       response: {
-        200: GetLogsSuccessResponse,
-        "4xx": ErrorObject,
-        "5xx": ErrorObject,
+        200: GetLogsSuccessResponseSchema,
+        "4xx": ErrorObjectSchema,
+        "5xx": ErrorObjectSchema,
       },
     },
     handler: async (request, reply) => {
@@ -165,7 +164,7 @@ const logs: FastifyPluginAsync = async (app, opts): Promise<void> => {
 function getPageUrl(
   origin: string,
   projectId: string,
-  query: z.infer<typeof GetLogsQuery>,
+  query: GetLogsQuery,
   page: number
 ): string {
   //query to URL search params

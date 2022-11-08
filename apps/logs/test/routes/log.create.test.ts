@@ -1,10 +1,10 @@
 import { test } from "tap";
-import { z } from "zod";
 import { CreateLogRequestBody } from "../../src/types";
 import { deleteLogs } from "../../src/utilities/test-utilities";
 import { build } from "../helper";
 
-const validRequestBody: z.infer<typeof CreateLogRequestBody> = {
+const validRequestBody: CreateLogRequestBody = {
+  requestId: "test-id",
   method: "GET",
   statusCode: 200,
   baseUrl: "https://example.com",

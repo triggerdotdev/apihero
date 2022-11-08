@@ -1,25 +1,26 @@
-datasource db {   
-  provider = "postgresql"   
-  url      = env("DATABASE_URL") 
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Log {
-  id         String     @id
+  id String @id
 
-  project_id  String
+  project_id String
+  request_id String
 
-  method     HTTPMethod @default(GET)
+  method      HTTPMethod @default(GET)
   status_code Int
   base_url    String
-  path       String
-  search     String     @default("")
+  path        String
+  search      String     @default("")
 
   request_body     Json?
   request_headers  Json?
   response_body    Json?
   response_headers Json?
 
-  is_cache_hit   Boolean
+  is_cache_hit  Boolean
   response_size Int     @default(0)
 
   request_duration Float @default(0)
@@ -27,7 +28,8 @@ model Log {
 
   time DateTime
 
-  @@unique([id,  time])
+  @@unique([id, time])
+  @@unique([request_id, time])
 }
 
 enum HTTPMethod {
