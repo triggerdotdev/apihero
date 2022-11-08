@@ -2,6 +2,7 @@ import { FastifyPluginAsync } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 import { Client } from "pg";
 import { z } from "zod";
+import { readDatabaseConnectionString } from "../../app";
 
 const healthcheck: FastifyPluginAsync = async (app, opts): Promise<void> => {
   app.withTypeProvider<ZodTypeProvider>().route({
@@ -18,7 +19,7 @@ const healthcheck: FastifyPluginAsync = async (app, opts): Promise<void> => {
       try {
         // if we can connect to the database and make a simple query
         const client = new Client({
-          connectionString: process.env.DATABASE_URL,
+          connectionString: readDatabaseConnectionString(),
         });
 
         await client.connect();
