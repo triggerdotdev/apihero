@@ -5,7 +5,7 @@ processes = [ ]
 
 [env]
 NODE_ENV = "production"
-PORT = 8080
+PORT = 3000
 SERVER_HOSTNAME = "0.0.0.0"
 PRIMARY_REGION = "mia"
 
@@ -17,7 +17,7 @@ allowed_public_ports = ["8080"]
 auto_rollback = true
 
 [[services]]
-internal_port = 8080
+internal_port = 3000
 processes = [ "app" ]
 protocol = "tcp"
 script_checks = [ ]
