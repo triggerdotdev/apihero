@@ -10,7 +10,6 @@
   ],
   "scripts": {
     "clean": "rimraf dist",
-    "lint": "eslint ./src --fix",
     "test": "vitest run",
     "test:dev": "vitest",
     "dev": "tsup --watch",
