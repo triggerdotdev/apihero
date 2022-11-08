@@ -76,8 +76,9 @@ const logs: FastifyPluginAsync = async (app, opts): Promise<void> => {
         request.body.time,
       ];
 
+      const client = await app.pg.connect();
       try {
-        const queryResult = await app.pg.query(query, values);
+        const queryResult = await client.query(query, values);
         const log = databaseToLog(queryResult.rows[0]);
         reply.send({ success: true, log });
       } catch (error) {
@@ -86,6 +87,8 @@ const logs: FastifyPluginAsync = async (app, opts): Promise<void> => {
           error: "Internal error",
           message: JSON.stringify(error),
         });
+      } finally {
+        client.release();
       }
     },
   });

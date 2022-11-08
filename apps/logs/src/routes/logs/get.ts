@@ -120,10 +120,11 @@ const logs: FastifyPluginAsync = async (app, opts): Promise<void> => {
 
       const origin = `${request.protocol}://${request.hostname}`;
 
-      try {
-        const parameterisedQuery = namedParameters(query, queryParams);
+      const parameterisedQuery = namedParameters(query, queryParams);
 
-        const queryResult = await app.pg.query(parameterisedQuery);
+      const client = await app.pg.connect();
+      try {
+        const queryResult = await client.query(parameterisedQuery);
         const logs = queryResult.rows
           .map((l) => databaseToLog(l))
           .slice(0, pageSize);
@@ -156,6 +157,8 @@ const logs: FastifyPluginAsync = async (app, opts): Promise<void> => {
           error: "Internal error",
           message: JSON.stringify(error),
         });
+      } finally {
+        client.release();
       }
     },
   });
