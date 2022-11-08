@@ -36,12 +36,6 @@ script_checks = [ ]
   handlers = [ "tls", "http" ]
   port = 443
 
-  [[services.tcp_checks]]
-  grace_period = "1s"
-  interval = "15s"
-  restart_limit = 0
-  timeout = "2s"
-
   [[services.http_checks]]
   interval = "10s"
   grace_period = "5s"
@@ -49,5 +43,5 @@ script_checks = [ ]
   path = "/healthcheck"
   protocol = "http"
   timeout = "2s"
-  tls_skip_verify = false
+  tls_skip_verify = true
   headers = { }
