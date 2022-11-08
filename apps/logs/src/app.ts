@@ -1,15 +1,9 @@
 import {
   serializerCompiler,
   validatorCompiler,
-  ZodTypeProvider,
 } from "fastify-type-provider-zod";
 import invariant from "tiny-invariant";
 import postgres from "@fastify/postgres";
-import cuid from "cuid";
-import { z } from "zod";
-import { CreateLogRequestBody, ErrorObject, Log } from "./types";
-import { databaseToLog } from "./utilities/log-conversion";
-import sensible from "@fastify/sensible";
 import { FastifyInstance } from "fastify";
 import AutoLoad, { AutoloadPluginOptions } from "@fastify/autoload";
 import { join } from "path";
