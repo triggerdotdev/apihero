@@ -107,7 +107,6 @@ test("create logs, get logs", async (t) => {
 
   //delete created logs
   const createdLogIds = createdLogs.map((log) => JSON.parse(log.body).log.id);
-  console.log(createdLogIds);
   await deleteLogs(createdLogIds);
 
   t.equal(res.statusCode, 200);
