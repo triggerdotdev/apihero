@@ -1,7 +1,7 @@
 import { ClipboardIcon } from "@heroicons/react/24/outline";
 import classNames from "classnames";
 import { useCallback, useState } from "react";
-import { CopyText } from "./CopyText";
+import { CopyText } from "../CopyText";
 
 const variantStyle = {
   slate:
@@ -16,16 +16,14 @@ const variantStyle = {
 export type CopyTextButtonProps = {
   value: string;
   className?: string;
-  variantStyle?: "slate" | "blue" | "darkTransparent" | "lightTransparent";
+  variant?: "slate" | "blue" | "darkTransparent" | "lightTransparent";
 };
 
 export function CopyTextButton({
   value,
   className,
-  variantStyle = "slate",
+  variant = "blue",
 }: CopyTextButtonProps) {
-  const classes = classNames(variantStyle, className);
-
   const [copied, setCopied] = useState(false);
   const onCopied = useCallback(() => {
     setCopied(true);
@@ -44,7 +42,8 @@ export function CopyTextButton({
       ) : (
         <div
           className={classNames(
-            "flex items-center rounded px-2 py-1 hover:cursor-pointer"
+            "flex items-center rounded px-2 py-1 hover:cursor-pointer",
+            variantStyle[variant]
           )}
         >
           <ClipboardIcon className="mr-[2px] h-4 w-4" />
