@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "npm run build:ts && tsc -p test/tsconfig.json && tap --ts \"test/**/*.test.ts\"",
-    "start": "node dist/app.js",
+    "start": "fastify start dist/app.js",
     "build": "npm run build:ts",
     "build:ts": "tsc",
     "watch:ts": "tsc -w",
