@@ -1,0 +1,26 @@
+{
+  "name": "internal-logs",
+  "version": "1.0.0",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "clean": "rimraf dist",
+    "lint": "eslint ./src --fix",
+    "test": "vitest run",
+    "test:dev": "vitest",
+    "typecheck": "tsc --project ./tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "@apihero/tsconfig": "*",
+    "eslint-config-vite": "*",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.8.4",
+    "vite": "^3.2.2",
+    "vite-tsconfig-paths": "^3.5.2",
+    "vitest": "^0.24.5"
+  },
+  "dependencies": {
+    "zod": "^3.19.1"
+  }
+}

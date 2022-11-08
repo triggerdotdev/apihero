@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { Log, LogSchema } from "../types";
+import { Log, LogSchema } from "internal-logs";
 
 const DatabaseLogSchema = z.object({
   id: LogSchema.shape.id,

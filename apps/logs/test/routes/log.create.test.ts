@@ -1,5 +1,5 @@
 import { test } from "tap";
-import { CreateLogRequestBody } from "../../src/types";
+import { CreateLogRequestBody } from "internal-logs";
 import { deleteLogs } from "../../src/utilities/test-utilities";
 import { build } from "../helper";
 

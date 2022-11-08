@@ -33,7 +33,8 @@
     "fastify-type-provider-zod": "^1.1.7",
     "pg": "^8.8.0",
     "tiny-invariant": "^1.2.0",
-    "zod": "^3.19.1"
+    "zod": "^3.19.1",
+    "internal-logs": "*"
   },
   "devDependencies": {
     "@types/node": "^18.0.0",

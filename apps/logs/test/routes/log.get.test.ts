@@ -1,8 +1,6 @@
 import { test } from "tap";
-import {
-  CreateLogRequestBody,
-  GetLogsSuccessResponseSchema,
-} from "../../src/types";
+import { GetLogsSuccessResponseSchema } from "../../src/types";
+import { CreateLogRequestBody } from "internal-logs";
 import { deleteLogs } from "../../src/utilities/test-utilities";
 import { build } from "../helper";
 
