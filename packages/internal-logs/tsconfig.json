@@ -1,13 +1,9 @@
 {
   "extends": "@apihero/tsconfig/node18.json",
-  "include": ["./src/**/*.ts"],
+  "include": ["./src/**/*.ts", "tsup.config.ts"],
   "compilerOptions": {
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "lib": ["DOM", "DOM.Iterable", "ES2021"],
-    "isolatedModules": true,
-    "esModuleInterop": true,
-    "noEmit": true,
     "paths": {}
   },
   "exclude": ["node_modules"]
