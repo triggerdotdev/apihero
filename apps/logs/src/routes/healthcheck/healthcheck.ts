@@ -16,14 +16,7 @@ const healthcheck: FastifyPluginAsync = async (app, opts): Promise<void> => {
       const host = request.headers["X-Forwarded-Host"] ?? request.headers.host;
 
       try {
-        // if we can connect to the database and make a simple query
-        const client = new Client({
-          connectionString: process.env.DATABASE_URL,
-        });
-
-        await client.connect();
-        await client.query("SELECT 1");
-
+        await app.pg.query("SELECT 1");
         reply.status(200).send("OK");
       } catch (error: unknown) {
         console.log("healthcheck ❌", { error });
