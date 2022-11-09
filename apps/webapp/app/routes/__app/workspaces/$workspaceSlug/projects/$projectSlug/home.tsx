@@ -1,11 +1,8 @@
-import type { ActionFunction, LoaderArgs } from "@remix-run/server-runtime";
+import type { LoaderArgs } from "@remix-run/server-runtime";
 import invariant from "tiny-invariant";
 import { getProjectFromSlugs } from "~/models/project.server";
 import { requireUserId } from "~/services/session.server";
-import { redirect, typedjson, useTypedLoaderData } from "remix-typedjson";
-import { z } from "zod";
-import { setCache as updateCacheSettings } from "~/models/httpClient.server";
-import { syncIntegrationsSettingsWithGateway } from "~/models/gateway.server";
+import { typedjson, useTypedLoaderData } from "remix-typedjson";
 import { CopyTextButton } from "~/libraries/ui/src/components/Buttons/CopyTextButton";
 import { Outlet } from "@remix-run/react";
 import {
@@ -22,8 +19,10 @@ import {
 } from "~/libraries/ui/src/components/Buttons/Buttons";
 import classNames from "classnames";
 import type { Log } from "internal-logs";
-import { UseDataFunctionReturn } from "remix-typedjson/dist/remix";
+import type { UseDataFunctionReturn } from "remix-typedjson/dist/remix";
 import { Spinner } from "~/libraries/common/src/components/Spinner";
+import { StyledTabs } from "~/libraries/common";
+import { Tab } from "@headlessui/react";
 
 export const loader = async ({ request, params }: LoaderArgs) => {
   await requireUserId(request);
@@ -140,6 +139,12 @@ export default function Page() {
       {/* TODO: make below components that can be greyed out */}
       {/* <Filters/> */}
       {/* <Tab /> */}
+      <Tab.Group defaultIndex={1}>
+        <StyledTabs.UnderlinedList>
+          <StyledTabs.Underlined>Dashboard</StyledTabs.Underlined>
+          <StyledTabs.Underlined>Logs</StyledTabs.Underlined>
+        </StyledTabs.UnderlinedList>
+      </Tab.Group>
       <Outlet />
     </main>
   );

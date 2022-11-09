@@ -1,13 +1,9 @@
-import type {
-  ApiSchemaParameter,
-  HttpRequestLog,
-  Prisma,
-} from ".prisma/client";
 import classNames from "classnames";
 import prettyBytes from "pretty-bytes";
 import { StatusCode } from "~/libraries/ui/src/components/StatusCode";
 import { CheckIcon } from "@heroicons/react/24/solid";
-import type { Mapping } from "@apihero/openapi-spec-generator/lib/generate";
+
+import type { Log } from "internal-logs";
 
 const dateFormatter = new Intl.DateTimeFormat("en-US", {
   dateStyle: "short",
@@ -15,20 +11,12 @@ const dateFormatter = new Intl.DateTimeFormat("en-US", {
 });
 
 type LogViewerProps = {
-  log: HttpRequestLog;
-  parameters: ApiSchemaParameter[];
+  log: Log;
   isSelected: boolean;
-  mappings: Mapping[];
   onClick: () => void;
 };
 
-export function LogRow({
-  log,
-  parameters,
-  isSelected,
-  onClick,
-  mappings,
-}: LogViewerProps) {
+export function LogRow({ log, isSelected, onClick }: LogViewerProps) {
   return (
     <tr
       onClick={onClick}
@@ -40,7 +28,7 @@ export function LogRow({
       )}
     >
       <td className="whitespace-nowrap px-3 py-2 text-xs text-slate-500">
-        {dateFormatter.format(new Date(log.createdAt))}
+        {dateFormatter.format(new Date(log.time))}
       </td>
       <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm sm:pl-6">
         <div className="flex gap-3 text-xs">
@@ -57,24 +45,13 @@ export function LogRow({
         {log.requestDuration && formatDurationInMs(log.requestDuration)}
       </td>
 
-      {parameters.map((parameter) => {
-        return (
-          <td
-            key={parameter.id}
-            className="whitespace-nowrap px-3 py-2 text-xs text-slate-500"
-          >
-            {log.params &&
-              formatParameterValue(
-                getMappedParamValue(
-                  parameter.name,
-                  log.params as Record<string, any>,
-                  mappings
-                )
-              )}
-          </td>
-        );
-      })}
+      <td className="whitespace-nowrap py-2 pl-4 pr-3 text-right font-mono text-xs text-slate-500 sm:pl-6">
+        {log.baseUrl}
+      </td>
 
+      <td className="whitespace-nowrap py-2 pl-4 pr-3 text-right font-mono text-xs text-slate-500 sm:pl-6">
+        {log.path}
+      </td>
       <td className="whitespace-nowrap px-3 py-2 font-mono text-xs text-slate-500">
         {prettyBytes(log.responseSize)}
       </td>
@@ -140,28 +117,16 @@ type RateLimitHeaderName =
   | "x-rate-limit-limit";
 
 function hasRateLimitHeaders(
-  headers: Prisma.JsonValue,
+  headers: Record<string, string>,
   headerName: Array<RateLimitHeaderName>
 ): boolean {
-  if (!headers) {
-    return false;
-  }
-
-  if (typeof headers !== "object") {
-    return false;
-  }
-
-  if (headers === null) {
-    return false;
-  }
-
   return headerName.every(
     (name) => typeof getRateLimitHeader(headers, name) !== "undefined"
   );
 }
 
 function getRateLimitHeader(
-  headers: Prisma.JsonValue,
+  headers: Record<string, string>,
   headerName: Array<RateLimitHeaderName> | RateLimitHeaderName
 ): number | undefined {
   if (Array.isArray(headers)) {
@@ -180,14 +145,6 @@ function getRateLimitHeader(
     return;
   }
 
-  if (typeof headers !== "object") {
-    return;
-  }
-
-  if (headers === null) {
-    return;
-  }
-
   const remaining = headers[headerName];
 
   if (typeof remaining !== "string") {
@@ -197,7 +154,7 @@ function getRateLimitHeader(
   return Number(remaining);
 }
 
-function getRateLimitReset(headers: Prisma.JsonValue): Date | undefined {
+function getRateLimitReset(headers: Record<string, string>): Date | undefined {
   if (Array.isArray(headers)) {
     return;
   }
@@ -218,40 +175,4 @@ function getRateLimitReset(headers: Prisma.JsonValue): Date | undefined {
   }
 
   return new Date(Number(remaining) * 1000);
-}
-
-function getMappedParamValue(
-  name: string,
-  params: Record<string, any>,
-  mappings: Mapping[]
-): any {
-  if (!mappings || !mappings.length) {
-    return params[name];
-  }
-
-  const mapping = mappings.find(
-    (m) => m.type === "parameter" && m.name === name
-  );
-
-  if (!mapping) {
-    return params[name];
-  }
-
-  return params[mapping.mappedName];
-}
-
-function formatParameterValue(value: any): string {
-  if (typeof value === "undefined") {
-    return "";
-  }
-
-  if (Array.isArray(value)) {
-    return value.join(",");
-  }
-
-  if (typeof value === "object") {
-    return JSON.stringify(value);
-  }
-
-  return String(value);
 }

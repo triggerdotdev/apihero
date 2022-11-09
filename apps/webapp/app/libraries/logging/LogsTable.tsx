@@ -1,22 +1,13 @@
-import type { Mapping } from "@apihero/openapi-spec-generator/lib/generate";
-import type { ApiSchemaParameter, HttpRequestLog } from ".prisma/client";
 import { LogRow } from "../request-response-viewer/src/LogViewer";
+import type { Log } from "internal-logs";
 
 type LogsTableProps = {
-  selectedLogId: string | null;
-  variables: ApiSchemaParameter[];
-  logs: HttpRequestLog[];
-  mappings: Mapping[];
+  selectedLogId?: string;
+  logs: Log[];
   onSelected: (logId: string) => void;
 };
 
-export function LogsTable({
-  variables,
-  logs,
-  selectedLogId,
-  onSelected,
-  mappings,
-}: LogsTableProps) {
+export function LogsTable({ logs, selectedLogId, onSelected }: LogsTableProps) {
   return (
     <table className="w-full divide-y divide-slate-300">
       <thead className="sticky top-0 bg-white outline outline-2 outline-slate-200">
@@ -35,22 +26,22 @@ export function LogsTable({
           </th>
           <th
             scope="col"
+            className="py-3 pl-4 pr-3 text-left text-xs font-semibold text-slate-900 sm:pl-6"
+          >
+            API
+          </th>
+          <th
+            scope="col"
+            className="py-3 pl-4 pr-3 text-left text-xs font-semibold text-slate-900 sm:pl-6"
+          >
+            Path
+          </th>
+          <th
+            scope="col"
             className="py-3 pl-4 pr-3 text-right text-xs font-semibold leading-tight text-slate-900 sm:pl-6"
           >
             Duration
           </th>
-
-          {variables.map((variable) => {
-            return (
-              <th
-                key={variable.id}
-                scope="col"
-                className="py-3 pl-2 pr-3 text-left text-xs font-semibold text-slate-900 sm:pl-3"
-              >
-                {`{${variable.name}}`}
-              </th>
-            );
-          })}
           <th
             scope="col"
             className="whitespace-nowrap px-3 py-3 text-left text-xs font-semibold leading-tight text-slate-900"
@@ -89,8 +80,6 @@ export function LogsTable({
             <LogRow
               key={log.id}
               log={log}
-              parameters={variables}
-              mappings={mappings}
               isSelected={log.id === selectedLogId}
               onClick={() => {
                 onSelected(log.id);
