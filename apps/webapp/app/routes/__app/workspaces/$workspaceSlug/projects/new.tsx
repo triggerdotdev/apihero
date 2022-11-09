@@ -1,3 +1,3 @@
 export default function NewProject() {
-  return null;
+  return <div>New project page</div>;
 }
