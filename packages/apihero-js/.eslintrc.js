@@ -1,1 +1,1 @@
-module.exports = require("eslint-config-vite/eslint-preset");
+module.exports = require("@apihero/eslint-config-vite/eslint-preset");

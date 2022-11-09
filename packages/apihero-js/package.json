@@ -54,7 +54,7 @@
     "babel-minify": "^0.5.2",
     "cors": "^2.8.5",
     "esbuild": "^0.15.12",
-    "eslint-config-vite": "*",
+    "@apihero/eslint-config-vite": "*",
     "express": "^4.18.2",
     "fs-extra": "^10.1.0",
     "happy-dom": "^6.0.4",
