@@ -13,7 +13,7 @@ export function Header({ children }: HeaderProps) {
   const user = useUser();
 
   return (
-    <div className="flex w-full items-center border-b border-slate-200 bg-white py-2 px-2">
+    <div className="flex w-full items-center border-b border-slate-200 bg-white py-1 px-2">
       <Link to="/" aria-label="API Hero">
         <Logo className="h-6" />
       </Link>
