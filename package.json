@@ -5,6 +5,7 @@
     "apps/*",
     "packages/*"
   ],
+  "version": "0.1.0",
   "prisma": {
     "schema": "apps/webapp/prisma/schema.prisma",
     "seed": "tsx apps/webapp/prisma/seed.ts"

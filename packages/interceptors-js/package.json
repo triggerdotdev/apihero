@@ -5,8 +5,13 @@
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
   "types": "./lib/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
   "files": [
-    "lib"
+    "lib",
+    "LICENSE.md",
+    "README.md"
   ],
   "scripts": {
     "build": "pnpm run clean && tsc --build",
