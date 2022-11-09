@@ -14,15 +14,12 @@ const healthcheck: FastifyPluginAsync = async (app, opts): Promise<void> => {
     handler: async (request, reply) => {
       const host = request.headers["X-Forwarded-Host"] ?? request.headers.host;
 
-      const client = await app.pg.pool.connect();
       try {
-        await client.query("SELECT 1");
+        await app.pg.pool.query("SELECT 1");
         reply.status(200).send("OK");
       } catch (error: unknown) {
         console.log("healthcheck ❌", { error });
         reply.status(500).send("ERROR");
-      } finally {
-        client.release();
       }
     },
   });
