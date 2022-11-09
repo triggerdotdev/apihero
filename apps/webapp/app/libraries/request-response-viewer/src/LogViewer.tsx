@@ -41,17 +41,19 @@ export function LogRow({ log, isSelected, onClick }: LogViewerProps) {
           )}
         </div>
       </td>
+
+      <td className="whitespace-nowrap py-2 pl-4 pr-3 font-mono text-xs text-slate-500 sm:pl-6">
+        {log.baseUrl}
+      </td>
+
+      <td className="whitespace-nowrap py-2 pl-4 pr-3 font-mono text-xs text-slate-500 sm:pl-6">
+        {log.path}
+      </td>
+
       <td className="whitespace-nowrap py-2 pl-4 pr-3 text-right font-mono text-xs text-slate-500 sm:pl-6">
         {log.requestDuration && formatDurationInMs(log.requestDuration)}
       </td>
 
-      <td className="whitespace-nowrap py-2 pl-4 pr-3 text-right font-mono text-xs text-slate-500 sm:pl-6">
-        {log.baseUrl}
-      </td>
-
-      <td className="whitespace-nowrap py-2 pl-4 pr-3 text-right font-mono text-xs text-slate-500 sm:pl-6">
-        {log.path}
-      </td>
       <td className="whitespace-nowrap px-3 py-2 font-mono text-xs text-slate-500">
         {prettyBytes(log.responseSize)}
       </td>
