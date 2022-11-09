@@ -6,8 +6,8 @@ import express from "express";
 import stream from "stream";
 import cors from "cors";
 
-const SSL_KEY = fs.readFileSync(path.join(__dirname, "./key.pem"));
-const SSL_CERT = fs.readFileSync(path.join(__dirname, "./cert.pem"));
+const SSL_KEY = fs.readFileSync(path.join(__dirname, "./certs/key.pem"));
+const SSL_CERT = fs.readFileSync(path.join(__dirname, "./certs/cert.pem"));
 
 export const httpsOptions: https.ServerOptions = {
   key: SSL_KEY,
