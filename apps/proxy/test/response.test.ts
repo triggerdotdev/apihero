@@ -37,9 +37,5 @@ describe("createResponse", () => {
     expect(finalResponse.headers.get(REQUEST_ID_HEADER_NAME)).toBe(requestId);
     expect(finalResponse.headers.get("Content-Type")).toBe("application/json");
     expect(finalResponse.headers.get("Connection")).toBeNull();
-    expect(finalResponse.headers.get("Date")).toBeNull();
-    expect(finalResponse.headers.get("Server")).toBeNull();
-    expect(finalResponse.headers.get("Strict-Transport-Security")).toBeNull();
-    expect(finalResponse.headers.get("Transfer-Encoding")).toBeNull();
   });
 });

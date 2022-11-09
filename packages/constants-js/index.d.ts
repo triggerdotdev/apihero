@@ -1,3 +1,4 @@
-export declare const DESTINATION_HEADER_NAME: "x-destination-origin";
-export declare const PROJECT_KEY_HEADER_NAME: "x-apihero-project-key";
-export declare const REQUEST_ID_HEADER_NAME: "x-apihero-request-id";
+export declare const DESTINATION_HEADER_NAME: "x-ah-origin";
+export declare const PROJECT_KEY_HEADER_NAME: "x-ah-pk";
+export declare const REQUEST_ID_HEADER_NAME: "x-ah-request-id";
+export declare const PROTOCOL_HEADER_NAME: "x-ah-proto";

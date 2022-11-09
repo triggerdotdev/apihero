@@ -22,7 +22,7 @@ export default {
     const requestId = await logService.captureEvent(
       request,
       originRequest,
-      originResponse
+      originResponse.clone()
     );
 
     return createResponse(originResponse, requestId);

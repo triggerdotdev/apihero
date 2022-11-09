@@ -29,10 +29,6 @@ function stripResponseHeaders(
   for (const [key, value] of Object.entries(headers)) {
     if (key.toLowerCase() === "connection") continue;
     if (key.toLowerCase() === "content-encoding") continue;
-    if (key.toLowerCase() === "content-security-policy") continue;
-    if (key.toLowerCase() === "date") continue;
-    if (key.toLowerCase() === "server") continue;
-    if (key.toLowerCase() === "strict-transport-security") continue;
     if (key.toLowerCase() === "transfer-encoding") continue;
     if (key.toLowerCase() === "content-length") continue;
 
