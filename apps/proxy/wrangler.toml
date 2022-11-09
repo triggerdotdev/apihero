@@ -8,6 +8,16 @@ routes = [
 [build]
 command = "node build.js"
 
+[vars]
+LOGS_URL = "https://logs.apihero.run"
+
+[env.local.vars]
+LOGS_URL = "http://localhost:3001"
+LOGS_DEBUG = true
+
 [miniflare]
 kv_persist = true
 cache_persist = true
+
+# Required secrets to be set:
+# - LOGS_AUTHENTICATION_TOKEN

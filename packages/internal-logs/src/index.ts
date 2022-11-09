@@ -7,7 +7,7 @@ const jsonSchema: z.ZodType<Json> = z.lazy(() =>
   z.union([literalSchema, z.array(jsonSchema), z.record(jsonSchema)])
 );
 
-const httpMethodSchema = z.union([
+export const HttpMethodSchema = z.union([
   z.literal("GET"),
   z.literal("POST"),
   z.literal("PUT"),
@@ -19,20 +19,24 @@ const httpMethodSchema = z.union([
   z.literal("TRACE"),
 ]);
 
-const httpHeaderSchema = z.record(z.string());
+export type HttpMethod = z.infer<typeof HttpMethodSchema>;
+
+export const HttpHeaderSchema = z.record(z.string());
+
+export type HttpHeader = z.infer<typeof HttpHeaderSchema>;
 
 export const LogSchema = z.object({
   id: z.string(),
   requestId: z.string(),
   projectId: z.string(),
-  method: httpMethodSchema,
+  method: HttpMethodSchema,
   statusCode: z.number(),
   baseUrl: z.string(),
   path: z.string(),
   search: z.string(),
-  requestHeaders: httpHeaderSchema,
+  requestHeaders: HttpHeaderSchema,
   requestBody: jsonSchema.optional(),
-  responseHeaders: httpHeaderSchema,
+  responseHeaders: HttpHeaderSchema,
   responseBody: jsonSchema.optional(),
   isCacheHit: z.boolean(),
   responseSize: z.number(),

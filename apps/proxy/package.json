@@ -11,14 +11,16 @@
     "dev": "miniflare --live-reload --debug --modules dist/index.mjs --wrangler-env local",
     "dev:remote": "wrangler dev --env local",
     "test": "pnpm run build && NODE_OPTIONS=--experimental-vm-modules npx vitest run",
-    "typecheck": "tsc && tsc -p tsconfig.json"
+    "typecheck": "tsc && tsc -p tsconfig.json",
+    "env:pull": "pnpm dlx infisical pull dev"
   },
   "dependencies": {
+    "@apihero/constants-js": "*",
     "cuid": "^2.1.8",
+    "internal-logs": "*",
     "itty-router": "^2.6.5",
     "itty-router-extras": "^0.4.2",
-    "zod": "^3.19.1",
-    "@apihero/constants-js": "*"
+    "zod": "^3.19.1"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^3.18.0",
@@ -28,6 +30,7 @@
     "openapi-types": "^12.0.2",
     "prettier": "^2.7.1",
     "typescript": "^4.8.4",
+    "vite": "^3.2.3",
     "vitest": "^0.24.1",
     "vitest-environment-miniflare": "^2.10.0",
     "wrangler": "^2.1.13"

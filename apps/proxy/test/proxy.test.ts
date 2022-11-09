@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import worker from "../src/index";
+import { proxyRequest } from "../src/proxy";
 import { DESTINATION_HEADER_NAME } from "@apihero/constants-js";
 
 const describe = setupMiniflareIsolatedStorage();
@@ -13,7 +13,8 @@ describe("proxy", () => {
       },
     });
 
-    const res = await worker.fetch(request);
+    const [req, res] = await proxyRequest(request);
+    expect(req.url).toBe("http://localhost/get");
     expect(res.status).toBe(200);
     expect(res.ok).toBe(true);
     const json = await res.json();
