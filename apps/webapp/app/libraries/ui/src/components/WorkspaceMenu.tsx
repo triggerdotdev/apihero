@@ -7,15 +7,15 @@ import {
   StyledOptions,
   StyledOption,
 } from "./ComboBox";
-import { useUserWorkspacesData } from "~/routes/__app";
 import { CheckIcon } from "@heroicons/react/24/solid";
 import {
   BookmarkIcon,
   BriefcaseIcon,
   PlusIcon,
 } from "@heroicons/react/24/outline";
-import { Workspace, Project } from ".prisma/client";
+import type { Workspace, Project } from ".prisma/client";
 import { useState } from "react";
+import { Link } from "@remix-run/react";
 
 type WorkspaceMenuProps = {
   workspaces: (Workspace & {
@@ -53,20 +53,20 @@ export default function WorkspaceMenu({
               <>
                 <div className="flex items-center gap-2 mb-2">
                   <BriefcaseIcon className="h-5 w-5 text-slate-600" />
-                  <span className="font-semibold text-base">
+                  <span className="font-semibold text-base text-slate-600">
                     {workspace.title}
                   </span>
                 </div>
                 {workspace.projects.map((project) => {
                   return (
-                    <>
-                      <StyledOption key={project.slug} value={project.slug}>
+                    <div key={project.slug} className="flex flex-col gap-1">
+                      <StyledOption value={project.slug}>
                         {({ active, selected }) => (
                           <>
                             <div
                               className={classNames(
-                                "flex items-center ml-1 gap-1.5",
-                                selected && "bg-slate-200"
+                                "flex items-center gap-1.5",
+                                selected && ""
                               )}
                             >
                               <BookmarkIcon
@@ -81,7 +81,7 @@ export default function WorkspaceMenu({
                             {selected && (
                               <span
                                 className={classNames(
-                                  "absolute inset-y-0 right-0 flex items-center pr-4 bg-slate-200",
+                                  "absolute inset-y-0 right-0 flex items-center pr-4 rounded-r",
                                   active ? "text-blue-500" : "text-blue-500"
                                 )}
                               >
@@ -94,16 +94,16 @@ export default function WorkspaceMenu({
                           </>
                         )}
                       </StyledOption>
-                      <StyledOption value={project.slug}>
-                        <div className="flex gap-2">
+                      <Link to={`/workspaces/${workspace.slug}/projects/new`}>
+                        <div className="flex gap-2 pl-3 py-2 rounded bg-white hover:bg-slate-100 transition">
                           <PlusIcon
                             className="h-5 w-5 text-green-500"
                             aria-hidden="true"
                           />
-                          <span className="">New Project</span>
+                          <span className="text-slate-600">New Project</span>
                         </div>
-                      </StyledOption>
-                    </>
+                      </Link>
+                    </div>
                   );
                 })}
               </>
@@ -114,64 +114,3 @@ export default function WorkspaceMenu({
     </HeadlessComboBox>
   );
 }
-
-/* //Todo use the workspaces from the loader in the new dropdown */
-
-/* <div className="flex flex-shrink flex-grow items-center justify-between bg-slate-50">
-        <div className="flex h-full flex-col justify-between bg-white p-4">
-          <ul>
-            <li>
-              <p className="mb-2 text-xs font-medium uppercase tracking-widest text-slate-500">
-                Workspaces
-              </p>
-            </li>
-            {workspaces.map((workspace) => (
-              <li className="mb-6" key={workspace.id}>
-                <div className="group flex w-full items-center justify-between">
-                  <p className="mb-2 text-xl font-semibold">
-                    {workspace.title}
-                  </p>
-                </div>
-
-                <ul className="flex flex-col gap-2">
-                  {workspace.projects.map((project) => (
-                    <Link
-                      to={`/workspaces/${workspace.slug}/projects/${project.slug}`}
-                      className="flex w-full flex-grow items-center rounded-md bg-slate-100 transition hover:bg-slate-200"
-                      key={project.id}
-                    >
-                      <li className="group flex w-full items-center justify-between p-3">
-                        <div className="flex overflow-hidden text-ellipsis whitespace-nowrap">
-                          <BookOpenIcon className="mr-2 flex h-6 w-6 flex-shrink-0 flex-grow-0 text-blue-500" />
-                          <p className="text-base text-slate-700">
-                            {project.title}
-                          </p>
-                        </div>
-                        <ProjectSettingsMenu projectId={project.id} />
-                      </li>
-                    </Link>
-                  ))}
-                </ul>
-              </li>
-            ))}
-          </ul>
-          <ul className="flex flex-col gap-5">
-            <li className="-mb-1 text-xs font-medium uppercase tracking-widest text-slate-500">
-              Help and resources
-            </li>
-            {helpAndResources.map((item) => (
-              <li key={item.name}>
-                <a
-                  href={item.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={helpLinks}
-                >
-                  {item.icon}
-                  <span className={helpLinkSpan}>{item.name}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div> */
