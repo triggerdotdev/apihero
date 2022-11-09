@@ -1,6 +1,7 @@
 import {
   DESTINATION_HEADER_NAME,
   PROJECT_KEY_HEADER_NAME,
+  PROTOCOL_HEADER_NAME,
 } from "@apihero/constants-js";
 import { IsomorphicRequest } from "@apihero/interceptors-js";
 import { ClientRequestInterceptor } from "@apihero/interceptors-js/lib/interceptors/ClientRequest";
@@ -52,7 +53,8 @@ export function setupProxy(options: SetupProxyOptions): ProxyInstance {
       url: newUrl,
       headers: {
         ...Object.fromEntries(request.headers.entries()),
-        [DESTINATION_HEADER_NAME]: request.url.origin,
+        [DESTINATION_HEADER_NAME]: request.url.hostname,
+        [PROTOCOL_HEADER_NAME]: request.url.protocol,
       },
     });
   });
