@@ -1,3 +1,3 @@
 export default function NewWorkspace() {
-  return null;
+  return <p>New Workspace page</p>;
 }
