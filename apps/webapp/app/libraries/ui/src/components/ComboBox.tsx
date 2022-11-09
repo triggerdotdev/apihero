@@ -263,12 +263,17 @@ export function StyledOption(
 ) {
   return (
     <HeadlessComboBox.Option
-      className={({ active }: { active: boolean }) =>
+      className={({
+        active,
+        selected,
+      }: {
+        active: boolean;
+        selected: boolean;
+      }) =>
         classNames(
-          "relative cursor-default select-none py-2 pl-3 pr-9",
-          active
-            ? "bg-slate-100 rounded transition text-slate-600"
-            : "text-slate-600"
+          "relative cursor-default rounded select-none py-2 pl-3 pr-9",
+          active ? "bg-slate-100 transition text-slate-600" : "text-slate-600",
+          selected ? "bg-slate-200" : ""
         )
       }
       {...props}
