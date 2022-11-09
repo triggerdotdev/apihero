@@ -11,14 +11,21 @@ import {
   describe,
   test,
 } from "vitest";
+import {
+  DESTINATION_HEADER_NAME,
+  PROJECT_KEY_HEADER_NAME,
+  PROTOCOL_HEADER_NAME,
+} from "@apihero/constants-js";
+import { PAYLOAD_HEADER_NAME } from "@apihero/constants-js";
 
 const proxyServer = new HttpServer((app) => {
-  app.get("/get", (_req, res) => {
+  app.get("/get", (req, res) => {
     res.header("x-powered-by", "apihero");
     res
       .status(200)
       .json({
         proxy: true,
+        requestHeaders: req.headers,
       })
       .end();
   });
@@ -31,6 +38,7 @@ const proxyServer = new HttpServer((app) => {
       .json({
         proxy: true,
         body: req.body,
+        requestHeaders: req.headers,
       })
       .end();
   });
@@ -81,9 +89,17 @@ describe("setupProxy / fetch", () => {
     test("should return proxied body", async () => {
       const body = await res.json();
 
-      expect(body).toEqual({
-        proxy: true,
-      });
+      expect(body).toEqual(
+        expect.objectContaining({
+          proxy: true,
+          requestHeaders: expect.objectContaining({
+            [PROJECT_KEY_HEADER_NAME]: "hero_abc123",
+            [PROTOCOL_HEADER_NAME]: "https:",
+            [DESTINATION_HEADER_NAME]: "httpbin.org",
+            [PAYLOAD_HEADER_NAME]: JSON.stringify({ env: "test" }),
+          }),
+        })
+      );
     });
   });
 
@@ -113,14 +129,20 @@ describe("setupProxy / fetch", () => {
 
     test("should return proxied and parsed JSON body", async () => {
       const body = await res.json();
-      expect(body).toMatchInlineSnapshot(`
-        {
-          "body": {
-            "payload": "info",
+      expect(body).toEqual(
+        expect.objectContaining({
+          body: {
+            payload: "info",
           },
-          "proxy": true,
-        }
-      `);
+          proxy: true,
+          requestHeaders: expect.objectContaining({
+            [PROJECT_KEY_HEADER_NAME]: "hero_abc123",
+            [PROTOCOL_HEADER_NAME]: "https:",
+            [DESTINATION_HEADER_NAME]: "httpbin.org",
+            [PAYLOAD_HEADER_NAME]: JSON.stringify({ env: "test" }),
+          }),
+        })
+      );
     });
   });
 });

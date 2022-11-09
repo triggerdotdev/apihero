@@ -2,6 +2,7 @@ import { expect, test } from "vitest";
 import { proxyRequest } from "../src/proxy";
 import {
   DESTINATION_HEADER_NAME,
+  PAYLOAD_HEADER_NAME,
   PROJECT_KEY_HEADER_NAME,
   PROTOCOL_HEADER_NAME,
 } from "@apihero/constants-js";
@@ -16,6 +17,7 @@ describe("proxy", () => {
         [DESTINATION_HEADER_NAME]: "httpbin.org",
         [PROTOCOL_HEADER_NAME]: "https",
         [PROJECT_KEY_HEADER_NAME]: "hero_123",
+        [PAYLOAD_HEADER_NAME]: JSON.stringify({ env: "test" }),
         host: "localhost",
         "cf-connecting-ip": "127.0.0.1",
         "cf-ipcountry": "US",
@@ -31,6 +33,7 @@ describe("proxy", () => {
     expect(req.headers.get(DESTINATION_HEADER_NAME)).toBeNull();
     expect(req.headers.get(PROTOCOL_HEADER_NAME)).toBeNull();
     expect(req.headers.get(PROJECT_KEY_HEADER_NAME)).toBeNull();
+    expect(req.headers.get(PAYLOAD_HEADER_NAME)).toBeNull();
     expect(req.headers.get("host")).toBeNull();
     expect(req.headers.get("cf-connecting-ip")).toBeNull();
     expect(req.headers.get("cf-ipcountry")).toBeNull();

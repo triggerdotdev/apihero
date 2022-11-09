@@ -1,5 +1,6 @@
 import {
   DESTINATION_HEADER_NAME,
+  PAYLOAD_HEADER_NAME,
   PROJECT_KEY_HEADER_NAME,
   PROTOCOL_HEADER_NAME,
 } from "@apihero/constants-js";
@@ -47,6 +48,7 @@ function stripHeaders(headers: Headers): Headers {
     if (key === DESTINATION_HEADER_NAME) continue;
     if (key === PROTOCOL_HEADER_NAME) continue;
     if (key === PROJECT_KEY_HEADER_NAME) continue;
+    if (key === PAYLOAD_HEADER_NAME) continue;
     if (key === "host") continue;
     if (key === "cf-connecting-ip") continue;
     if (key === "cf-ipcountry") continue;

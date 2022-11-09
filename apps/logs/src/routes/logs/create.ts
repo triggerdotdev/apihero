@@ -57,7 +57,7 @@ const logs: FastifyPluginAsync = async (app, opts): Promise<void> => {
       }
 
       const id = cuid();
-      const query = `INSERT INTO "Log" (id, request_id, project_id, method, status_code, base_url, path, search, request_headers, request_body, response_headers, response_body, is_cache_hit, response_size, request_duration, gateway_duration, time) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17) RETURNING *`;
+      const query = `INSERT INTO "Log" (id, request_id, project_id, method, status_code, base_url, path, search, request_headers, request_body, response_headers, response_body, is_cache_hit, response_size, request_duration, gateway_duration, environment, time) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18) RETURNING *`;
 
       const values = [
         id,
@@ -76,6 +76,7 @@ const logs: FastifyPluginAsync = async (app, opts): Promise<void> => {
         request.body.responseSize,
         request.body.requestDuration,
         request.body.gatewayDuration,
+        request.body.environment,
         request.body.time,
       ];
 

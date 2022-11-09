@@ -10,4 +10,5 @@ export interface SetupProxyOptions {
   url: string;
   allow?: Array<PolicyRule>;
   deny?: Array<PolicyRule>;
+  env?: string;
 }

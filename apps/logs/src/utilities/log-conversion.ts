@@ -18,6 +18,7 @@ const DatabaseLogSchema = z.object({
   response_size: LogSchema.shape.responseSize,
   request_duration: LogSchema.shape.requestDuration,
   gateway_duration: LogSchema.shape.gatewayDuration,
+  environment: LogSchema.shape.environment,
   time: z.date(),
 });
 
@@ -53,6 +54,7 @@ export function databaseToLog(input: any): Log {
     responseSize: databaseLog.response_size,
     requestDuration: databaseLog.request_duration,
     gatewayDuration: databaseLog.gateway_duration,
+    environment: databaseLog.environment,
     time: databaseLog.time.toISOString(),
   };
 }

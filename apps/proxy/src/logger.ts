@@ -1,5 +1,15 @@
 import { CreateLogRequestBody, HttpMethod } from "internal-logs";
-import { PROJECT_KEY_HEADER_NAME } from "@apihero/constants-js";
+import {
+  PAYLOAD_HEADER_NAME,
+  PROJECT_KEY_HEADER_NAME,
+} from "@apihero/constants-js";
+import { z } from "zod";
+
+const PayloadSchema = z.object({
+  env: z.string(),
+});
+
+type Payload = z.infer<typeof PayloadSchema>;
 
 export type LogOptions = {
   url: string;
@@ -43,6 +53,26 @@ export class LogService {
       return;
     }
 
+    const rawPayload = request.headers.get(PAYLOAD_HEADER_NAME);
+
+    if (!rawPayload) {
+      this.debug(() =>
+        this.warn(`No payload found in request header ${PAYLOAD_HEADER_NAME}`)
+      );
+      return;
+    }
+
+    const payload = PayloadSchema.safeParse(safeParse(rawPayload));
+
+    if (!payload.success) {
+      this.debug(() =>
+        this.warn(
+          `Payload found in request header ${PAYLOAD_HEADER_NAME} is not valid: ${payload.error}`
+        )
+      );
+      return;
+    }
+
     if (this.shouldSkipLogging(request, originResponse)) {
       this.debug(() => this.log("Skipping logging"));
 
@@ -52,7 +82,8 @@ export class LogService {
     const body = await this.createLogRequestBody(
       request,
       originRequest,
-      originResponse
+      originResponse,
+      payload.data
     );
 
     if (this.options.context) {
@@ -92,7 +123,8 @@ export class LogService {
   private async createLogRequestBody(
     request: Request,
     originRequest: Request,
-    originResponse: Response
+    originResponse: Response,
+    payload: Payload
   ): Promise<CreateLogRequestBody> {
     const originUrl = new URL(originRequest.url);
     const responseHeaders = Object.fromEntries(originResponse.headers);
@@ -119,6 +151,7 @@ export class LogService {
       gatewayDuration,
       responseSize,
       time: new Date().toISOString(),
+      environment: payload.env,
     };
   }
 
@@ -253,5 +286,13 @@ function caseInsensitiveGet(headers: Headers, key: string): string | undefined {
     if (headerKey.toLowerCase() === key.toLowerCase()) {
       return value;
     }
+  }
+}
+
+function safeParse(body: string) {
+  try {
+    return JSON.parse(body);
+  } catch (e) {
+    return {};
   }
 }

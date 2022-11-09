@@ -2,7 +2,9 @@ import { expect, test, vi, afterEach } from "vitest";
 import { LogService } from "../src/logger";
 import {
   DESTINATION_HEADER_NAME,
+  PAYLOAD_HEADER_NAME,
   PROJECT_KEY_HEADER_NAME,
+  PROTOCOL_HEADER_NAME,
 } from "@apihero/constants-js";
 
 const describe = setupMiniflareIsolatedStorage();
@@ -22,6 +24,7 @@ describe("LogService / sendProxiedRequestEvent", () => {
           headers: {
             [DESTINATION_HEADER_NAME]: "https://httpbin.org",
             [PROJECT_KEY_HEADER_NAME]: "hero_123",
+            [PAYLOAD_HEADER_NAME]: JSON.stringify({ env: "test" }),
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ foo: "bar" }),
@@ -104,6 +107,7 @@ describe("LogService / sendProxiedRequestEvent", () => {
             requestDuration: expect.any(Number),
             time: expect.any(String),
             responseSize: 434,
+            environment: "test",
           })
         );
       });
@@ -114,6 +118,7 @@ describe("LogService / sendProxiedRequestEvent", () => {
           headers: {
             [DESTINATION_HEADER_NAME]: "https://httpbin.org",
             [PROJECT_KEY_HEADER_NAME]: "hero_123",
+            [PAYLOAD_HEADER_NAME]: JSON.stringify({ env: "test" }),
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ foo: "bar" }),
@@ -184,6 +189,7 @@ describe("LogService / sendProxiedRequestEvent", () => {
         method: "GET",
         headers: {
           [DESTINATION_HEADER_NAME]: "https://httpbin.org",
+          [PAYLOAD_HEADER_NAME]: JSON.stringify({ env: "test" }),
         },
       });
 
@@ -219,8 +225,9 @@ describe("LogService / sendProxiedRequestEvent", () => {
       const request = new Request(`http://localhost/get`, {
         method: "GET",
         headers: {
-          [DESTINATION_HEADER_NAME]: "https://httpbin.org",
+          [DESTINATION_HEADER_NAME]: "httpbin.org",
           [PROJECT_KEY_HEADER_NAME]: "hero_123",
+          [PAYLOAD_HEADER_NAME]: JSON.stringify({ env: "test" }),
         },
       });
 
@@ -302,6 +309,7 @@ describe("LogService / sendProxiedRequestEvent", () => {
           requestDuration: expect.any(Number),
           time: expect.any(String),
           responseSize: 262,
+          environment: "test",
         })
       );
     });

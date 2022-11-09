@@ -1,5 +1,6 @@
 import {
   DESTINATION_HEADER_NAME,
+  PAYLOAD_HEADER_NAME,
   PROJECT_KEY_HEADER_NAME,
   PROTOCOL_HEADER_NAME,
 } from "@apihero/constants-js";
@@ -28,10 +29,13 @@ export function setupProxy(options: SetupProxyOptions): ProxyInstance {
       return;
     }
 
+    const env = options.env || process.env.NODE_ENV || "development";
+
     request.requestWith({
       headers: {
         ...Object.fromEntries(request.headers.entries()),
         [PROJECT_KEY_HEADER_NAME]: options.projectKey,
+        [PAYLOAD_HEADER_NAME]: JSON.stringify({ env }),
       },
     });
   });

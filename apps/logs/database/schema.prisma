@@ -26,6 +26,8 @@ model Log {
   request_duration Float @default(0)
   gateway_duration Float @default(0)
 
+  environment String @default("development")
+
   time DateTime
 
   @@unique([id, time])

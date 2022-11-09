@@ -43,6 +43,7 @@ export const LogSchema = z.object({
   requestDuration: z.number(),
   gatewayDuration: z.number(),
   time: z.string(),
+  environment: z.string(),
 });
 
 export type Log = z.infer<typeof LogSchema>;

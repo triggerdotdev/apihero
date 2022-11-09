@@ -3,4 +3,5 @@ module.exports = {
   PROJECT_KEY_HEADER_NAME: "x-ah-pk",
   REQUEST_ID_HEADER_NAME: "x-ah-request-id",
   PROTOCOL_HEADER_NAME: "x-ah-proto",
+  PAYLOAD_HEADER_NAME: "x-ah-payload",
 };
