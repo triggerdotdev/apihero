@@ -331,7 +331,7 @@ function OptionalSteps() {
           <p className="text-sm text-slate-700">
             Add caching to speed up requests and save money (optional).
           </p>
-          <PrimaryLink to="caching">
+          <PrimaryLink to="../caching">
             <BoltIcon className="h-4 w-4 -ml-1" />
             Add caching
           </PrimaryLink>
