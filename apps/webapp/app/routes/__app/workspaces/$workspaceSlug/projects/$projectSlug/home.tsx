@@ -152,7 +152,7 @@ export default function Page() {
   const data = useTypedLoaderData<typeof loader>();
 
   return (
-    <main className="h-full w-full bg-slate-50 p-4">
+    <main className="h-mainMobileContainerHeight xl:h-mainDesktopContainerHeight overflow-y-auto overflow-hidden w-full bg-slate-50 p-4">
       {data.project.httpClients ? (
         <>
           <OnboardingIncomplete />

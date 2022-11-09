@@ -7,6 +7,8 @@ module.exports = {
     extend: {
       ...parentConfig.theme.extend,
       height: {
+        mainMobileContainerHeight: "calc(100vh - 148px)",
+        mainDesktopContainerHeight: "calc(100vh - 72px)",
         editEndpointContainerHeight: "calc(100vh - 112px)",
       },
     },
