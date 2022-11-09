@@ -17,7 +17,8 @@
     "db:migrate:deploy": "prisma migrate deploy",
     "db:migrate:dev": "prisma migrate dev",
     "env:pull": "pnpm dlx infisical pull dev",
-    "docker:build": "cd ../.. && docker build -t remix-gospel-stack-logs -f ./apps/logs/Dockerfile ."
+    "docker:build": "cd ../.. && docker build -t remix-gospel-stack-logs -f ./apps/logs/Dockerfile .",
+    "typecheck": "tsc --noEmit"
   },
   "keywords": [],
   "author": "",
