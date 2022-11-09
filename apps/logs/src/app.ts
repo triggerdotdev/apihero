@@ -22,16 +22,20 @@ export default async function (app: FastifyInstance, opts: AppOptions) {
   app.setValidatorCompiler(validatorCompiler);
   app.setSerializerCompiler(serializerCompiler);
 
-  app.register(postgres, {
+  await app.register(postgres, {
     connectionString: process.env.DATABASE_URL,
   });
 
-  app.register(AutoLoad, {
+  app.pg.pool.on("error", (err, client) => {
+    console.error("Unexpected postgres pool error", err);
+  });
+
+  await app.register(AutoLoad, {
     dir: join(__dirname, "plugins"),
     options: opts,
   });
 
-  app.register(AutoLoad, {
+  await app.register(AutoLoad, {
     dir: join(__dirname, "routes"),
     options: opts,
   });
