@@ -28,41 +28,6 @@ export function getProjectFromSlugs({
 }) {
   return prisma.project.findFirst({
     where: { slug, workspace: { slug: workspaceSlug } },
-    include: {
-      httpClients: {
-        include: {
-          integration: {
-            include: {
-              currentSchema: {
-                select: {
-                  servers: true,
-                  id: true,
-                },
-              },
-            },
-          },
-          authentications: {
-            include: {
-              securityScheme: true,
-            },
-          },
-          endpoints: {
-            include: {
-              operation: {
-                include: {
-                  path: true,
-                  securityRequirements: {
-                    include: {
-                      securityScheme: true,
-                    },
-                  },
-                },
-              },
-            },
-          },
-        },
-      },
-    },
   });
 }
 

@@ -2,11 +2,7 @@ import type { ActionFunction, LoaderArgs } from "@remix-run/server-runtime";
 import invariant from "tiny-invariant";
 import { getProjectFromSlugs } from "~/models/project.server";
 import { requireUserId } from "~/services/session.server";
-import { getSecurityRequirementsForIntegration } from "~/models/security.server";
-import { typedjson, useTypedLoaderData } from "remix-typedjson";
-import type { UseDataFunctionReturn } from "remix-typedjson/dist/remix";
-import type { EndpointStats } from "~/models/httpEndpoint.server";
-import { getStatsById } from "~/models/httpEndpoint.server";
+import { redirect, typedjson, useTypedLoaderData } from "remix-typedjson";
 import { z } from "zod";
 import { setCache as updateCacheSettings } from "~/models/httpClient.server";
 import { syncIntegrationsSettingsWithGateway } from "~/models/gateway.server";
@@ -25,7 +21,9 @@ import {
   SecondaryLink,
 } from "~/libraries/ui/src/components/Buttons/Buttons";
 import classNames from "classnames";
-type LoaderData = UseDataFunctionReturn<typeof loader>;
+import type { Log } from "internal-logs";
+import { UseDataFunctionReturn } from "remix-typedjson/dist/remix";
+import { Spinner } from "~/libraries/common/src/components/Spinner";
 
 export const loader = async ({ request, params }: LoaderArgs) => {
   await requireUserId(request);
@@ -33,11 +31,6 @@ export const loader = async ({ request, params }: LoaderArgs) => {
   invariant(workspaceSlug, "workspaceSlug not found");
   invariant(projectSlug, "projectSlug not found");
 
-  const project = await loadProject(workspaceSlug, projectSlug);
-  return typedjson({ project });
-};
-
-async function loadProject(workspaceSlug: string, projectSlug: string) {
   const project = await getProjectFromSlugs({
     workspaceSlug,
     slug: projectSlug,
@@ -47,40 +40,30 @@ async function loadProject(workspaceSlug: string, projectSlug: string) {
     throw new Response("Not Found", { status: 404 });
   }
 
-  const clientsWithSecurity = await Promise.all(
-    project.httpClients.map(async (client) => {
-      const securityOptions = await getSecurityRequirementsForIntegration(
-        client.integration.id
-      );
-      return {
-        ...client,
-        securityOptions,
-      };
-    })
+  const logsOrigin = process.env.LOGS_ORIGIN;
+  invariant(logsOrigin, "LOGS_ORIGIN env variables not defined");
+  const authenticationToken = process.env.LOGS_API_AUTHENTICATION_TOKEN;
+  invariant(
+    authenticationToken,
+    "LOGS_API_AUTHENTICATION_TOKEN env variables not defined"
   );
 
-  const endpointStats: Record<string, EndpointStats> = {};
+  let logs: Log[] = [];
 
-  const allEndpoints = project.httpClients.flatMap(
-    (client) => client.endpoints
-  );
+  const url = `${logsOrigin}/logs/${project.id}?days=10000&page=1`;
+  const logsResponse = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${authenticationToken}`,
+    },
+  });
 
-  const endpointPromises: Array<Promise<void>> = [];
-
-  for (const endpoint of allEndpoints) {
-    endpointPromises.push(
-      (async () => {
-        const stats = await getStatsById(endpoint.id);
-
-        endpointStats[endpoint.id] = stats;
-      })()
-    );
+  if (logsResponse.ok) {
+    const json = await logsResponse.json();
+    logs = json.logs;
   }
 
-  await Promise.all(endpointPromises);
-
-  return { ...project, httpClients: clientsWithSecurity, endpointStats };
-}
+  return typedjson({ project, logs });
+};
 
 export type ActionData = {
   errors?: {
@@ -90,78 +73,70 @@ export type ActionData = {
   };
 };
 
-export const action: ActionFunction = async ({ request, params }) => {
-  const { workspaceSlug, projectSlug } = params;
-  invariant(workspaceSlug, "workspaceSlug not found");
-  invariant(projectSlug, "projectSlug not found");
+// export const action: ActionFunction = async ({ request, params }) => {
+//   const { workspaceSlug, projectSlug } = params;
+//   invariant(workspaceSlug, "workspaceSlug not found");
+//   invariant(projectSlug, "projectSlug not found");
 
-  const formData = await request.formData();
+//   const formData = await request.formData();
 
-  const toggleFormSchema = z.object({
-    type: z.literal("toggle"),
-    enabled: z.preprocess((a) => (a as string) === "true", z.boolean()),
-    clientId: z.string(),
-  });
-  const updateTimeSchema = z.object({
-    type: z.literal("updateTime"),
-    time: z.preprocess(
-      (a) => parseFloat(a as string),
-      z.number().positive().min(0)
-    ),
-    clientId: z.string(),
-  });
-  const schema = z.discriminatedUnion("type", [
-    toggleFormSchema,
-    updateTimeSchema,
-  ]);
+//   const toggleFormSchema = z.object({
+//     type: z.literal("toggle"),
+//     enabled: z.preprocess((a) => (a as string) === "true", z.boolean()),
+//     clientId: z.string(),
+//   });
+//   const updateTimeSchema = z.object({
+//     type: z.literal("updateTime"),
+//     time: z.preprocess(
+//       (a) => parseFloat(a as string),
+//       z.number().positive().min(0)
+//     ),
+//     clientId: z.string(),
+//   });
+//   const schema = z.discriminatedUnion("type", [
+//     toggleFormSchema,
+//     updateTimeSchema,
+//   ]);
 
-  const result = schema.safeParse(Object.fromEntries(formData));
+//   const result = schema.safeParse(Object.fromEntries(formData));
 
-  if (!result.success) {
-    return typedjson(
-      {
-        errors: result.error.format(),
-      },
-      { status: 400 }
-    );
-  }
+//   if (!result.success) {
+//     return typedjson(
+//       {
+//         errors: result.error.format(),
+//       },
+//       { status: 400 }
+//     );
+//   }
 
-  if (result.data.type === "toggle") {
-    await updateCacheSettings({
-      clientId: result.data.clientId,
-      enabled: result.data.enabled,
-    });
-  } else {
-    await updateCacheSettings({
-      clientId: result.data.clientId,
-      enabled: true,
-      ttl: result.data.time,
-    });
-  }
+//   if (result.data.type === "toggle") {
+//     await updateCacheSettings({
+//       clientId: result.data.clientId,
+//       enabled: result.data.enabled,
+//     });
+//   } else {
+//     await updateCacheSettings({
+//       clientId: result.data.clientId,
+//       enabled: true,
+//       ttl: result.data.time,
+//     });
+//   }
 
-  await syncIntegrationsSettingsWithGateway({
-    workspaceSlug,
-    projectSlug,
-    clientId: result.data.clientId,
-  });
+//   await syncIntegrationsSettingsWithGateway({
+//     workspaceSlug,
+//     projectSlug,
+//     clientId: result.data.clientId,
+//   });
 
-  return typedjson({});
-};
+//   return typedjson({});
+// };
 
 export default function Page() {
   const data = useTypedLoaderData<typeof loader>();
 
   return (
     <main className="h-mainMobileContainerHeight xl:h-mainDesktopContainerHeight overflow-y-auto overflow-hidden w-full bg-slate-50 p-4">
-      {data.project.httpClients ? (
-        <>
-          <OnboardingIncomplete />
-        </>
-      ) : (
-        <>
-          <OnboardingComplete />
-        </>
-      )}
+      <Onboarding project={data.project} logs={data.logs} />
       {/* TODO: make below components that can be greyed out */}
       {/* <Filters/> */}
       {/* <Tab /> */}
@@ -178,165 +153,127 @@ const codeConatiner =
   "flex items-center font-mono justify-between gap-2.5 rounded-md border bg-slate-700 py-2 pl-4 pr-2 text-sm text-white";
 const codeExample = "Code sample to configure your monitoring";
 
-function OnboardingIncomplete() {
-  const data = useTypedLoaderData<typeof loader>();
+function Onboarding({ project, logs }: UseDataFunctionReturn<typeof loader>) {
   const copyCode =
-    "apihero({ platform: “node”, projectKey: “" + data.project.id + "” });";
+    "apihero({ platform: “node”, projectKey: “" + project.id + "” });";
 
   return (
     <div className="w-full flex gap-2">
       <div className="w-full bg-slate-100 p-4 border border-slate-200 rounded-md">
         <div className="flex gap-2.5 items-center mb-4 ml-0.5">
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 20 20"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="animate-spin"
-          >
-            <rect
-              x="2"
-              y="2"
-              width="16"
-              height="16"
-              rx="8"
-              stroke="#BBF7D0"
-              strokeWidth="3"
-            />
-            <path
-              d="M10 18C5.58172 18 2 14.4183 2 10C2 5.58172 5.58172 2 10 2"
-              stroke="#22C55E"
-              strokeWidth="3"
-              strokeLinecap="round"
-            />
-          </svg>
-
+          <Spinner />
           <h2 className="font-semibold text-xl text-slate-600">Get started</h2>
         </div>
         <ul className="flex flex-col gap-5">
+          {logs.length > 0 ? (
+            <>
+              <li className="flex gap-2">
+                <span className={classNames(listItemCompleted)}>
+                  <CheckIcon className="h-4 w-4" />
+                </span>
+                <p className="text-sm text-slate-700">
+                  Copy paste the code into your project.
+                </p>
+              </li>
+              <li className="flex gap-2">
+                <span className={classNames(listItemCompleted)}>
+                  <CheckIcon className="h-4 w-4" />
+                </span>
+                <div className="flex flex-col gap-2">
+                  <p className="text-sm text-slate-700">
+                    Send any API request from your project, then return here to
+                    your dashboard and refresh.
+                  </p>
+                </div>
+              </li>
+            </>
+          ) : (
+            <>
+              <li className="flex gap-2">
+                <span className={classNames(listItemNumbered)}>1</span>
+                <div className="flex flex-col gap-2">
+                  <p className="text-sm text-slate-700">
+                    Copy paste the code into your project.
+                  </p>
+                  <div className={codeConatiner}>
+                    {copyCode}
+                    <CopyTextButton value={copyCode} variant="blue" />
+                  </div>
+                </div>
+              </li>
+              <li className="flex gap-2">
+                <span className={classNames(listItemNumbered)}>2</span>
+                <div className="flex flex-col gap-2">
+                  <p className="text-sm text-slate-700">
+                    Send any API request from your project, then return here to
+                    your dashboard and refresh.
+                  </p>
+                  <div className="flex items-center gap-4">
+                    <PrimaryLink to="/">
+                      <ArrowPathIcon className="h-4 w-4 -ml-1" />
+                      Refresh
+                    </PrimaryLink>
+                    <span className="text-slate-400 text-xs">
+                      Last refreshed 20 minutes ago
+                    </span>
+                  </div>
+                </div>
+              </li>
+            </>
+          )}
+
           <li className="flex gap-2">
-            <span className={classNames(listItemNumbered)}>1</span>
+            <span className={classNames(listItemNumbered)}>3</span>
             <div className="flex flex-col gap-2">
               <p className="text-sm text-slate-700">
-                Copy paste the code into your project.
+                Configure what API traffic you want to monitor (optional). Use
+                the example below or view the docs.
               </p>
               <div className={codeConatiner}>
-                {copyCode}
-                <CopyTextButton value={copyCode} variant="blue" />
+                {codeExample}
+                <CopyTextButton value={codeExample} variant="blue" />
               </div>
+              <PrimaryA href="https://docs.apihero.run" target="_blank">
+                <ArrowTopRightOnSquareIcon className="h-4 w-4 -ml-1" />
+                Documentation
+              </PrimaryA>
             </div>
           </li>
           <li className="flex gap-2">
-            <span className={classNames(listItemNumbered)}>2</span>
+            <span className={classNames(listItemNumbered)}>4</span>
             <div className="flex flex-col gap-2">
               <p className="text-sm text-slate-700">
-                Send any API request from your project, then return here to your
-                dashboard and refresh.
+                Add caching to speed up requests and save money (optional).
               </p>
-              <div className="flex items-center gap-4">
-                <PrimaryLink to="/">
-                  <ArrowPathIcon className="h-4 w-4 -ml-1" />
-                  Refresh
-                </PrimaryLink>
-                <span className="text-slate-400 text-xs">
-                  Last refreshed 20 minutes ago
-                </span>
-              </div>
+              <PrimaryLink to="caching">
+                <BoltIcon className="h-4 w-4 -ml-1" />
+                Add caching
+              </PrimaryLink>
             </div>
           </li>
-          <OptionalSteps />
         </ul>
       </div>
-      <div className="bg-blue-50 w-80 border border-blue-100 rounded-md text-slate-700 p-4">
-        <h3 className="text-xl font-semibold mb-2">No project yet?</h3>
-        <p className="mb-1 text-sm">
-          Check out a live demo to see API Hero in action.
-        </p>
-        <SecondaryLink to="/" target="_blank" className="mb-4">
-          <ArrowTopRightOnSquareIcon className="h-4 w-4 -ml-1" />
-          View in Code Sandbox
-        </SecondaryLink>
-        <p className="mb-1 text-sm">
-          Or read more about how it all works in our documentation.
-        </p>
-        <SecondaryLink to="https://docs.apihero.run" target="_blank">
-          <ArrowTopRightOnSquareIcon className="h-4 w-4 -ml-1" />
-          Documentation
-        </SecondaryLink>
-      </div>
-    </div>
-  );
-}
-
-function OnboardingComplete() {
-  return (
-    <div className="flex justify-between items-start w-full bg-slate-100 p-4 border border-slate-200 rounded-md">
-      <div className="">
-        <div className="flex gap-1.5 items-center mb-4 ml-0.5">
-          <CheckIcon className="h-6 w-6 text-green-500" />
-          <h2 className="font-semibold text-xl text-slate-600">Get started</h2>
-        </div>
-        <ul className="flex flex-col gap-5">
-          <li className="flex gap-2">
-            <span className={classNames(listItemCompleted)}>
-              <CheckIcon className="h-4 w-4" />
-            </span>
-            <p className="text-sm text-slate-700">
-              Copy paste the code into your project.
-            </p>
-          </li>
-          <li className="flex gap-2">
-            <span className={classNames(listItemCompleted)}>
-              <CheckIcon className="h-4 w-4" />
-            </span>
-            <div className="flex flex-col gap-2">
-              <p className="text-sm text-slate-700">
-                Send any API request from your project, then return here to your
-                dashboard and refresh.
-              </p>
-            </div>
-          </li>
-          <OptionalSteps />
-        </ul>
-      </div>
-      <SecondaryButton>Dismiss</SecondaryButton>
-    </div>
-  );
-}
-
-function OptionalSteps() {
-  return (
-    <>
-      <li className="flex gap-2">
-        <span className={classNames(listItemNumbered)}>3</span>
-        <div className="flex flex-col gap-2">
-          <p className="text-sm text-slate-700">
-            Configure what API traffic you want to monitor (optional). Use the
-            example below or view the docs.
+      {logs.length == 0 ? (
+        <div className="bg-blue-50 w-80 border border-blue-100 rounded-md text-slate-700 p-4">
+          <h3 className="text-xl font-semibold mb-2">No project yet?</h3>
+          <p className="mb-1 text-sm">
+            Check out a live demo to see API Hero in action.
           </p>
-          <div className={codeConatiner}>
-            {codeExample}
-            <CopyTextButton value={codeExample} variant="blue" />
-          </div>
-          <PrimaryA href="https://docs.apihero.run" target="_blank">
+          <SecondaryLink to="/" target="_blank" className="mb-4">
+            <ArrowTopRightOnSquareIcon className="h-4 w-4 -ml-1" />
+            View in Code Sandbox
+          </SecondaryLink>
+          <p className="mb-1 text-sm">
+            Or read more about how it all works in our documentation.
+          </p>
+          <SecondaryLink to="https://docs.apihero.run" target="_blank">
             <ArrowTopRightOnSquareIcon className="h-4 w-4 -ml-1" />
             Documentation
-          </PrimaryA>
+          </SecondaryLink>
         </div>
-      </li>
-      <li className="flex gap-2">
-        <span className={classNames(listItemNumbered)}>4</span>
-        <div className="flex flex-col gap-2">
-          <p className="text-sm text-slate-700">
-            Add caching to speed up requests and save money (optional).
-          </p>
-          <PrimaryLink to="../caching">
-            <BoltIcon className="h-4 w-4 -ml-1" />
-            Add caching
-          </PrimaryLink>
-        </div>
-      </li>
-    </>
+      ) : (
+        <SecondaryButton className=" self-start ">Dismiss</SecondaryButton>
+      )}
+    </div>
   );
 }
