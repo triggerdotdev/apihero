@@ -7,7 +7,7 @@ import {
   GetLogsQuerySchema,
   GetLogsSuccessResponseSchema,
   GetLogsQuery,
-} from "../../types";
+} from "internal-logs";
 import { databaseToLog } from "../../utilities/log-conversion";
 import { namedParameters } from "../../utilities/named-sql";
 

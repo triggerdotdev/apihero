@@ -3,8 +3,11 @@ import { FastifyPluginAsync } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 import invariant from "tiny-invariant";
 import { z } from "zod";
-import { CreateLogRequestBodySchema, LogSchema } from "internal-logs";
-import { ErrorObjectSchema } from "../../types";
+import {
+  CreateLogRequestBodySchema,
+  LogSchema,
+  ErrorObjectSchema,
+} from "internal-logs";
 import { databaseToLog } from "../../utilities/log-conversion";
 
 const logsToken = process.env.API_AUTHENTICATION_TOKEN;
