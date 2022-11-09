@@ -14,7 +14,7 @@ import {
   PlusIcon,
 } from "@heroicons/react/24/outline";
 import type { Workspace, Project } from ".prisma/client";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Link } from "@remix-run/react";
 
 type WorkspaceMenuProps = {
@@ -50,7 +50,7 @@ export default function WorkspaceMenu({
         <StyledOptions>
           {workspaces.map((workspace) => {
             return (
-              <>
+              <React.Fragment key={workspace.slug}>
                 <div className="flex items-center gap-2 mb-2">
                   <BriefcaseIcon className="h-5 w-5 text-slate-600" />
                   <span className="font-semibold text-base text-slate-600">
@@ -106,7 +106,7 @@ export default function WorkspaceMenu({
                     </div>
                   );
                 })}
-              </>
+              </React.Fragment>
             );
           })}
         </StyledOptions>
