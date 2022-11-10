@@ -27,7 +27,8 @@
     "README.md"
   ],
   "scripts": {
-    "build": "tsup",
+    "build": "npm run clean && npm run build:tsup",
+    "build:tsup": "tsup",
     "clean": "rimraf lib",
     "dev": "tsup --watch",
     "lint": "eslint ./src --fix",

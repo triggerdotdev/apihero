@@ -17,7 +17,7 @@ export default defineConfig([
     clean: true,
     bundle: true,
     splitting: false,
-    dts: false,
+    dts: true,
     esbuildPlugins: [workerScriptPlugin()],
   },
   {
@@ -31,7 +31,7 @@ export default defineConfig([
     bundle: true,
     sourcemap: true,
     splitting: false,
-    dts: false,
+    dts: true,
     esbuildPlugins: [workerScriptPlugin()],
   },
   {
@@ -52,16 +52,7 @@ export default defineConfig([
     ],
     clean: true,
     sourcemap: true,
-    dts: false,
+    dts: true,
     esbuildPlugins: [workerScriptPlugin()],
-  },
-  {
-    name: "typedefs",
-    entry: ["./src/index.ts", "./src/node/index.ts"],
-    outDir: "./lib",
-    clean: false,
-    dts: {
-      only: true,
-    },
   },
 ]);
