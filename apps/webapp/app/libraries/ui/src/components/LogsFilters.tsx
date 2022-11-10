@@ -55,9 +55,6 @@ export function LogsFilters({ logs }: { logs: GetLogsSuccessResponse }) {
           submitForm={submitForm}
         />
       </FormField>
-      <PrimaryButton type="submit" className="btn btn-primary">
-        Filter
-      </PrimaryButton>
     </Form>
   );
 }
