@@ -9,7 +9,8 @@
   "scripts": {
     "test": "npm run build:ts && tsc -p test/tsconfig.json && tap --ts \"test/**/*.test.ts\"",
     "start": "fastify start dist/app.js -l info --address ::",
-    "build": "npm run build:ts",
+    "clean": "rimraf dist",
+    "build": "npm run clean && npm run build:ts",
     "build:ts": "tsc",
     "watch:ts": "tsc -w",
     "dev": "npm run build:ts && concurrently -k -p \"[{name}]\" -n \"TypeScript,App\" -c \"yellow.bold,cyan.bold\" \"npm:watch:ts\" \"npm:dev:start\"",
@@ -32,10 +33,10 @@
     "fastify-cli": "^5.5.1",
     "fastify-plugin": "^4.0.0",
     "fastify-type-provider-zod": "^1.1.7",
+    "internal-logs": "*",
     "pg": "^8.8.0",
     "tiny-invariant": "^1.2.0",
-    "zod": "^3.19.1",
-    "internal-logs": "*"
+    "zod": "^3.19.1"
   },
   "devDependencies": {
     "@types/node": "^18.0.0",
@@ -44,6 +45,7 @@
     "concurrently": "^7.0.0",
     "fastify-tsconfig": "^1.0.1",
     "prisma": "^4.3.0",
+    "rimraf": "^3.0.2",
     "tap": "^16.1.0",
     "ts-node": "^10.4.0",
     "typescript": "^4.5.4"
