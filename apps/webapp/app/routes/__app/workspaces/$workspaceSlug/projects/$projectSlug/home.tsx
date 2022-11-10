@@ -18,7 +18,7 @@ import {
   SecondaryLink,
 } from "~/libraries/ui/src/components/Buttons/Buttons";
 import classNames from "classnames";
-import type { Log } from "internal-logs";
+import type { GetLogsSuccessResponse } from "internal-logs";
 import type { UseDataFunctionReturn } from "remix-typedjson/dist/remix";
 import { Spinner } from "~/libraries/common/src/components/Spinner";
 import { StyledTabs } from "~/libraries/common";
@@ -47,7 +47,7 @@ export const loader = async ({ request, params }: LoaderArgs) => {
     "LOGS_API_AUTHENTICATION_TOKEN env variables not defined"
   );
 
-  let logs: Log[] = [];
+  let logs: GetLogsSuccessResponse | undefined = undefined;
 
   const url = `${logsOrigin}/logs/${project.id}?days=10000&page=1`;
   const logsResponse = await fetch(url, {
@@ -56,9 +56,9 @@ export const loader = async ({ request, params }: LoaderArgs) => {
     },
   });
 
-  if (logsResponse.ok) {
+  if (logsResponse.ok && logsResponse.status === 200) {
     const json = await logsResponse.json();
-    logs = json.logs;
+    logs = json;
   }
 
   return typedjson({ project, logs });
@@ -170,7 +170,7 @@ function Onboarding({ project, logs }: UseDataFunctionReturn<typeof loader>) {
           <h2 className="font-semibold text-xl text-slate-600">Get started</h2>
         </div>
         <ul className="flex flex-col gap-5">
-          {logs.length > 0 ? (
+          {logs && logs.logs.length > 0 ? (
             <>
               <li className="flex gap-2">
                 <span className={classNames(listItemCompleted)}>
@@ -258,7 +258,7 @@ function Onboarding({ project, logs }: UseDataFunctionReturn<typeof loader>) {
           </li>
         </ul>
       </div>
-      {logs.length == 0 ? (
+      {logs && logs.logs.length == 0 ? (
         <div className="bg-blue-50 w-80 border border-blue-100 rounded-md text-slate-700 p-4">
           <h3 className="text-xl font-semibold mb-2">No project yet?</h3>
           <p className="mb-1 text-sm">

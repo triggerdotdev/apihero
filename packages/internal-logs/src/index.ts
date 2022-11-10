@@ -111,6 +111,10 @@ export const GetLogsSuccessResponseSchema = z.object({
   previous: z.string().optional(),
 });
 
+export type GetLogsSuccessResponse = z.infer<
+  typeof GetLogsSuccessResponseSchema
+>;
+
 export const GetLogsResponseSchema = z.union([
   ErrorObjectSchema,
   GetLogsSuccessResponseSchema,
