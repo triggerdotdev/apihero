@@ -28,6 +28,12 @@ export function LogsTable({ logs, selectedLogId, onSelected }: LogsTableProps) {
             scope="col"
             className="py-3 pl-4 pr-3 text-left text-xs font-semibold text-slate-900 sm:pl-6"
           >
+            Method
+          </th>
+          <th
+            scope="col"
+            className="py-3 pl-4 pr-3 text-left text-xs font-semibold text-slate-900 sm:pl-6"
+          >
             API
           </th>
           <th

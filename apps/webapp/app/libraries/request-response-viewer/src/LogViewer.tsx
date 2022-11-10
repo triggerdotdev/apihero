@@ -43,6 +43,10 @@ export function LogRow({ log, isSelected, onClick }: LogViewerProps) {
       </td>
 
       <td className="whitespace-nowrap py-2 pl-4 pr-3 font-mono text-xs text-slate-500 sm:pl-6">
+        {log.method}
+      </td>
+
+      <td className="whitespace-nowrap py-2 pl-4 pr-3 font-mono text-xs text-slate-500 sm:pl-6">
         {log.baseUrl}
       </td>
 
