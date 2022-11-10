@@ -81,6 +81,9 @@ model Project {
 
   httpClients HttpClient[]
 
+  hasLogs Boolean @default(false)
+  hasCompletedOnboarding Boolean @default(false)
+
   @@unique([workspaceId, slug])
 }
 
