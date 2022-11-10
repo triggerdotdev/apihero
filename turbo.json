@@ -74,6 +74,9 @@
     },
     "env": {
       "cache": false
+    },
+    "env:pull": {
+      "cache": false
     }
   },
   "globalDependencies": [".env"],

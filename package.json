@@ -12,6 +12,7 @@
   },
   "scripts": {
     "build": "turbo run build",
+    "build:force": "turbo run build --force",
     "db:migrate:deploy": "turbo run db:migrate:deploy",
     "db:migrate:dev": "turbo run db:migrate:dev",
     "db:push": "turbo run db:push",
@@ -40,7 +41,8 @@
     "env": "turbo run env",
     "changeset:add": "changeset",
     "changeset:version": "changeset version",
-    "changeset:release": "pnpm run build && changeset publish"
+    "changeset:release": "pnpm run build && changeset publish",
+    "env:pull": "turbo run env:pull"
   },
   "devDependencies": {
     "@manypkg/cli": "^0.19.2",
