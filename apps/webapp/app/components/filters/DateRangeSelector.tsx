@@ -1,24 +1,22 @@
 import { CalendarIcon, ChevronDownIcon } from "@heroicons/react/24/solid";
-import { useSubmit } from "@remix-run/react";
 import classNames from "classnames";
 import { useCallback, useEffect, useState } from "react";
 import type { Range } from "react-date-range";
 import { DateRange } from "react-date-range";
 import type { DateRange as MyDateRange } from "~/libraries/common";
 import { utcNow } from "~/libraries/common";
-import { rangeToFormData } from "~/libraries/common";
 import { addDays } from "~/libraries/common";
 
 type DateRangeSelectorProps = {
   searchObject: Record<string, string>;
   presets: number[];
-  formRef: React.RefObject<HTMLFormElement>;
+  submitForm: () => void;
 };
 
 export function DateRangeSelector({
   searchObject,
   presets,
-  formRef,
+  submitForm,
 }: DateRangeSelectorProps) {
   const [currentRange, setCurrentRange] = useState<MyDateRange>(
     getDateRange(searchObject)
@@ -27,7 +25,6 @@ export function DateRangeSelector({
     getDateRange(searchObject)
   );
 
-  const submit = useSubmit();
   const [showPicker, setShowPicker] = useState(false);
 
   const rangeChanged = useCallback((dateRange: Range) => {
@@ -74,8 +71,8 @@ export function DateRangeSelector({
   }, [currentRange]);
 
   useEffect(() => {
-    submit(formRef.current, { replace: true });
-  }, [currentRange, formRef, submit]);
+    submitForm();
+  }, [currentRange, submitForm]);
 
   return (
     <div className="relative">

@@ -1,6 +1,6 @@
 import { Form, useSearchParams, useSubmit } from "@remix-run/react";
 import type { GetLogsSuccessResponse } from "internal-logs";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { ComboBox } from "./ComboBox";
 import { Input } from "./Primitives/Input";
 import { statusCodes } from "./StatusCode";
@@ -13,15 +13,16 @@ export function LogsFilters({ logs }: { logs: GetLogsSuccessResponse }) {
   const [searchParams] = useSearchParams();
   const searchObject = Object.fromEntries(searchParams.entries());
 
-  function handleChange(event: React.FormEvent<HTMLFormElement>) {
-    submit(event.currentTarget, { replace: true });
-  }
+  const submitForm = useCallback(() => {
+    if (!formRef.current) return;
+    submit(formRef.current, { replace: true });
+  }, [submit]);
 
   return (
     <Form
       method="get"
       className="py-4 flex gap-2"
-      onChange={handleChange}
+      onChange={submitForm}
       ref={formRef}
     >
       {searchObject.page && (
@@ -41,14 +42,17 @@ export function LogsFilters({ logs }: { logs: GetLogsSuccessResponse }) {
       />
       <StatusComboBox
         defaultValue={searchObject.status ?? ""}
-        formRef={formRef}
+        submitForm={submitForm}
       />
-      <CachingComboBox defaultValue={searchObject.cached} formRef={formRef} />
+      <CachingComboBox
+        defaultValue={searchObject.cached}
+        submitForm={submitForm}
+      />
       <FormField label={"Date range"} name={"date"}>
         <DateRangeSelector
           searchObject={searchObject}
           presets={[1, 7, 30, 90, 365]}
-          formRef={formRef}
+          submitForm={submitForm}
         />
       </FormField>
       <PrimaryButton type="submit" className="btn btn-primary">
@@ -111,19 +115,16 @@ function Label({ label, htmlFor }: { label: string; htmlFor: string }) {
 
 function CachingComboBox({
   defaultValue,
-  formRef,
+  submitForm,
 }: {
   defaultValue?: string;
-  formRef: React.RefObject<HTMLFormElement>;
+  submitForm: () => void;
 }) {
-  const submit = useSubmit();
   const [cached, setCached] = useState(defaultValue ?? "all");
 
   useEffect(() => {
-    if (formRef.current) {
-      submit(formRef.current, { replace: true });
-    }
-  }, [cached, formRef, submit]);
+    submitForm();
+  }, [cached, submitForm]);
 
   return (
     <FormField label="Caching" name="cached">
@@ -147,12 +148,11 @@ function CachingComboBox({
 
 function StatusComboBox({
   defaultValue,
-  formRef,
+  submitForm,
 }: {
   defaultValue: string;
-  formRef: React.RefObject<HTMLFormElement>;
+  submitForm: () => void;
 }) {
-  const submit = useSubmit();
   const selected =
     defaultValue === "" ? [] : defaultValue.split(",").map((v) => v.trim());
   const [values, setValues] = useState(
@@ -160,10 +160,8 @@ function StatusComboBox({
   );
 
   useEffect(() => {
-    if (formRef.current) {
-      submit(formRef.current, { replace: true });
-    }
-  }, [values, formRef, submit]);
+    submitForm();
+  }, [submitForm, values]);
 
   return (
     <FormField label="Status" name="status">
