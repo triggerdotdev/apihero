@@ -8,9 +8,12 @@ const roundedStyles = {
   roundedFull: "rounded focus:outline-offset-[0px] focus:outline-blue-500",
 };
 
-type InputProps = React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> & {
+type InputProps = React.DetailedHTMLProps<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  HTMLInputElement
+> & {
   roundedEdges?: "roundedLeft" | "roundedRight" | "roundedFull";
-}
+};
 
 export function Input({
   children,
@@ -23,7 +26,7 @@ export function Input({
   return (
     <input
       {...props}
-      className={`flex grow border border-slate-200 bg-slate-100 py-2 pl-3 pr-1 text-slate-700 ${classes}`}
+      className={`flex grow border border-slate-200 py-2 pl-3 pr-1 text-slate-700 ${classes}`}
     >
       {children}
     </input>

@@ -3,13 +3,10 @@ import invariant from "tiny-invariant";
 import { getProjectFromSlugs } from "~/models/project.server";
 import { requireUserId } from "~/services/session.server";
 import { typedjson, useTypedLoaderData } from "remix-typedjson";
-import { Link, Outlet } from "@remix-run/react";
+import { Outlet } from "@remix-run/react";
 import type { GetLogsSuccessResponse } from "internal-logs";
-import { StyledTabs } from "~/libraries/common";
-import { Tab } from "@headlessui/react";
 import { LogsOnboarding } from "~/libraries/ui/src/components/LogsOnboarding";
 import type { UseDataFunctionReturn } from "remix-typedjson/dist/remix";
-import classnames from "classnames";
 
 export type LoaderData = UseDataFunctionReturn<typeof loader>;
 
@@ -38,19 +35,35 @@ export const loader = async ({ request, params }: LoaderArgs) => {
 
   let logs: GetLogsSuccessResponse | undefined = undefined;
 
-  const url = `${logsOrigin}/logs/${project.id}?days=10000&page=1`;
-  const logsResponse = await fetch(url, {
-    headers: {
-      Authorization: `Bearer ${authenticationToken}`,
-    },
-  });
-
-  if (logsResponse.ok && logsResponse.status === 200) {
-    const json = await logsResponse.json();
-    logs = json;
+  const url = new URL(request.url);
+  const searchParams = new URLSearchParams(url.search);
+  if (!searchParams.has("page")) {
+    searchParams.set("page", "1");
+  }
+  if (!searchParams.has("days") && !searchParams.has("start")) {
+    searchParams.set("days", "7");
   }
 
-  return typedjson({ project, logs });
+  const apiUrl = `${logsOrigin}/logs/${project.id}?${searchParams.toString()}`;
+  console.log("apiUrl", apiUrl);
+
+  try {
+    const logsResponse = await fetch(apiUrl, {
+      headers: {
+        Authorization: `Bearer ${authenticationToken}`,
+      },
+    });
+
+    if (logsResponse.ok && logsResponse.status === 200) {
+      const json = await logsResponse.json();
+      logs = json;
+    }
+
+    return typedjson({ project, logs });
+  } catch (error) {
+    console.error(error);
+    return typedjson({ project, logs });
+  }
 };
 
 export type ActionData = {
@@ -125,10 +138,6 @@ export default function Page() {
   return (
     <main className="h-mainMobileContainerHeight xl:h-mainDesktopContainerHeight overflow-y-auto overflow-hidden w-full bg-slate-50 p-4">
       <LogsOnboarding project={data.project} logs={data.logs} />
-      {/* TODO: make below components that can be greyed out */}
-      {/* <Filters/> */}
-      {/* <Tab /> */}
-
       <Outlet />
     </main>
   );

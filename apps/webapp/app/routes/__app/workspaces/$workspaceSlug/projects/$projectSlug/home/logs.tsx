@@ -7,7 +7,8 @@ import {
 } from "~/libraries/common/src/components/Pagination";
 import { useLogs } from "~/libraries/common/src/hooks/useLogs";
 import { LogsTable } from "~/libraries/logging/LogsTable";
-import { LogsTabs, LogsTabs } from "~/libraries/ui/src/components/LogsTabs";
+import { LogsFilters } from "~/libraries/ui/src/components/LogsFilters";
+import { LogsTabs } from "~/libraries/ui/src/components/LogsTabs";
 
 export default function Logs() {
   const logs = useLogs();
@@ -23,7 +24,7 @@ export default function Logs() {
       const pageUrl = new URL(document.location.href);
       let pageSearchParams = Object.fromEntries(pageUrl.searchParams.entries());
 
-      if (direction === "previous" && logs.previous) {
+      if (direction === "previous" && logs?.previous) {
         const previousApiUrl = new URL(logs.previous);
         const previousApiParams = Object.fromEntries(
           previousApiUrl.searchParams.entries()
@@ -32,7 +33,7 @@ export default function Logs() {
           ...pageSearchParams,
           ...previousApiParams,
         };
-      } else if (direction === "next" && logs.next) {
+      } else if (direction === "next" && logs?.next) {
         const nextApiUrl = new URL(logs.next);
         const nextApiParams = Object.fromEntries(
           nextApiUrl.searchParams.entries()
@@ -55,39 +56,44 @@ export default function Logs() {
 
   return (
     <div>
-      <LogsTabs selected={"logs"} />
-      <div className="flex items-center justify-end">
-        <RefreshButton
-          disabled={false}
-          onClick={() => reload()}
-          lastUpdated={new Date()}
-        />
+      {logs && (
+        <>
+          <LogsFilters logs={logs} />
+          <LogsTabs selected={"logs"} />
+          <div className="flex items-center justify-end">
+            <RefreshButton
+              disabled={false}
+              onClick={() => reload()}
+              lastUpdated={new Date()}
+            />
 
-        <PreviousButton
-          disabled={
-            logs.previous !== undefined
-              ? transition.state === "loading" ||
-                transition.state === "submitting"
-              : true
-          }
-          onClick={() => loadMore("previous")}
-        />
+            <PreviousButton
+              disabled={
+                logs.previous !== undefined
+                  ? transition.state === "loading" ||
+                    transition.state === "submitting"
+                  : true
+              }
+              onClick={() => loadMore("previous")}
+            />
 
-        <NextButton
-          disabled={
-            logs.next !== undefined
-              ? transition.state === "loading" ||
-                transition.state === "submitting"
-              : true
-          }
-          onClick={() => loadMore("next")}
-        />
-      </div>
-      <LogsTable
-        logs={logs.logs}
-        selectedLogId={undefined}
-        onSelected={(logIg) => {}}
-      />
+            <NextButton
+              disabled={
+                logs.next !== undefined
+                  ? transition.state === "loading" ||
+                    transition.state === "submitting"
+                  : true
+              }
+              onClick={() => loadMore("next")}
+            />
+          </div>
+          <LogsTable
+            logs={logs.logs}
+            selectedLogId={undefined}
+            onSelected={(logIg) => {}}
+          />
+        </>
+      )}
     </div>
   );
 }

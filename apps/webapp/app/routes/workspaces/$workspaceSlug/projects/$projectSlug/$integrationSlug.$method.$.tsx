@@ -248,15 +248,16 @@ export default function Page() {
             </div>
             <div className="h-[calc(100%-36px)] overflow-auto rounded-lg border border-slate-200 bg-white">
               {data.logs.logs.length > 0 ? (
-                <LogsTable
-                  variables={data.variables}
-                  logs={data.logs.logs}
-                  selectedLogId={selectedLog}
-                  onSelected={onLogSelected}
-                  mappings={parseMappingsValue(
-                    data.endpoint.operation.mappings
-                  )}
-                />
+                // <LogsTable
+                //   variables={data.variables}
+                //   logs={data.logs.logs}
+                //   selectedLogId={selectedLog}
+                //   onSelected={onLogSelected}
+                //   mappings={parseMappingsValue(
+                //     data.endpoint.operation.mappings
+                //   )}
+                // />
+                <></>
               ) : (
                 <NoLogsPanel />
               )}
