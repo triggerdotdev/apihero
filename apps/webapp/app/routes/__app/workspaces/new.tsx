@@ -10,7 +10,7 @@ import {
   SecondaryLink,
 } from "~/libraries/ui/src/components/Buttons/Buttons";
 import { createWorkspace } from "~/models/workspace.server";
-// import { requireUserId } from "~/session.server";
+import { requireUserId } from "~/services/session.server";
 
 type ActionData = {
   errors?: {
@@ -20,7 +20,7 @@ type ActionData = {
 };
 
 export const action: ActionFunction = async ({ request }) => {
-  // const userId = await requireUserId(request);
+  const userId = await requireUserId(request);
 
   const formData = await request.formData();
   const title = formData.get("title");
@@ -32,8 +32,8 @@ export const action: ActionFunction = async ({ request }) => {
     );
   }
 
-  // const workspace = await createWorkspace({ title, userId });
-  // return redirect(`/workspaces/${workspace.id}`);
+  const workspace = await createWorkspace({ title, userId });
+  return redirect(`/workspaces/${workspace.id}`);
 };
 
 export default function NewWorkspacePage() {
@@ -49,12 +49,9 @@ export default function NewWorkspacePage() {
   return (
     <main className="bg-slate-50 w-full h-screen flex items-center justify-center">
       <div className="flex flex-col gap-y-3.5 max-w-lg bg-white shadow border border-slate-200 rounded-md p-10">
-        <div className="flex gap-1 items-center">
-          <PlusIcon className="text-green-500 h-5 w-5" />
-          <h3 className="font-semibold text-slate-600 text-lg">
-            Create a new Workspace
-          </h3>
-        </div>
+        <h3 className="font-semibold text-slate-600 text-xl">
+          Create a new Workspace
+        </h3>
         <p className="text-slate-600">
           Use Workspaces to hold a collection of Projects. A typical Workspace
           is named after a company or team.
