@@ -61,6 +61,13 @@ export function getProjects({ workspaceId }: { workspaceId: Workspace["id"] }) {
   });
 }
 
+export async function createFirstProject(userId: string, workspaceId: string) {
+  return await createProject({
+    title: "My project",
+    workspaceId,
+  });
+}
+
 export function createProject({
   title,
   workspaceId,

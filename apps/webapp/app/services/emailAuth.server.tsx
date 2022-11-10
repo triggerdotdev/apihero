@@ -6,6 +6,7 @@ import type { Authenticator } from "remix-auth";
 import type { AuthUser } from "./authUser";
 import { createFirstWorkspace } from "~/models/workspace.server";
 import { findOrCreateUser } from "~/models/user.server";
+import { createFirstProject } from "~/models/project.server";
 
 export const sendEmail: SendEmailFunction<AuthUser> = async (options) => {
   let subject = "Log in to API Hero";
@@ -58,7 +59,8 @@ const emailStrategy = new EmailLinkStrategy(
       await emailProvider.addToEmailList(user);
 
       if (isNewUser) {
-        await createFirstWorkspace(user.id);
+        const firstWorkspace = await createFirstWorkspace(user.id);
+        await createFirstProject(user.id, firstWorkspace.id);
       }
 
       return { userId: user.id };

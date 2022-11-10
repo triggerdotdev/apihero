@@ -7,7 +7,7 @@ import {
   PlusIcon,
 } from "@heroicons/react/24/outline";
 import type { Workspace, Project } from ".prisma/client";
-import React, { Fragment, useState } from "react";
+import React, { Fragment } from "react";
 import { Link } from "@remix-run/react";
 import { useCurrentProjectSlug } from "~/libraries/common/src/hooks/useCurrentProject";
 

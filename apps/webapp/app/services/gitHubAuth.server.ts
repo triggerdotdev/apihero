@@ -1,5 +1,6 @@
 import type { Authenticator } from "remix-auth";
 import { GitHubStrategy } from "remix-auth-github";
+import { createFirstProject } from "~/models/project.server";
 import { findOrCreateUser } from "~/models/user.server";
 import { createFirstWorkspace } from "~/models/workspace.server";
 import type { AuthUser } from "./authUser";
@@ -30,7 +31,8 @@ const gitHubStrategy = new GitHubStrategy(
       await addToEmailList(user);
 
       if (isNewUser) {
-        await createFirstWorkspace(user.id);
+        const firstWorkspace = await createFirstWorkspace(user.id);
+        await createFirstProject(user.id, firstWorkspace.id);
       }
 
       return {
