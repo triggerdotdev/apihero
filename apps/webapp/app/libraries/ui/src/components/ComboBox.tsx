@@ -56,6 +56,10 @@ export function SingleComboBox({
           return option.label.toLowerCase().includes(query.toLowerCase());
         });
 
+  useEffect(() => {
+    setValue(initialValue);
+  }, [initialValue]);
+
   return (
     <>
       {name && value && <input type="hidden" name={name} value={value} />}
@@ -71,7 +75,9 @@ export function SingleComboBox({
         <div className="relative">
           <StyledInput
             onChange={(event) => setQuery(event.target.value)}
-            displayValue={(selected: string) => selected}
+            displayValue={(selected: string) =>
+              options.find((o) => o.value === selected)?.label ?? selected
+            }
           />
           <StyledButton>
             <StyledChevron />

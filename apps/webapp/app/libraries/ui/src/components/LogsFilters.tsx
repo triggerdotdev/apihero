@@ -40,7 +40,10 @@ export function LogsFilters({ logs }: { logs: GetLogsSuccessResponse }) {
         defaultValue={searchObject.status ?? ""}
         formRef={formRef}
       />
-
+      <CachingComboBox
+        defaultValue={searchObject.cached ?? ""}
+        formRef={formRef}
+      />
       <button type="submit" className="btn btn-primary">
         Filter
       </button>
@@ -92,6 +95,42 @@ function Label({ label, htmlFor }: { label: string; htmlFor: string }) {
   );
 }
 
+function CachingComboBox({
+  defaultValue,
+  formRef,
+}: {
+  defaultValue?: string;
+  formRef: React.RefObject<HTMLFormElement>;
+}) {
+  const submit = useSubmit();
+  const [cached, setCached] = useState(defaultValue ?? "all");
+
+  useEffect(() => {
+    if (formRef.current) {
+      submit(formRef.current, { replace: true });
+    }
+  }, [cached, formRef, submit]);
+
+  return (
+    <FormField label="Caching" name="cached">
+      <>
+        {cached !== "all" && (
+          <input type="hidden" name="cached" defaultValue={cached} />
+        )}
+        <ComboBox
+          options={[
+            { label: "All", value: "all" },
+            { label: "Only Cached", value: "true" },
+            { label: "Only uncached", value: "false" },
+          ]}
+          initialValue={`${cached}`}
+          onChange={setCached}
+        />
+      </>
+    </FormField>
+  );
+}
+
 function StatusComboBox({
   defaultValue,
   formRef,
@@ -107,7 +146,6 @@ function StatusComboBox({
   );
 
   useEffect(() => {
-    console.log("submit");
     if (formRef.current) {
       submit(formRef.current, { replace: true });
     }
