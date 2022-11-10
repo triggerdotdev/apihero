@@ -57,7 +57,7 @@ export function setupProxy(options: SetupProxyOptions): ProxyInstance {
       url: newUrl,
       headers: {
         ...Object.fromEntries(request.headers.entries()),
-        [DESTINATION_HEADER_NAME]: request.url.hostname,
+        [DESTINATION_HEADER_NAME]: request.url.host,
         [PROTOCOL_HEADER_NAME]: request.url.protocol,
       },
     });

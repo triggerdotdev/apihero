@@ -24,9 +24,9 @@ export async function proxyRequest(
 
   const url = new URL(clonedRequest.url);
   url.protocol = protocol;
-  url.hostname = origin;
+  url.host = origin;
 
-  if (url.port) {
+  if (url.port && !origin.includes(":")) {
     url.port = "";
   }
 

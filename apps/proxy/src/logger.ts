@@ -184,6 +184,10 @@ export class LogService {
 
   // Only log responses that are json
   private shouldSkipLogging(request: Request, response: Response) {
+    if (response.status > 299) {
+      return false;
+    }
+
     const contentType = caseInsensitiveGet(response.headers, "content-type");
 
     if (!contentType) {
@@ -269,7 +273,11 @@ export function extractResponseSize(
 
 async function getRequestBody(request: Request) {
   if (request.method === "POST" || request.method === "PUT") {
-    return request.json();
+    try {
+      return await request.json();
+    } catch (e) {
+      return null;
+    }
   }
 }
 

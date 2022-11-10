@@ -14,6 +14,7 @@
     "tsx": "^3.12.0"
   },
   "scripts": {
-    "start": "tsx src/index.ts"
+    "start": "tsx src/index.ts",
+    "start:bin": "docker run -p 8080:80 kennethreitz/httpbin"
   }
 }
