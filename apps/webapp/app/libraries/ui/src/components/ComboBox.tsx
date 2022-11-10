@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Combobox as HeadlessComboBox } from "@headlessui/react";
 import {
   CheckIcon,
@@ -141,6 +141,10 @@ export function MultipleComboBox({
       : options.filter((option) => {
           return option.label.toLowerCase().includes(query.toLowerCase());
         });
+
+  useEffect(() => {
+    setValues(initialValue);
+  }, [initialValue]);
 
   return (
     <>

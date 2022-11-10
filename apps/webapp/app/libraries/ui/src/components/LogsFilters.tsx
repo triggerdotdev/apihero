@@ -1,16 +1,28 @@
 import { Form, useSearchParams, useSubmit } from "@remix-run/react";
 import type { GetLogsSuccessResponse } from "internal-logs";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ComboBox } from "./ComboBox";
 import { Input } from "./Primitives/Input";
 import { statusCodes } from "./StatusCode";
 
 export function LogsFilters({ logs }: { logs: GetLogsSuccessResponse }) {
+  const submit = useSubmit();
+  const formRef = useRef<HTMLFormElement>(null);
   const [searchParams] = useSearchParams();
   const searchObject = Object.fromEntries(searchParams.entries());
 
+  function handleChange(event: React.FormEvent<HTMLFormElement>) {
+    console.log("handleChange");
+    submit(event.currentTarget, { replace: true });
+  }
+
   return (
-    <Form method="get" className="py-4 flex gap-2">
+    <Form
+      method="get"
+      className="py-4 flex gap-2"
+      onChange={handleChange}
+      ref={formRef}
+    >
       {searchObject.page && (
         <input type="hidden" name="page" value={searchObject.page} />
       )}
@@ -24,7 +36,10 @@ export function LogsFilters({ logs }: { logs: GetLogsSuccessResponse }) {
         label="Path"
         defaultValue={searchObject.path ?? undefined}
       />
-      <StatusComboBox defaultValue={searchObject.status ?? ""} />
+      <StatusComboBox
+        defaultValue={searchObject.status ?? ""}
+        formRef={formRef}
+      />
 
       <button type="submit" className="btn btn-primary">
         Filter
@@ -77,28 +92,42 @@ function Label({ label, htmlFor }: { label: string; htmlFor: string }) {
   );
 }
 
-function StatusComboBox({ defaultValue }: { defaultValue: string }) {
+function StatusComboBox({
+  defaultValue,
+  formRef,
+}: {
+  defaultValue: string;
+  formRef: React.RefObject<HTMLFormElement>;
+}) {
+  const submit = useSubmit();
   const selected =
     defaultValue === "" ? [] : defaultValue.split(",").map((v) => v.trim());
-  const [values, setValues] = useState(selected);
+  const [values, setValues] = useState(
+    selected.length > 0 ? selected : everythingCodes
+  );
 
-  const inputValues = values.filter((v) => v !== "all");
+  useEffect(() => {
+    console.log("submit");
+    if (formRef.current) {
+      submit(formRef.current, { replace: true });
+    }
+  }, [values, formRef, submit]);
 
   return (
     <FormField label="Status" name="status">
       <>
-        {inputValues.length > 0 && (
-          <input type="hidden" name="status" value={inputValues.join(",")} />
+        {values.length > 0 && (
+          <input type="hidden" name="status" value={values.join(",")} />
         )}
         <ComboBox
           multiple
           options={statusCodeOptions}
-          initialValue={selected}
-          onChange={(values) => {
-            if (values.some((v) => v === "all")) {
-              setValues(["all"]);
+          initialValue={values}
+          onChange={(changed) => {
+            if (changed.some((v) => v === "all") || changed.length === 0) {
+              setValues(everythingCodes);
             } else {
-              setValues(values);
+              setValues(changed);
             }
           }}
         />
@@ -106,6 +135,8 @@ function StatusComboBox({ defaultValue }: { defaultValue: string }) {
     </FormField>
   );
 }
+
+const everythingCodes = ["2**", "3**", "4**", "5**"];
 
 const statusCodeOptions = [
   { label: "All", value: "all" },
