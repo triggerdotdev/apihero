@@ -1,7 +1,9 @@
-import { FireIcon } from "@heroicons/react/24/outline";
+import { useUser } from "~/libraries/common";
+import { FireIcon, MegaphoneIcon } from "@heroicons/react/24/outline";
 import { PrimaryButton } from "~/libraries/ui/src/components/Buttons/Buttons";
 
 export default function Alerts() {
+  const user = useUser();
   return (
     <div className="bg-slate-50 w-full flex items-center justify-center">
       <div className="flex flex-col gap-y-8 max-w-lg items-center text-center justify-center bg-slate-100 border border-slate-200 rounded-md p-10">
@@ -21,13 +23,13 @@ export default function Alerts() {
             target="_blank"
             noValidate
           >
-            <div id="mc_embed_signup_scroll" className="flex">
-              <div className="mc-field-group flex flex-col flex-grow">
+            <div id="mc_embed_signup_scroll" className="flex justify-center">
+              <div className="mc-field-group">
                 <input
-                  type="email"
+                  type="hidden"
                   name="EMAIL"
-                  placeholder="Email Address"
-                  className="rounded-l-md h-[48px] w-full bg-white border-slate-200"
+                  value={user?.email}
+                  // className="hidden"
                   id="mce-EMAIL"
                 />
               </div>
@@ -51,9 +53,10 @@ export default function Alerts() {
               <PrimaryButton
                 name="submit"
                 id="mc-embedded-subscribe"
-                className="px-4 py-2 h-12 rounded-l-none text-base"
+                className="px-4 py-2 text-base"
               >
-                Let me know
+                <MegaphoneIcon className="h-5 w-5" />
+                Notify me
               </PrimaryButton>
             </div>
           </form>
