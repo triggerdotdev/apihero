@@ -12,7 +12,6 @@ export function LogsFilters({ logs }: { logs: GetLogsSuccessResponse }) {
   const searchObject = Object.fromEntries(searchParams.entries());
 
   function handleChange(event: React.FormEvent<HTMLFormElement>) {
-    console.log("handleChange");
     submit(event.currentTarget, { replace: true });
   }
 
@@ -30,20 +29,19 @@ export function LogsFilters({ logs }: { logs: GetLogsSuccessResponse }) {
         name="api"
         label="API"
         defaultValue={searchObject.api ?? undefined}
+        placeholder="*"
       />
       <FilterTextField
         name="path"
         label="Path"
         defaultValue={searchObject.path ?? undefined}
+        placeholder="*"
       />
       <StatusComboBox
         defaultValue={searchObject.status ?? ""}
         formRef={formRef}
       />
-      <CachingComboBox
-        defaultValue={searchObject.cached ?? ""}
-        formRef={formRef}
-      />
+      <CachingComboBox defaultValue={searchObject.cached} formRef={formRef} />
       <button type="submit" className="btn btn-primary">
         Filter
       </button>
@@ -72,14 +70,21 @@ function FilterTextField({
   name,
   label,
   defaultValue,
+  placeholder,
 }: {
   name: string;
   label: string;
   defaultValue: string | undefined;
+  placeholder?: string;
 }) {
   return (
     <FormField label={label} name={name}>
-      <Input type="text" name={name} defaultValue={defaultValue} />
+      <Input
+        type="text"
+        name={name}
+        defaultValue={defaultValue}
+        placeholder={placeholder}
+      />
     </FormField>
   );
 }
