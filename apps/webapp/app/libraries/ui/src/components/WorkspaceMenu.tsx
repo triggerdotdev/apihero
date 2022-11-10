@@ -30,12 +30,13 @@ export default function WorkspaceMenu({
             <Popover.Button
               className={`
                 ${open ? "" : "text-opacity-90"}
-                group inline-flex items-center rounded-md bg-white px-3 py-2 text-sm text-slate-600 border border-slate-200 shadow hover:bg-slate-50 transition focus:outline-none`}
+                group inline-flex items-center rounded text-slate-700 hover:text-blue-600 bg-white pl-2.5 pr-2 py-1 text-sm border border-slate-200 shadow-sm hover:bg-slate-50 transition focus:outline-none`}
             >
-              <span>James' Project</span>
+              {/* TODO: Figure out how to pull the project title into here. */}
+              <span className="transition">James' Project</span>
               <ChevronDownIcon
                 className={`${open ? "rotate-180" : "text-opacity-70"}
-                  ml-2 h-5 w-5 text-slate-600 transition duration-150 ease-in-out group-hover:text-opacity-80`}
+                  ml-1 h-5 w-5 transition duration-150 ease-in-out group-hover:text-opacity-80`}
                 aria-hidden="true"
               />
             </Popover.Button>
