@@ -37,10 +37,12 @@ export const loader = async ({ request, params }: LoaderArgs) => {
 
   const url = new URL(request.url);
   const searchParams = new URLSearchParams(url.search);
-  if (!searchParams.has("page")) {
+  const searchObject = Object.fromEntries(searchParams.entries());
+
+  if (searchObject.page === undefined) {
     searchParams.set("page", "1");
   }
-  if (!searchParams.has("days") && !searchParams.has("start")) {
+  if (searchObject.days === undefined && searchObject.start === undefined) {
     searchParams.set("days", "7");
   }
 

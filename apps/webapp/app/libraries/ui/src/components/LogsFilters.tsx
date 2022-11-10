@@ -5,21 +5,22 @@ import { Input } from "./Primitives/Input";
 
 export function LogsFilters({ logs }: { logs: GetLogsSuccessResponse }) {
   const [searchParams] = useSearchParams();
-
-  const page = searchParams.get("page");
+  const searchObject = Object.fromEntries(searchParams.entries());
 
   return (
     <Form method="get" className="py-4 flex gap-2">
-      {page && <input type="hidden" name="page" value={page} />}
+      {searchObject.page && (
+        <input type="hidden" name="page" value={searchObject.page} />
+      )}
       <FilterTextField
         name="api"
         label="API"
-        defaultValue={searchParams.get("api") ?? undefined}
+        defaultValue={searchObject.api ?? undefined}
       />
       <FilterTextField
         name="path"
         label="Path"
-        defaultValue={searchParams.get("path") ?? undefined}
+        defaultValue={searchObject.path ?? undefined}
       />
       <button type="submit" className="btn btn-primary">
         Filter
