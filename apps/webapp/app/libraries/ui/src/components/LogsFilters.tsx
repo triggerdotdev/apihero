@@ -4,6 +4,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { ComboBox } from "./ComboBox";
 import { Input } from "./Primitives/Input";
 import { statusCodes } from "./StatusCode";
+import { DateRangeSelector } from "~/components/filters/DateRangeSelector";
+import { PrimaryButton } from "~/libraries/common";
 
 export function LogsFilters({ logs }: { logs: GetLogsSuccessResponse }) {
   const submit = useSubmit();
@@ -42,9 +44,16 @@ export function LogsFilters({ logs }: { logs: GetLogsSuccessResponse }) {
         formRef={formRef}
       />
       <CachingComboBox defaultValue={searchObject.cached} formRef={formRef} />
-      <button type="submit" className="btn btn-primary">
+      <FormField label={"Date range"} name={"date"}>
+        <DateRangeSelector
+          searchObject={searchObject}
+          presets={[1, 7, 30, 90, 365]}
+          formRef={formRef}
+        />
+      </FormField>
+      <PrimaryButton type="submit" className="btn btn-primary">
         Filter
-      </button>
+      </PrimaryButton>
     </Form>
   );
 }

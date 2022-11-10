@@ -1,7 +1,7 @@
 import { CalendarIcon, ChevronDownIcon } from "@heroicons/react/24/solid";
 import { useSubmit } from "@remix-run/react";
 import classNames from "classnames";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { Range } from "react-date-range";
 import { DateRange } from "react-date-range";
 import type { DateRange as MyDateRange } from "~/libraries/common";
@@ -10,13 +10,22 @@ import { rangeToFormData } from "~/libraries/common";
 import { addDays } from "~/libraries/common";
 
 type DateRangeSelectorProps = {
-  range: MyDateRange;
+  searchObject: Record<string, string>;
   presets: number[];
+  formRef: React.RefObject<HTMLFormElement>;
 };
 
-export function DateRangeSelector({ range, presets }: DateRangeSelectorProps) {
-  const [currentRange, setCurrentRange] = useState(range);
-  const [pendingRange, setPendingRange] = useState(range);
+export function DateRangeSelector({
+  searchObject,
+  presets,
+  formRef,
+}: DateRangeSelectorProps) {
+  const [currentRange, setCurrentRange] = useState<MyDateRange>(
+    getDateRange(searchObject)
+  );
+  const [pendingRange, setPendingRange] = useState<MyDateRange>(
+    getDateRange(searchObject)
+  );
 
   const submit = useSubmit();
   const [showPicker, setShowPicker] = useState(false);
@@ -31,53 +40,64 @@ export function DateRangeSelector({ range, presets }: DateRangeSelectorProps) {
   }, []);
 
   const saveDate = useCallback(() => {
-    const formData = rangeToFormData(pendingRange);
-    const url = new URL(document.location.href);
-    submit(formData, { method: "get", action: url.origin + url.pathname });
     setCurrentRange(pendingRange);
     setShowPicker(false);
-  }, [pendingRange, submit]);
+  }, [pendingRange]);
 
-  const setPreset = useCallback(
-    (days: number) => {
-      let range: MyDateRange;
-      if (days === 0) {
-        range = {
-          mode: "custom",
-          start: new Date(),
-          end: new Date(),
-        };
-        setPendingRange(range);
-        return;
-      }
-
+  const setPreset = useCallback((days: number) => {
+    let range: MyDateRange;
+    if (days === 0) {
       range = {
-        mode: "last",
-        days,
-        start: addDays(utcNow(), -days),
-        end: utcNow(),
+        mode: "custom",
+        start: new Date(),
+        end: new Date(),
       };
-
-      const formData = rangeToFormData(range);
-      const url = new URL(document.location.href);
-      submit(formData, { method: "get", action: url.origin + url.pathname });
       setPendingRange(range);
-      setCurrentRange(range);
-      setShowPicker(false);
-    },
-    [submit]
-  );
+      return;
+    }
+
+    range = {
+      mode: "last",
+      days,
+      start: addDays(utcNow(), -days),
+      end: utcNow(),
+    };
+
+    setPendingRange(range);
+    setCurrentRange(range);
+    setShowPicker(false);
+  }, []);
 
   const cancelDate = useCallback(() => {
     setPendingRange(currentRange);
     setShowPicker(false);
   }, [currentRange]);
 
+  useEffect(() => {
+    submit(formRef.current, { replace: true });
+  }, [currentRange, formRef, submit]);
+
   return (
     <div className="relative">
+      {currentRange.mode === "last" ? (
+        <input type="hidden" name="days" value={currentRange.days} />
+      ) : (
+        <>
+          <input
+            type="hidden"
+            name="start"
+            value={currentRange.start.toISOString()}
+          />
+          <input
+            type="hidden"
+            name="end"
+            value={currentRange.end.toISOString()}
+          />
+        </>
+      )}
       <button
         onClick={() => setShowPicker((s) => !s)}
-        className="group flex items-center rounded-md border border-slate-200 bg-white py-1 px-2 text-xs text-slate-500 transition hover:border-slate-300 hover:text-slate-600"
+        className="group flex items-center rounded-md border border-slate-200 bg-white py-2 px-2 text-sm text-slate-500 transition hover:border-slate-300 hover:text-slate-600"
       >
         <CalendarIcon className="mr-1 h-3.5 w-3.5 text-slate-500 transition group-hover:text-slate-600" />
         <span>{pickerTitle(currentRange)}</span>
@@ -187,4 +207,24 @@ function lastDaysTitle(days: number) {
     return "Last 24 hours";
   }
   return `Last ${days} days`;
+}
+
+function getDateRange(searchObject: Record<string, string>): MyDateRange {
+  const start = searchObject.start ? new Date(searchObject.start) : undefined;
+  const end = searchObject.end ? new Date(searchObject.end) : undefined;
+
+  if (start && end) {
+    return { mode: "custom", start, end };
+  } else {
+    let days = 7;
+    if (searchObject.days) {
+      days = Number(searchObject.days);
+    }
+    return {
+      mode: "last",
+      days,
+      start: addDays(utcNow(), -days),
+      end: utcNow(),
+    };
+  }
 }
