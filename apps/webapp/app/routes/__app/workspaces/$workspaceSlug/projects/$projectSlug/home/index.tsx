@@ -2,7 +2,7 @@ import type { LoaderArgs } from "@remix-run/server-runtime";
 import { redirect, typedjson } from "remix-typedjson";
 import invariant from "tiny-invariant";
 import dashboardDisabled from "~/libraries/images/ui/dashboard-disabled.png";
-import { getProjectFromSlugs } from "~/models/project.server";
+import { getProjectFromSlugs, setHasLogs } from "~/models/project.server";
 import { requireUserId } from "~/services/session.server";
 
 export const loader = async ({ request, params }: LoaderArgs) => {
@@ -37,6 +37,11 @@ export const loader = async ({ request, params }: LoaderArgs) => {
     if (logsResponse.ok) {
       const json = await logsResponse.json();
       if (json.logs.length > 0) {
+        //save this state to the database
+        if (!project.hasLogs) {
+          await setHasLogs(project.id);
+        }
+
         return redirect(
           `/workspaces/${workspaceSlug}/projects/${projectSlug}/home/logs`
         );

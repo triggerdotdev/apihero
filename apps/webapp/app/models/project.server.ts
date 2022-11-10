@@ -61,6 +61,13 @@ export function getProjects({ workspaceId }: { workspaceId: Workspace["id"] }) {
   });
 }
 
+export function setHasLogs(projectId: string) {
+  return prisma.project.update({
+    where: { id: projectId },
+    data: { hasLogs: true },
+  });
+}
+
 export async function createFirstProject(userId: string, workspaceId: string) {
   return await createProject({
     title: "My project",

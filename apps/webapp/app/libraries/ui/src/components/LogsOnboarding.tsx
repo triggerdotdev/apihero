@@ -29,7 +29,7 @@ export function LogsOnboarding({ project, logs }: LoaderData) {
         <div className="flex items-start justify-between">
           <div className="flex flex-col gap-2">
             <div className="flex gap-2.5 items-center mb-4 ml-0.5">
-              {logs && logs.logs.length > 0 ? (
+              {project.hasLogs ? (
                 <CheckIcon className="h-5 w-5 text-green-500" />
               ) : (
                 <Spinner />
@@ -41,7 +41,7 @@ export function LogsOnboarding({ project, logs }: LoaderData) {
             </div>
 
             <ul className="flex flex-col gap-5">
-              {logs && logs.logs.length > 0 ? (
+              {project.hasLogs ? (
                 <>
                   <li className="flex gap-2">
                     <span className={classNames(listItemCompleted)}>
@@ -129,9 +129,7 @@ export function LogsOnboarding({ project, logs }: LoaderData) {
               </li>
             </ul>
           </div>
-          {logs && logs.logs.length > 0 ? null : (
-            <SecondaryButton>Dismiss</SecondaryButton>
-          )}
+          {project.hasLogs ? null : <SecondaryButton>Dismiss</SecondaryButton>}
         </div>
       </div>
       {logs && logs.logs.length == 0 ? (
