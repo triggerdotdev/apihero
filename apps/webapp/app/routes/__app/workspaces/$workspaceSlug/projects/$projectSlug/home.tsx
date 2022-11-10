@@ -47,7 +47,6 @@ export const loader = async ({ request, params }: LoaderArgs) => {
   }
 
   const apiUrl = `${logsOrigin}/logs/${project.id}?${searchParams.toString()}`;
-  console.log("apiUrl", apiUrl);
 
   try {
     const logsResponse = await fetch(apiUrl, {

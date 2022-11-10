@@ -1,7 +1,9 @@
-import { Form, useSearchParams } from "@remix-run/react";
+import { Form, useSearchParams, useSubmit } from "@remix-run/react";
 import type { GetLogsSuccessResponse } from "internal-logs";
-import React from "react";
+import React, { useState } from "react";
+import { ComboBox } from "./ComboBox";
 import { Input } from "./Primitives/Input";
+import { statusCodes } from "./StatusCode";
 
 export function LogsFilters({ logs }: { logs: GetLogsSuccessResponse }) {
   const [searchParams] = useSearchParams();
@@ -22,6 +24,8 @@ export function LogsFilters({ logs }: { logs: GetLogsSuccessResponse }) {
         label="Path"
         defaultValue={searchObject.path ?? undefined}
       />
+      <StatusComboBox defaultValue={searchObject.status ?? ""} />
+
       <button type="submit" className="btn btn-primary">
         Filter
       </button>
@@ -72,3 +76,45 @@ function Label({ label, htmlFor }: { label: string; htmlFor: string }) {
     </label>
   );
 }
+
+function StatusComboBox({ defaultValue }: { defaultValue: string }) {
+  const selected =
+    defaultValue === "" ? [] : defaultValue.split(",").map((v) => v.trim());
+  const [values, setValues] = useState(selected);
+
+  const inputValues = values.filter((v) => v !== "all");
+
+  return (
+    <FormField label="Status" name="status">
+      <>
+        {inputValues.length > 0 && (
+          <input type="hidden" name="status" value={inputValues.join(",")} />
+        )}
+        <ComboBox
+          multiple
+          options={statusCodeOptions}
+          initialValue={selected}
+          onChange={(values) => {
+            if (values.some((v) => v === "all")) {
+              setValues(["all"]);
+            } else {
+              setValues(values);
+            }
+          }}
+        />
+      </>
+    </FormField>
+  );
+}
+
+const statusCodeOptions = [
+  { label: "All", value: "all" },
+  { label: "Success", value: "2**" },
+  { label: "Redirect", value: "3**" },
+  { label: "Client Error", value: "4**" },
+  { label: "Server Error", value: "5**" },
+  ...statusCodes.map((code) => ({
+    label: `${code}`,
+    value: `${code}`,
+  })),
+];
