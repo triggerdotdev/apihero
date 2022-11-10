@@ -7,6 +7,7 @@ import {
 } from "~/libraries/common/src/components/Pagination";
 import { useLogs } from "~/libraries/common/src/hooks/useLogs";
 import { LogsTable } from "~/libraries/logging/LogsTable";
+import { LogsTabs, LogsTabs } from "~/libraries/ui/src/components/LogsTabs";
 
 export default function Logs() {
   const logs = useLogs();
@@ -49,11 +50,12 @@ export default function Logs() {
         action: pageUrl.origin + pageUrl.pathname,
       });
     },
-    [logs.next, logs.previous, submit]
+    [logs, submit]
   );
 
   return (
     <div>
+      <LogsTabs selected={"logs"} />
       <div className="flex items-center justify-end">
         <RefreshButton
           disabled={false}
@@ -63,7 +65,7 @@ export default function Logs() {
 
         <PreviousButton
           disabled={
-            logs.previous
+            logs.previous !== undefined
               ? transition.state === "loading" ||
                 transition.state === "submitting"
               : true
@@ -73,7 +75,7 @@ export default function Logs() {
 
         <NextButton
           disabled={
-            logs.next
+            logs.next !== undefined
               ? transition.state === "loading" ||
                 transition.state === "submitting"
               : true

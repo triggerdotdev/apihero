@@ -1,3 +1,10 @@
+import { LogsTabs } from "~/libraries/ui/src/components/LogsTabs";
+
 export default function Dashboard() {
-  return <div className="">Dashboard Index</div>;
+  return (
+    <div>
+      <LogsTabs selected={"dashboard"} />
+      Dashboard Index
+    </div>
+  );
 }
