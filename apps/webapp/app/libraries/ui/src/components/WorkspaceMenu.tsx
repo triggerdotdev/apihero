@@ -9,19 +9,21 @@ import {
 import type { Workspace, Project } from ".prisma/client";
 import React, { Fragment, useState } from "react";
 import { Link } from "@remix-run/react";
+import { useCurrentProjectSlug } from "~/libraries/common/src/hooks/useCurrentProject";
 
 type WorkspaceMenuProps = {
   workspaces: (Workspace & {
     projects: Project[];
   })[];
-  currentProjectSlug?: string;
 };
 
-export default function WorkspaceMenu({
-  workspaces,
-  currentProjectSlug,
-}: WorkspaceMenuProps) {
-  const [projectSlug, setProjectSlug] = useState(currentProjectSlug);
+export default function WorkspaceMenu({ workspaces }: WorkspaceMenuProps) {
+  const currentProjectSlug = useCurrentProjectSlug();
+
+  const currentProject = workspaces
+    .flatMap((w) => w.projects)
+    .find((p) => p.slug === currentProjectSlug);
+
   return (
     <div className="w-full max-w-max px-4">
       <Popover className="relative">
@@ -32,8 +34,7 @@ export default function WorkspaceMenu({
                 ${open ? "" : "text-opacity-90"}
                 group inline-flex items-center rounded text-slate-700 hover:text-blue-600 bg-white pl-2.5 pr-2 py-1 text-sm border border-slate-200 shadow-sm hover:bg-slate-50 transition focus:outline-none`}
             >
-              {/* TODO: Figure out how to pull the project title into here. */}
-              <span className="transition">James' Project</span>
+              <span className="transition">{currentProject?.title}</span>
               <ChevronDownIcon
                 className={`${open ? "rotate-180" : "text-opacity-70"}
                   ml-1 h-5 w-5 transition duration-150 ease-in-out group-hover:text-opacity-80`}
@@ -71,7 +72,7 @@ export default function WorkspaceMenu({
                                   to={`/workspaces/${workspace.slug}/projects/${project.slug}/home`}
                                   className={classNames(
                                     "flex items-center justify-between gap-1.5 mx-1 px-3 py-2 text-slate-600 rounded hover:bg-slate-100 transition",
-                                    projectSlug === currentProjectSlug &&
+                                    project.slug === currentProjectSlug &&
                                       "!bg-slate-200"
                                   )}
                                 >
@@ -84,7 +85,7 @@ export default function WorkspaceMenu({
                                       {project.title}
                                     </span>
                                   </div>
-                                  {projectSlug === currentProjectSlug && (
+                                  {project.slug === currentProjectSlug && (
                                     <CheckIcon className="h-5 w-5 text-blue-500" />
                                   )}
                                 </Link>
