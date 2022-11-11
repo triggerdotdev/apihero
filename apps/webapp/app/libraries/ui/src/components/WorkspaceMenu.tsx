@@ -8,7 +8,7 @@ import {
 } from "@heroicons/react/24/outline";
 import type { Workspace, Project } from ".prisma/client";
 import React, { Fragment } from "react";
-import { Link, useResolvedPath } from "@remix-run/react";
+import { Link } from "@remix-run/react";
 import { useCurrentProjectSlug } from "~/libraries/common/src/hooks/useCurrentProject";
 import { useCurrentWorkspaceSlug } from "~/libraries/common/src/hooks/useCurrentWorkspace";
 
