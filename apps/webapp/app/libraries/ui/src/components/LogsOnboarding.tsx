@@ -1,8 +1,5 @@
-import { ArrowPathIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import {
-  CheckIcon,
-  ArrowTopRightOnSquareIcon,
-} from "@heroicons/react/24/solid";
+import { CheckCircleIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
 import { Form } from "@remix-run/react";
 import classNames from "classnames";
 import { useCallback, useEffect, useState } from "react";
@@ -105,38 +102,47 @@ function OnboardingComplete({
   return (
     <>
       <div className="bg-green-100 flex-grow p-4 border border-slate-200 rounded-md mb-4">
-        <div className="flex gap-2.5 items-center mb-4 ml-0.5">
-          <CheckIcon className="h-5 w-5 text-green-500" />
+        <div className="flex gap-2.5 items-center ml-0.5">
+          <CheckCircleIcon className="h-7 w-7 text-green-500" />
           <h2 className="font-semibold text-xl text-slate-600">
             Awesome, setup complete!
           </h2>
         </div>
       </div>
-      <div className="bg-slate-100 flex-grow p-4 border border-slate-200 rounded-md mb-4">
-        <h2 className="font-semibold text-xl text-slate-600">
-          Optional configuration: Choose which requests are proxied
-        </h2>
-        <div className="flex flex-col gap-2">
-          <p className="text-sm text-slate-700">
-            Configure what API traffic you want to monitor (optional). Use the
-            example below or read the Link{" "}
-            <a href="https://docs.apihero.run">full documentation</a>.
-          </p>
-          <div className={codeContainer}>
-            {copyCode}
-            <CopyTextButton value={copyCode} variant="blue" />
+      <div className="bg-slate-100 flex gap-2 justify-between p-4 border border-slate-200 rounded-md mb-4">
+        <div className="flex flex-col gap-y-2">
+          <h2 className="font-semibold text-xl text-slate-600">
+            Optional configuration
+          </h2>
+          <div className="flex flex-col gap-2">
+            <p className="text-sm text-slate-700">
+              Choose which requests are proxied. Use the example below or read
+              the{" "}
+              <a
+                href="https://docs.apihero.run"
+                target="_blank"
+                rel="noreferrer"
+                className="underline hover:text-blue-500 transition"
+              >
+                full documentation
+              </a>
+              .
+            </p>
+            <div className={codeContainer}>
+              {copyCode}
+              <CopyTextButton value={copyCode} variant="blue" />
+            </div>
           </div>
-          <PrimaryA href="https://docs.apihero.run" target="_blank">
-            <ArrowTopRightOnSquareIcon className="h-4 w-4 -ml-1" />
-            Documentation
-          </PrimaryA>
         </div>
         <Form
           method="post"
           action={`/resources/workspaces/${workspaceSlug}/projects/${projectSlug}/completed-logs-onboarding`}
         >
-          <button type="submit">
-            <XMarkIcon className="h-4 w-4 text-slate-600" />
+          <button
+            type="submit"
+            className="-mt-2 -mr-2 bg-transparent hover:bg-white border border-transparent hover:border-slate-300 transition rounded p-1"
+          >
+            <XMarkIcon className="h-5 w-5 text-slate-600" />
           </button>
         </Form>
       </div>
