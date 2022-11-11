@@ -14,7 +14,7 @@ import { namedParameters } from "../../utilities/named-sql";
 const logsToken = process.env.API_AUTHENTICATION_TOKEN;
 invariant(logsToken, "API_AUTHENTICATION_TOKEN is required");
 
-const pageSize = 10;
+const pageSize = 20;
 
 const logs: FastifyPluginAsync = async (app, opts): Promise<void> => {
   app.withTypeProvider<ZodTypeProvider>().route({
