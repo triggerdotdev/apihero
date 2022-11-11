@@ -30,6 +30,6 @@ function tabStyle(selected: SelectedTab, tab: SelectedTab) {
       ? "border-blue-500 text-slate-900 outline-none"
       : "border-transparent text-slate-800 hover:border-slate-200 hover:text-slate-700",
     "disabled:text-slate-300 disabled:hover:border-transparent",
-    "flex whitespace-nowrap border-b-2 py-2 px-4 text-xs font-medium"
+    "flex whitespace-nowrap border-b-2 py-2 px-4 text-base font-medium"
   );
 }

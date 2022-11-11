@@ -92,7 +92,7 @@ function PaginationButton({
     <button
       disabled={disabled}
       onClick={onClick}
-      className={`focus:shadow-outline group flex h-[30px] max-w-xs items-center justify-center rounded-md border border-transparent bg-transparent p-3 py-2 text-sm text-slate-500 transition hover:border-slate-200 hover:bg-white hover:text-slate-800 focus:outline-none disabled:border-transparent disabled:bg-transparent disabled:text-slate-400 ${className}`}
+      className={`focus:shadow-outline group flex h-[30px] max-w-xs items-center justify-center rounded-md border border-transparent bg-transparent p-3 py-2 text-xs text-slate-500 transition hover:border-slate-200 hover:bg-white hover:text-slate-800 focus:outline-none disabled:border-transparent disabled:bg-transparent disabled:text-slate-400 ${className}`}
     >
       {children}
     </button>
