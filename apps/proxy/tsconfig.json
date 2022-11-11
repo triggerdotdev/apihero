@@ -10,7 +10,9 @@
     "esModuleInterop": true,
     "baseUrl": "./",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "internal-logs/*": ["../../packages/internal-logs/src/*"],
+      "internal-logs": ["../../packages/internal-logs/src/index"]
     }
   },
   "include": ["src/**/*", "bindings.d.ts"]
