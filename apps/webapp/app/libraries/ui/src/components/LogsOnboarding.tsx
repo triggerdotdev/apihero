@@ -100,7 +100,7 @@ function OnboardingComplete({
   const copyCode = `apihero({ projectKey: “${projectId}, allows: [“*.github.com”] });`;
 
   return (
-    <>
+    <div className="mb-5">
       <div className="bg-green-100 flex-grow p-4 border border-slate-200 rounded-md mb-4">
         <div className="flex gap-2.5 items-center ml-0.5">
           <CheckCircleIcon className="h-7 w-7 text-green-500" />
@@ -146,7 +146,7 @@ function OnboardingComplete({
           </button>
         </Form>
       </div>
-    </>
+    </div>
   );
 }
 
