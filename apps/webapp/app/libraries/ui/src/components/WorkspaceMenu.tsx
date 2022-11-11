@@ -120,24 +120,23 @@ export default function WorkspaceMenu({ workspaces }: WorkspaceMenuProps) {
                                     <CheckIcon className="h-5 w-5 text-blue-500" />
                                   )}
                                 </Link>
-
-                                <Link
-                                  to={`/workspaces/${workspace.slug}/projects/new`}
-                                >
-                                  <div className="flex items-center gap-2 mx-1 pl-3 py-2 rounded bg-white hover:bg-slate-100 transition">
-                                    <PlusIcon
-                                      className="h-5 w-5 text-green-500"
-                                      aria-hidden="true"
-                                    />
-                                    <span className="text-slate-600">
-                                      New Project
-                                    </span>
-                                  </div>
-                                </Link>
-                                <div className="border-t w-full border-slate-100" />
                               </div>
                             );
                           })}
+                          <Link
+                            to={`/workspaces/${workspace.slug}/projects/new`}
+                          >
+                            <div className="flex items-center gap-2 mx-1 pl-3 py-2 rounded bg-white hover:bg-slate-100 transition">
+                              <PlusIcon
+                                className="h-5 w-5 text-green-500"
+                                aria-hidden="true"
+                              />
+                              <span className="text-slate-600">
+                                New Project
+                              </span>
+                            </div>
+                          </Link>
+                          <div className="border-t w-full border-slate-100" />
                         </React.Fragment>
                       );
                     })}
