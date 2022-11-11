@@ -27,7 +27,7 @@ export const action: ActionFunction = async ({ request }) => {
   const title = formData.get("title");
   if (typeof title !== "string" || title.length === 0) {
     return json<ActionData>(
-      { errors: { title: "Title is required" } },
+      { errors: { title: "Workspace title is required" } },
       { status: 400 }
     );
   }
