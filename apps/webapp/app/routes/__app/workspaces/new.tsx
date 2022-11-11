@@ -71,7 +71,7 @@ export default function NewWorkspacePage() {
                 Name your Workspace
               </label>
               <div className="group flex">
-                <div className="flex justify-end z-10 -mr-8 items-center w-8">
+                <div className="flex justify-end pointer-events-none z-10 -mr-8 items-center w-8">
                   <BriefcaseIcon className="h-5 w-5 text-slate-600"></BriefcaseIcon>
                 </div>
                 <input
@@ -96,7 +96,7 @@ export default function NewWorkspacePage() {
                 Create a Project to add to your new Workspace
               </label>
               <div className="group flex">
-                <div className="flex justify-end z-10 -mr-8 items-center w-8">
+                <div className="flex justify-end pointer-events-none z-10 -mr-8 items-center w-8">
                   <BookmarkIcon className="h-5 w-5 text-slate-600"></BookmarkIcon>
                 </div>
                 <input
