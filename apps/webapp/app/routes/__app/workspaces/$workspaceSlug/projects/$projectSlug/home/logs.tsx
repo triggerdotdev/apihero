@@ -1,5 +1,5 @@
 import { useSubmit, useTransition } from "@remix-run/react";
-import { Log } from "internal-logs";
+import type { Log } from "internal-logs";
 import { useCallback, useMemo, useState } from "react";
 import {
   RefreshButton,
@@ -7,10 +7,8 @@ import {
   NextButton,
 } from "~/libraries/common/src/components/Pagination";
 import { useLogs } from "~/libraries/common/src/hooks/useLogs";
-import {
-  PanelPosition,
-  usePanelPosition,
-} from "~/libraries/common/src/hooks/usePanelPosition";
+import type { PanelPosition } from "~/libraries/common/src/hooks/usePanelPosition";
+import { usePanelPosition } from "~/libraries/common/src/hooks/usePanelPosition";
 import { LogsTable } from "~/libraries/logging/LogsTable";
 import { RequestResponseViewer } from "~/libraries/request-response-viewer";
 import { LogsFilters } from "~/libraries/ui/src/components/LogsFilters";
@@ -89,7 +87,7 @@ export default function Logs() {
         <>
           <LogsFilters logs={logs} />
           <LogsTabs selected={"logs"} />
-          <div className="flex h-full w-full overflow-hidden">
+          <div className="flex h-full w-[calc(100vw-130px)] overflow-hidden">
             <div className="flex h-full w-full flex-col justify-between overflow-auto bg-slate-50">
               <div className="h-[calc(100%-36px)] overflow-auto">
                 <div className="flex items-center justify-between py-2">
