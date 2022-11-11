@@ -45,18 +45,25 @@ export function RequestViewer({
         </Tab.List>
         <Tab.Panels className="flex-grow overflow-y-auto">
           <Tab.Panel className="relative h-full">
-            <JSONEditor
-              content={JSON.stringify(requestBody, null, 2)}
-              readOnly={true}
-              className="h-[calc(100%-40px)]"
-            />
-            <div className="absolute bottom-10 right-0">
-              <JSONHeroButton
-                to={`/requestLog/${logId}/${
-                  type === "request" ? "requestBody" : "responseBody"
-                }`}
-              />
-            </div>
+            {requestBody == null ? (
+              <div>No body</div>
+            ) : (
+              <>
+                <pre>{JSON.stringify(requestBody, null, 2)}</pre>
+                {/* <JSONEditor
+                  content={JSON.stringify(requestBody, null, 2)}
+                  readOnly={true}
+                  className="h-[calc(100%-40px)]"
+                /> */}
+                <div className="absolute bottom-10 right-0">
+                  <JSONHeroButton
+                    to={`/requestLog/${logId}/${
+                      type === "request" ? "requestBody" : "responseBody"
+                    }`}
+                  />
+                </div>
+              </>
+            )}
           </Tab.Panel>
           <Tab.Panel>
             <KeyValueList
