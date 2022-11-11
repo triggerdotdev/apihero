@@ -60,31 +60,33 @@ export default function Logs() {
         <>
           <LogsFilters logs={logs} />
           <LogsTabs selected={"logs"} />
-          <div className="flex items-center justify-end">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <PreviousButton
+                disabled={
+                  logs.previous !== undefined
+                    ? transition.state === "loading" ||
+                      transition.state === "submitting"
+                    : true
+                }
+                onClick={() => loadMore("previous")}
+              />
+
+              <NextButton
+                disabled={
+                  logs.next !== undefined
+                    ? transition.state === "loading" ||
+                      transition.state === "submitting"
+                    : true
+                }
+                onClick={() => loadMore("next")}
+              />
+            </div>
+
             <RefreshButton
               disabled={false}
               onClick={() => reload()}
               lastUpdated={new Date()}
-            />
-
-            <PreviousButton
-              disabled={
-                logs.previous !== undefined
-                  ? transition.state === "loading" ||
-                    transition.state === "submitting"
-                  : true
-              }
-              onClick={() => loadMore("previous")}
-            />
-
-            <NextButton
-              disabled={
-                logs.next !== undefined
-                  ? transition.state === "loading" ||
-                    transition.state === "submitting"
-                  : true
-              }
-              onClick={() => loadMore("next")}
             />
           </div>
           <LogsTable
