@@ -5,7 +5,6 @@ import { ComboBox } from "./ComboBox";
 import { Input } from "./Primitives/Input";
 import { statusCodes } from "./StatusCode";
 import { DateRangeSelector } from "~/components/filters/DateRangeSelector";
-import { PrimaryButton } from "~/libraries/common";
 
 export function LogsFilters({ logs }: { logs: GetLogsSuccessResponse }) {
   const submit = useSubmit();

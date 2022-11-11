@@ -49,12 +49,11 @@ export function RequestViewer({
               <div>No body</div>
             ) : (
               <>
-                <pre>{JSON.stringify(requestBody, null, 2)}</pre>
-                {/* <JSONEditor
+                <JSONEditor
                   content={JSON.stringify(requestBody, null, 2)}
                   readOnly={true}
                   className="h-[calc(100%-40px)]"
-                /> */}
+                />
                 <div className="absolute bottom-10 right-0">
                   <JSONHeroButton
                     to={`/requestLog/${logId}/${

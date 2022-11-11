@@ -1,7 +1,9 @@
 import type { LoaderArgs } from "@remix-run/server-runtime";
+import { useEffect } from "react";
 import { redirect, typedjson } from "remix-typedjson";
 import invariant from "tiny-invariant";
 import dashboardDisabled from "~/libraries/images/ui/dashboard-disabled.png";
+import { logCheckingInterval } from "~/libraries/ui/src/components/LogsOnboarding";
 import { getProjectFromSlugs, setHasLogs } from "~/models/project.server";
 import { requireUserId } from "~/services/session.server";
 
@@ -56,6 +58,15 @@ export const loader = async ({ request, params }: LoaderArgs) => {
 };
 
 export default function PlaceholderDashboard() {
+  //auto reload the page
+  useEffect(() => {
+    const interval = setInterval(() => {
+      window.location.reload();
+    }, logCheckingInterval);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div>
       <img src={dashboardDisabled} alt="Placeholder dashboard" />

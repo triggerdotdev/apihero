@@ -1,28 +1,19 @@
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import { ArrowPathIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import {
   CheckIcon,
-  ArrowPathIcon,
   ArrowTopRightOnSquareIcon,
-  BoltIcon,
 } from "@heroicons/react/24/solid";
 import { Form } from "@remix-run/react";
 import classNames from "classnames";
+import { useCallback, useEffect, useState } from "react";
 import type { LoaderData } from "~/routes/__app/workspaces/$workspaceSlug/projects/$projectSlug/home";
-import { SecondaryButton } from "../../../common";
 import { Spinner } from "../../../common/src/components/Spinner";
-import {
-  PrimaryLink,
-  PrimaryA,
-  SecondaryLink,
-  PrimaryButton,
-} from "./Buttons/Buttons";
+import { PrimaryA, PrimaryButton, SecondaryLink } from "./Buttons/Buttons";
 import { CopyTextButton } from "./Buttons/CopyTextButton";
 
 const listItemNumbered =
   "inline-flex text-slate-600 -mt-0.5 h-6 w-6 text-sm bg-white p-2 items-center justify-center rounded border border-slate-200";
-const listItemCompleted =
-  "inline-flex text-white -mt-0.5 h-6 w-6 text-sm bg-green-500 items-center justify-center rounded border border-green-600";
-const codeConatiner =
+const codeContainer =
   "flex items-center font-mono justify-between gap-2.5 rounded-md border bg-slate-700 py-2 pl-4 pr-2 text-sm text-white";
 
 export function LogsOnboarding({
@@ -194,7 +185,7 @@ function OnboardingIncomplete({ projectId }: { projectId: string }) {
               <p className="text-sm text-slate-700">
                 Copy paste the code into your project.
               </p>
-              <div className={codeConatiner}>
+              <div className={codeContainer}>
                 {copyCode}
                 <CopyTextButton value={copyCode} variant="blue" />
               </div>
@@ -204,17 +195,10 @@ function OnboardingIncomplete({ projectId }: { projectId: string }) {
             <span className={classNames(listItemNumbered)}>2</span>
             <div className="flex flex-col gap-2">
               <p className="text-sm text-slate-700">
-                Send any API request from your project, then return here to your
-                dashboard and refresh.
+                Send any API request from your project, then come back here.
               </p>
               <div className="flex items-center gap-4">
-                <PrimaryButton onClick={() => document.location.reload()}>
-                  <ArrowPathIcon className="h-4 w-4 -ml-1" />
-                  Refresh
-                </PrimaryButton>
-                <span className="text-slate-400 text-xs">
-                  Last refreshed 20 minutes ago
-                </span>
+                <CountdownToRefreshButton lastUpdated={new Date()} />
               </div>
             </div>
           </li>
@@ -272,7 +256,7 @@ function OnboardingComplete({
             example below or read the Link{" "}
             <a href="https://docs.apihero.run">full documentation</a>.
           </p>
-          <div className={codeConatiner}>
+          <div className={codeContainer}>
             {copyCode}
             <CopyTextButton value={copyCode} variant="blue" />
           </div>
@@ -291,5 +275,42 @@ function OnboardingComplete({
         </Form>
       </div>
     </>
+  );
+}
+
+type RefreshButtonProps = {
+  lastUpdated: Date;
+};
+
+export const logCheckingInterval = 5000;
+
+export function CountdownToRefreshButton({ lastUpdated }: RefreshButtonProps) {
+  const [countdown, setCountdown] = useState(logCheckingInterval / 1000);
+
+  const refreshTime = useCallback(() => {
+    const elapsed = new Date().getTime() - lastUpdated.getTime();
+    const remaining = Math.round((logCheckingInterval - elapsed) / 1000);
+    if (remaining === 0) return;
+    setCountdown(remaining);
+  }, [lastUpdated]);
+
+  useEffect(() => {
+    const interval = setInterval(() => refreshTime(), 1000);
+    return () => clearInterval(interval);
+  }, [refreshTime]);
+
+  return (
+    <div>
+      Listening for events…
+      <div className="flex gap-2 items-center text-xs text-slate-500">
+        Checking again in {countdown}
+        <button
+          onClick={() => document.location.reload()}
+          className={`focus:shadow-outline group flex h-[30px] max-w-xs items-center justify-center rounded-md border border-slate-100 bg-transparent p-1 py-2 text-xs text-slate-500 transition hover:border-slate-200 hover:bg-white hover:text-slate-800 focus:outline-none disabled:border-transparent disabled:bg-transparent disabled:text-slate-400`}
+        >
+          <ArrowPathIcon className="h-4 w-4" />
+        </button>
+      </div>
+    </div>
   );
 }
