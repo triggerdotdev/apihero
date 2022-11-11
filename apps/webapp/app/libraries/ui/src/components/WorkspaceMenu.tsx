@@ -8,7 +8,7 @@ import {
 } from "@heroicons/react/24/outline";
 import type { Workspace, Project } from ".prisma/client";
 import React, { Fragment } from "react";
-import { Link } from "@remix-run/react";
+import { Link, useResolvedPath } from "@remix-run/react";
 import { useCurrentProjectSlug } from "~/libraries/common/src/hooks/useCurrentProject";
 import { useCurrentWorkspaceSlug } from "~/libraries/common/src/hooks/useCurrentWorkspace";
 
@@ -99,7 +99,8 @@ export default function WorkspaceMenu({ workspaces }: WorkspaceMenuProps) {
                                 key={project.slug}
                                 className="flex flex-col gap-1"
                               >
-                                <Link
+                                <Popover.Button
+                                  as={Link}
                                   to={`/workspaces/${workspace.slug}/projects/${project.slug}/home`}
                                   className={classNames(
                                     "flex items-center justify-between gap-1.5 mx-1 px-3 py-2 text-slate-600 rounded hover:bg-slate-100 transition",
@@ -119,11 +120,12 @@ export default function WorkspaceMenu({ workspaces }: WorkspaceMenuProps) {
                                   {project.slug === currentProjectSlug && (
                                     <CheckIcon className="h-5 w-5 text-blue-500" />
                                   )}
-                                </Link>
+                                </Popover.Button>
                               </div>
                             );
                           })}
-                          <Link
+                          <Popover.Button
+                            as={Link}
                             to={`/workspaces/${workspace.slug}/projects/new`}
                           >
                             <div className="flex items-center gap-2 mx-1 pl-3 py-2 rounded bg-white hover:bg-slate-100 transition">
@@ -135,12 +137,12 @@ export default function WorkspaceMenu({ workspaces }: WorkspaceMenuProps) {
                                 New Project
                               </span>
                             </div>
-                          </Link>
+                          </Popover.Button>
                           <div className="border-t w-full border-slate-100" />
                         </React.Fragment>
                       );
                     })}
-                    <Link to={`/workspaces/new`}>
+                    <Popover.Button as={Link} to={`/workspaces/new`}>
                       <div className="flex items-center gap-2 mx-1 mt-1 pl-1 py-2 rounded bg-white hover:bg-slate-100 transition">
                         <PlusIcon
                           className="h-5 w-5 text-green-500"
@@ -148,7 +150,7 @@ export default function WorkspaceMenu({ workspaces }: WorkspaceMenuProps) {
                         />
                         <span className="text-slate-600">New Workspace</span>
                       </div>
-                    </Link>
+                    </Popover.Button>
                   </div>
                 </div>
               </Popover.Panel>
