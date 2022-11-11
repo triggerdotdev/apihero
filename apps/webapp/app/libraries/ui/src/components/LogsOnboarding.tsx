@@ -8,7 +8,7 @@ import classNames from "classnames";
 import { useCallback, useEffect, useState } from "react";
 import type { LoaderData } from "~/routes/__app/workspaces/$workspaceSlug/projects/$projectSlug/home";
 import { Spinner } from "../../../common/src/components/Spinner";
-import { PrimaryA, PrimaryButton, SecondaryLink } from "./Buttons/Buttons";
+import { PrimaryA, SecondaryLink } from "./Buttons/Buttons";
 import { CopyTextButton } from "./Buttons/CopyTextButton";
 
 const listItemNumbered =
@@ -18,7 +18,6 @@ const codeContainer =
 
 export function LogsOnboarding({
   project,
-  logs,
   workspaceSlug,
 }: LoaderData & { workspaceSlug: string }) {
   return (
@@ -31,138 +30,6 @@ export function LogsOnboarding({
           projectId={project.id}
         />
       )}
-
-      {/* <div className="w-full flex gap-2">
-        <div className="w-full bg-slate-100 p-4 border border-slate-200 rounded-md">
-          <div className="flex items-start justify-between">
-            <div className="flex flex-col gap-2">
-              <div className="flex gap-2.5 items-center mb-4 ml-0.5">
-                {project.hasLogs ? (
-                  <CheckIcon className="h-5 w-5 text-green-500" />
-                ) : (
-                  <Spinner />
-                )}
-
-                <h2 className="font-semibold text-xl text-slate-600">
-                  Get started
-                </h2>
-              </div>
-
-              <ul className="flex flex-col gap-5">
-                {project.hasLogs ? (
-                  <>
-                    <li className="flex gap-2">
-                      <span className={classNames(listItemCompleted)}>
-                        <CheckIcon className="h-4 w-4" />
-                      </span>
-                      <p className="text-sm text-slate-700">
-                        Copy paste the code into your project.
-                      </p>
-                    </li>
-                    <li className="flex gap-2">
-                      <span className={classNames(listItemCompleted)}>
-                        <CheckIcon className="h-4 w-4" />
-                      </span>
-                      <div className="flex flex-col gap-2">
-                        <p className="text-sm text-slate-700">
-                          Send any API request from your project, then return
-                          here to your dashboard and refresh.
-                        </p>
-                      </div>
-                    </li>
-                  </>
-                ) : (
-                  <>
-                    <li className="flex gap-2">
-                      <span className={classNames(listItemNumbered)}>1</span>
-                      <div className="flex flex-col gap-2">
-                        <p className="text-sm text-slate-700">
-                          Copy paste the code into your project.
-                        </p>
-                        <div className={codeConatiner}>
-                          {copyCode}
-                          <CopyTextButton value={copyCode} variant="blue" />
-                        </div>
-                      </div>
-                    </li>
-                    <li className="flex gap-2">
-                      <span className={classNames(listItemNumbered)}>2</span>
-                      <div className="flex flex-col gap-2">
-                        <p className="text-sm text-slate-700">
-                          Send any API request from your project, then return
-                          here to your dashboard and refresh.
-                        </p>
-                        <div className="flex items-center gap-4">
-                          <PrimaryLink to="/">
-                            <ArrowPathIcon className="h-4 w-4 -ml-1" />
-                            Refresh
-                          </PrimaryLink>
-                          <span className="text-slate-400 text-xs">
-                            Last refreshed 20 minutes ago
-                          </span>
-                        </div>
-                      </div>
-                    </li>
-                  </>
-                )}
-
-                <li className="flex gap-2">
-                  <span className={classNames(listItemNumbered)}>3</span>
-                  <div className="flex flex-col gap-2">
-                    <p className="text-sm text-slate-700">
-                      Configure what API traffic you want to monitor (optional).
-                      Use the example below or view the docs.
-                    </p>
-                    <div className={codeConatiner}>
-                      {codeExample}
-                      <CopyTextButton value={codeExample} variant="blue" />
-                    </div>
-                    <PrimaryA href="https://docs.apihero.run" target="_blank">
-                      <ArrowTopRightOnSquareIcon className="h-4 w-4 -ml-1" />
-                      Documentation
-                    </PrimaryA>
-                  </div>
-                </li>
-                <li className="flex gap-2">
-                  <span className={classNames(listItemNumbered)}>4</span>
-                  <div className="flex flex-col gap-2">
-                    <p className="text-sm text-slate-700">
-                      Add caching to speed up requests and save money
-                      (optional).
-                    </p>
-                    <PrimaryLink to="../caching">
-                      <BoltIcon className="h-4 w-4 -ml-1" />
-                      Add caching
-                    </PrimaryLink>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            {project.hasLogs ? null : (
-              <SecondaryButton>Dismiss</SecondaryButton>
-            )}
-          </div>
-        </div>
-        {!project.hasLogs ? (
-          <div className="bg-blue-50 w-80 border border-blue-100 rounded-md text-slate-700 p-4">
-            <h3 className="text-xl font-semibold mb-2">No project yet?</h3>
-            <p className="mb-1 text-sm">
-              Check out a live demo to see API Hero in action.
-            </p>
-            <SecondaryLink to="/" target="_blank" className="mb-4">
-              <ArrowTopRightOnSquareIcon className="h-4 w-4 -ml-1" />
-              View in Code Sandbox
-            </SecondaryLink>
-            <p className="mb-1 text-sm">
-              Or read more about how it all works in our documentation.
-            </p>
-            <SecondaryLink to="https://docs.apihero.run" target="_blank">
-              <ArrowTopRightOnSquareIcon className="h-4 w-4 -ml-1" />
-              Documentation
-            </SecondaryLink>
-          </div>
-        ) : null}
-      </div> */}
     </>
   );
 }
@@ -173,11 +40,10 @@ function OnboardingIncomplete({ projectId }: { projectId: string }) {
 
   return (
     <div className="flex gap-2">
-      <div className="bg-slate-100 flex-grow p-4 border border-slate-200 rounded-md mb-4">
-        <div className="flex gap-2.5 items-center mb-4 ml-0.5">
-          <Spinner />
-          <h2 className="font-semibold text-xl text-slate-600">Get started</h2>
-        </div>
+      <div className="bg-slate-100 flex-grow p-4 border border-slate-200 rounded-md">
+        <h2 className="font-semibold text-xl mb-4 text-slate-600">
+          Get started
+        </h2>
         <ul className="flex flex-col gap-5">
           <li className="flex gap-2">
             <span className={classNames(listItemNumbered)}>1</span>
@@ -290,7 +156,7 @@ export function CountdownToRefreshButton({ lastUpdated }: RefreshButtonProps) {
   const refreshTime = useCallback(() => {
     const elapsed = new Date().getTime() - lastUpdated.getTime();
     const remaining = Math.round((logCheckingInterval - elapsed) / 1000);
-    if (remaining === 0) return;
+    if (remaining <= 0) return;
     setCountdown(remaining);
   }, [lastUpdated]);
 
@@ -300,17 +166,14 @@ export function CountdownToRefreshButton({ lastUpdated }: RefreshButtonProps) {
   }, [refreshTime]);
 
   return (
-    <div>
-      Listening for events…
-      <div className="flex gap-2 items-center text-xs text-slate-500">
-        Checking again in {countdown}
-        <button
-          onClick={() => document.location.reload()}
-          className={`focus:shadow-outline group flex h-[30px] max-w-xs items-center justify-center rounded-md border border-slate-100 bg-transparent p-1 py-2 text-xs text-slate-500 transition hover:border-slate-200 hover:bg-white hover:text-slate-800 focus:outline-none disabled:border-transparent disabled:bg-transparent disabled:text-slate-400`}
-        >
-          <ArrowPathIcon className="h-4 w-4" />
-        </button>
+    <div className="flex justify-between bg-green-100 border border-green-200 pl-3 pr-4 py-3 w-full rounded">
+      <div className="flex items-center gap-2">
+        <Spinner />
+        <p className="text-slate-600 text-sm">Listening for events…</p>
       </div>
+      <p className="flex gap-2 items-center text-xs text-slate-600">
+        Checking again in {countdown}
+      </p>
     </div>
   );
 }
