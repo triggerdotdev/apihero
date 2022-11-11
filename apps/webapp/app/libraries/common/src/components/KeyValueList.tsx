@@ -1,7 +1,7 @@
 import classnames from "classnames";
 
 type KeyValueListProps = {
-  data: { [key: string]: string };
+  data: Record<string, string>;
   keyTitle?: string;
   valueTitle?: string;
   showTitle?: boolean;

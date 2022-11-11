@@ -1,12 +1,12 @@
 import { Tab } from "@headlessui/react";
-import type { HTTPMethod, HttpRequestLog } from ".prisma/client";
+import type { HttpMethod, Log } from "internal-logs";
 import { StyledTabs } from "~/libraries/common";
 import { SwitchPanelPositionButton } from "~/libraries/common/src/components/SwitchPanelPositionButton";
 import type { PanelPosition } from "~/libraries/common/src/hooks/usePanelPosition";
 import { RequestViewer } from "./RequestViewer";
 
 type RequestResponseViewerProps = {
-  log: HttpRequestLog;
+  log: Log;
   position: PanelPosition;
   setPosition: (position: PanelPosition) => void;
 };
@@ -46,7 +46,6 @@ export function RequestResponseViewer({
             status={log.statusCode}
             duration={log.requestDuration}
             responseSize={log.responseSize}
-            params={log.params}
             type="request"
             logId={log.id}
           />
@@ -58,7 +57,6 @@ export function RequestResponseViewer({
             status={log.statusCode}
             duration={log.requestDuration}
             responseSize={log.responseSize}
-            params={log.params}
             type="response"
             logId={log.id}
           />
@@ -72,7 +70,7 @@ export function RequestUrlBar({
   method,
   url,
 }: {
-  method: HTTPMethod;
+  method: HttpMethod;
   url: string;
 }) {
   return (

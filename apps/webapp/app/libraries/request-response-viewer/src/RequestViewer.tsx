@@ -1,21 +1,15 @@
 import { Tab } from "@headlessui/react";
-import type { Prisma } from ".prisma/client";
 import { JSONEditor, KeyValueList, StyledTabs } from "~/libraries/common";
 import { JSONHeroButton } from "~/libraries/common/src/components/JSONHeroButton";
-import {
-  isJsonObject,
-  isStringRecord,
-} from "~/libraries/common/src/utilities/prisma-utilities";
 import { ResponseInfo } from "~/libraries/ui";
-import { InputParameters } from "./InputParameters";
+import type { Json } from "internal-logs";
 
 type RequestViewerProps = {
-  requestHeaders: Prisma.JsonValue;
-  requestBody: Prisma.JsonValue;
+  requestHeaders?: Json;
+  requestBody?: Json;
   status: number;
   duration?: number;
   responseSize?: number;
-  params: Prisma.JsonValue;
   type: "request" | "response";
   logId: string;
 };
@@ -26,7 +20,6 @@ export function RequestViewer({
   status,
   duration,
   responseSize,
-  params,
   type,
   logId,
 }: RequestViewerProps) {
@@ -40,7 +33,6 @@ export function RequestViewer({
                 Body
               </StyledTabs.Underlined>
               <StyledTabs.Underlined>Headers</StyledTabs.Underlined>
-              <StyledTabs.Underlined>Input params</StyledTabs.Underlined>
             </div>
             <div className="flex w-full max-w-fit items-center">
               <ResponseInfo
@@ -68,13 +60,14 @@ export function RequestViewer({
           </Tab.Panel>
           <Tab.Panel>
             <KeyValueList
-              data={isStringRecord(requestHeaders) ? requestHeaders : {}}
+              data={
+                requestHeaders === undefined
+                  ? {}
+                  : (requestHeaders as Record<string, string>)
+              }
               keyTitle="Header"
               showTitle={false}
             />
-          </Tab.Panel>
-          <Tab.Panel>
-            <InputParameters variables={isJsonObject(params) ? params : {}} />
           </Tab.Panel>
         </Tab.Panels>
       </Tab.Group>
