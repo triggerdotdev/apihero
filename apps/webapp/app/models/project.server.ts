@@ -61,6 +61,13 @@ export function getProjects({ workspaceId }: { workspaceId: Workspace["id"] }) {
   });
 }
 
+export function setHasCompletedLogsOnboarding(projectId: string) {
+  return prisma.project.update({
+    where: { id: projectId },
+    data: { hasCompletedOnboarding: true },
+  });
+}
+
 export function setHasLogs(projectId: string) {
   return prisma.project.update({
     where: { id: projectId },
