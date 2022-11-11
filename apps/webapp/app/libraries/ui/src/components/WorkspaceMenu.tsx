@@ -138,20 +138,18 @@ export default function WorkspaceMenu({ workspaces }: WorkspaceMenuProps) {
                               </div>
                             );
                           })}
-                          <Link to={`/workspaces/new`}>
-                            <div className="flex items-center gap-2 mx-1 mt-1 pl-1 py-2 rounded bg-white hover:bg-slate-100 transition">
-                              <PlusIcon
-                                className="h-5 w-5 text-green-500"
-                                aria-hidden="true"
-                              />
-                              <span className="text-slate-600">
-                                New Workspace
-                              </span>
-                            </div>
-                          </Link>
                         </React.Fragment>
                       );
                     })}
+                    <Link to={`/workspaces/new`}>
+                      <div className="flex items-center gap-2 mx-1 mt-1 pl-1 py-2 rounded bg-white hover:bg-slate-100 transition">
+                        <PlusIcon
+                          className="h-5 w-5 text-green-500"
+                          aria-hidden="true"
+                        />
+                        <span className="text-slate-600">New Workspace</span>
+                      </div>
+                    </Link>
                   </div>
                 </div>
               </Popover.Panel>
