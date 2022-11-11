@@ -10,6 +10,7 @@ import type { Workspace, Project } from ".prisma/client";
 import React, { Fragment } from "react";
 import { Link } from "@remix-run/react";
 import { useCurrentProjectSlug } from "~/libraries/common/src/hooks/useCurrentProject";
+import { useCurrentWorkspaceSlug } from "~/libraries/common/src/hooks/useCurrentWorkspace";
 
 type WorkspaceMenuProps = {
   workspaces: (Workspace & {
@@ -17,12 +18,40 @@ type WorkspaceMenuProps = {
   })[];
 };
 
+const actionClassNames = "text-green-500";
+
+function getMenuTitle(
+  workspace?: Workspace,
+  project?: Project
+): string | React.ReactNode {
+  if (workspace === undefined) {
+    return <span className={actionClassNames}>Create new Workspace</span>;
+  }
+  if (project === undefined) {
+    return (
+      <span>
+        {workspace.title} /{" "}
+        <span className={actionClassNames}>Create new Project</span>
+      </span>
+    );
+  }
+  return (
+    <span>
+      {workspace.title} / {project.title}
+    </span>
+  );
+}
+
 export default function WorkspaceMenu({ workspaces }: WorkspaceMenuProps) {
   const currentProjectSlug = useCurrentProjectSlug();
-
   const currentProject = workspaces
     .flatMap((w) => w.projects)
     .find((p) => p.slug === currentProjectSlug);
+
+  const currentWorkspaceSlug = useCurrentWorkspaceSlug();
+  const currentWorkspace = workspaces.find(
+    (w) => w.slug === currentWorkspaceSlug
+  );
 
   return (
     <div className="w-full max-w-max px-4">
@@ -34,7 +63,9 @@ export default function WorkspaceMenu({ workspaces }: WorkspaceMenuProps) {
                 ${open ? "" : "text-opacity-90"}
                 group inline-flex min-w-[200px] justify-between items-center rounded text-slate-700 hover:text-blue-600 bg-white pl-2.5 pr-2 py-1 text-sm border border-slate-200 shadow-sm hover:bg-slate-50 transition focus:outline-none`}
             >
-              <span className="transition">{currentProject?.title}</span>
+              <span className="transition">
+                {getMenuTitle(currentWorkspace, currentProject)}
+              </span>
               <ChevronDownIcon
                 className={`${open ? "rotate-180" : "text-opacity-70"}
                   ml-1 h-5 w-5 transition duration-150 ease-in-out group-hover:text-opacity-80`}
