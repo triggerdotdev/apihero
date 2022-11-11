@@ -1,21 +1,21 @@
-import { BookmarkIcon, BriefcaseIcon } from "@heroicons/react/24/outline";
+import { BookmarkIcon } from "@heroicons/react/24/outline";
 import type { ActionFunction, LoaderArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, useActionData } from "@remix-run/react";
 import * as React from "react";
 import {
+  PrimaryButton,
   PrimaryLink,
   SecondaryLink,
 } from "~/libraries/ui/src/components/Buttons/Buttons";
 import {
   createWorkspace,
   getWorkspaceFromSlug,
-  getWorkspaces,
 } from "~/models/workspace.server";
 import { requireUserId } from "~/services/session.server";
-import type { Workspace } from ".prisma/client";
 import invariant from "tiny-invariant";
 import { typedjson, useTypedLoaderData } from "remix-typedjson";
+import { createProject } from "~/models/project.server";
 
 type ActionData = {
   errors?: {
@@ -37,7 +37,9 @@ export const loader = async ({ request, params }: LoaderArgs) => {
   return typedjson(workspace);
 };
 
-export const action: ActionFunction = async ({ request }) => {
+export const action: ActionFunction = async ({ request, params }) => {
+  const { workspaceSlug } = params;
+  invariant(workspaceSlug, "workspaceSlug not found");
   const userId = await requireUserId(request);
 
   const formData = await request.formData();
@@ -50,8 +52,15 @@ export const action: ActionFunction = async ({ request }) => {
     );
   }
 
-  const workspace = await createWorkspace({ title, userId });
-  return redirect(`/workspaces/${workspace.id}`);
+  const workspace = await getWorkspaceFromSlug({ slug: workspaceSlug, userId });
+  if (workspace === null) {
+    throw new Response("Not Found", {
+      status: 404,
+    });
+  }
+
+  const project = await createProject({ title, workspaceId: workspace.id });
+  return redirect(`/workspaces/${workspace.slug}/projects/${project.slug}`);
 };
 
 export default function NewProjectPage() {
@@ -115,13 +124,12 @@ export default function NewProjectPage() {
             >
               Cancel
             </SecondaryLink>
-            <PrimaryLink
-              to="/"
+            <PrimaryButton
               type="submit"
               className="rounded bg-blue-500  py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400"
             >
               Create
-            </PrimaryLink>
+            </PrimaryButton>
           </div>
         </Form>
       </div>
