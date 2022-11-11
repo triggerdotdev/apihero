@@ -3,7 +3,7 @@ import invariant from "tiny-invariant";
 import { getProjectFromSlugs } from "~/models/project.server";
 import { requireUserId } from "~/services/session.server";
 import { typedjson, useTypedLoaderData } from "remix-typedjson";
-import { Outlet } from "@remix-run/react";
+import { Outlet, useParams } from "@remix-run/react";
 import type { GetLogsSuccessResponse } from "internal-logs";
 import { LogsOnboarding } from "~/libraries/ui/src/components/LogsOnboarding";
 import type { UseDataFunctionReturn } from "remix-typedjson/dist/remix";
@@ -135,10 +135,15 @@ export type ActionData = {
 
 export default function Page() {
   const data = useTypedLoaderData<typeof loader>();
+  const { workspaceSlug } = useParams();
 
   return (
     <main className="h-mainMobileContainerHeight xl:h-mainDesktopContainerHeight overflow-y-auto overflow-hidden w-full bg-slate-50 p-4">
-      <LogsOnboarding project={data.project} logs={data.logs} />
+      <LogsOnboarding
+        project={data.project}
+        logs={data.logs}
+        workspaceSlug={workspaceSlug ?? ""}
+      />
       <Outlet />
     </main>
   );

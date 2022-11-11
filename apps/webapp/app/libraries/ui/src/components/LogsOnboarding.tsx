@@ -10,7 +10,12 @@ import classNames from "classnames";
 import type { LoaderData } from "~/routes/__app/workspaces/$workspaceSlug/projects/$projectSlug/home";
 import { SecondaryButton } from "../../../common";
 import { Spinner } from "../../../common/src/components/Spinner";
-import { PrimaryLink, PrimaryA, SecondaryLink } from "./Buttons/Buttons";
+import {
+  PrimaryLink,
+  PrimaryA,
+  SecondaryLink,
+  PrimaryButton,
+} from "./Buttons/Buttons";
 import { CopyTextButton } from "./Buttons/CopyTextButton";
 
 const listItemNumbered =
@@ -19,17 +24,24 @@ const listItemCompleted =
   "inline-flex text-white -mt-0.5 h-6 w-6 text-sm bg-green-500 items-center justify-center rounded border border-green-600";
 const codeConatiner =
   "flex items-center font-mono justify-between gap-2.5 rounded-md border bg-slate-700 py-2 pl-4 pr-2 text-sm text-white";
-const codeExample = "Code sample to configure your monitoring";
 
-export function LogsOnboarding({ project, logs }: LoaderData) {
-  const copyCode =
-    "apihero({ platform: “node”, projectKey: “" + project.id + "” });";
-
+export function LogsOnboarding({
+  project,
+  logs,
+  workspaceSlug,
+}: LoaderData & { workspaceSlug: string }) {
   return (
     <>
-      <OnboardingIncomplete />
-      <OnboardingComplete projectId={project.id} />
-      <div className="w-full flex gap-2">
+      {!project.hasLogs && <OnboardingIncomplete projectId={project.id} />}
+      {project.hasLogs && !project.hasCompletedOnboarding && (
+        <OnboardingComplete
+          workspaceSlug={workspaceSlug}
+          projectSlug={project.slug}
+          projectId={project.id}
+        />
+      )}
+
+      {/* <div className="w-full flex gap-2">
         <div className="w-full bg-slate-100 p-4 border border-slate-200 rounded-md">
           <div className="flex items-start justify-between">
             <div className="flex flex-col gap-2">
@@ -159,14 +171,14 @@ export function LogsOnboarding({ project, logs }: LoaderData) {
             </SecondaryLink>
           </div>
         ) : null}
-      </div>
+      </div> */}
     </>
   );
 }
 
-function OnboardingIncomplete() {
-  // const copyCode =
-  //   "apihero({ platform: “node”, projectKey: “" + project.id + "” });";
+function OnboardingIncomplete({ projectId }: { projectId: string }) {
+  const copyCode =
+    "apihero({ platform: “node”, projectKey: “" + projectId + "” });";
 
   return (
     <div className="flex gap-2">
@@ -183,8 +195,8 @@ function OnboardingIncomplete() {
                 Copy paste the code into your project.
               </p>
               <div className={codeConatiner}>
-                {/* {copyCode}
-              <CopyTextButton value={copyCode} variant="blue" /> */}
+                {copyCode}
+                <CopyTextButton value={copyCode} variant="blue" />
               </div>
             </div>
           </li>
@@ -196,10 +208,10 @@ function OnboardingIncomplete() {
                 dashboard and refresh.
               </p>
               <div className="flex items-center gap-4">
-                <PrimaryLink to="/">
+                <PrimaryButton onClick={() => document.location.reload()}>
                   <ArrowPathIcon className="h-4 w-4 -ml-1" />
                   Refresh
-                </PrimaryLink>
+                </PrimaryButton>
                 <span className="text-slate-400 text-xs">
                   Last refreshed 20 minutes ago
                 </span>
@@ -229,7 +241,17 @@ function OnboardingIncomplete() {
   );
 }
 
-function OnboardingComplete({ projectId }: { projectId: string }) {
+function OnboardingComplete({
+  workspaceSlug,
+  projectSlug,
+  projectId,
+}: {
+  workspaceSlug: string;
+  projectSlug: string;
+  projectId: string;
+}) {
+  const copyCode = `apihero({ projectKey: “${projectId}, allows: [“*.github.com”] });`;
+
   return (
     <>
       <div className="bg-green-100 flex-grow p-4 border border-slate-200 rounded-md mb-4">
@@ -241,10 +263,27 @@ function OnboardingComplete({ projectId }: { projectId: string }) {
         </div>
       </div>
       <div className="bg-slate-100 flex-grow p-4 border border-slate-200 rounded-md mb-4">
-        <p>Hello</p>
+        <h2 className="font-semibold text-xl text-slate-600">
+          Optional configuration: Choose which requests are proxied
+        </h2>
+        <div className="flex flex-col gap-2">
+          <p className="text-sm text-slate-700">
+            Configure what API traffic you want to monitor (optional). Use the
+            example below or read the Link{" "}
+            <a href="https://docs.apihero.run">full documentation</a>.
+          </p>
+          <div className={codeConatiner}>
+            {copyCode}
+            <CopyTextButton value={copyCode} variant="blue" />
+          </div>
+          <PrimaryA href="https://docs.apihero.run" target="_blank">
+            <ArrowTopRightOnSquareIcon className="h-4 w-4 -ml-1" />
+            Documentation
+          </PrimaryA>
+        </div>
         <Form
           method="post"
-          action={`/resources/projects/${projectId}/completed-logs-onboarding`}
+          action={`/resources/workspaces/${workspaceSlug}/projects/${projectSlug}/completed-logs-onboarding`}
         >
           <button type="submit">
             <XMarkIcon className="h-4 w-4 text-slate-600" />
