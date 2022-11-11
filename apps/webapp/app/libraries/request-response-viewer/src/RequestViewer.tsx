@@ -55,7 +55,9 @@ export function RequestViewer({
                   className="h-[calc(100%-40px)]"
                 /> */}
                 <pre>
-                  <code>{JSON.stringify(requestBody, null, 2)}</code>
+                  <code className="text-xs">
+                    {JSON.stringify(requestBody, null, 2)}
+                  </code>
                 </pre>
                 <div className="absolute bottom-10 right-0">
                   <JSONHeroButton
