@@ -83,7 +83,7 @@ export default function NewProjectPage() {
             width: "100%",
           }}
         >
-          <div className="flex w-full flex-col gap-1">
+          <div className="flex w-full flex-col gap-1 mb-2.5">
             <label className="text-slate-500 text-sm">Name your Project</label>
             <div className="group flex">
               <div className="flex justify-end pointer-events-none z-10 -mr-8 items-center w-8">
