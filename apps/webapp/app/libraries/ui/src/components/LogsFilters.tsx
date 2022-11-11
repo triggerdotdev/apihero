@@ -187,10 +187,10 @@ const everythingCodes = ["2**", "3**", "4**", "5**"];
 
 const statusCodeOptions = [
   { label: "All", value: "all" },
-  { label: "Success", value: "2**" },
-  { label: "Redirect", value: "3**" },
-  { label: "Client Error", value: "4**" },
-  { label: "Server Error", value: "5**" },
+  { label: "Success (2xx)", value: "2**" },
+  { label: "Redirect (3xx)", value: "3**" },
+  { label: "Client Error (4xx)", value: "4**" },
+  { label: "Server Error (5xx)", value: "5**" },
   ...statusCodes.map((code) => ({
     label: `${code}`,
     value: `${code}`,
