@@ -1,12 +1,10 @@
 import { BookmarkIcon, BriefcaseIcon } from "@heroicons/react/24/outline";
-import { PlusIcon } from "@heroicons/react/24/solid";
 import type { ActionFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, useActionData } from "@remix-run/react";
 import * as React from "react";
 import {
   PrimaryLink,
-  SecondaryButton,
   SecondaryLink,
 } from "~/libraries/ui/src/components/Buttons/Buttons";
 import { createWorkspace } from "~/models/workspace.server";
