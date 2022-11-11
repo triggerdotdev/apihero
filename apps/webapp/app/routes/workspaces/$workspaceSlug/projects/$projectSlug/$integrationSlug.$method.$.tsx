@@ -194,7 +194,7 @@ export default function Page() {
             />
           </Resizable>
         )}
-        <div className="flex h-full w-full flex-col justify-between overflow-auto bg-slate-50">
+        <div className="flex h-full w-full flex-col justify-between overflow-auto">
           {position === "top" && (
             <Resizable
               position="top"

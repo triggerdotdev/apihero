@@ -88,7 +88,7 @@ export default function Logs() {
           <LogsFilters logs={logs} />
           <LogsTabs selected={"logs"} />
           <div className="flex h-full w-[calc(100vw-130px)] overflow-hidden">
-            <div className="flex h-full w-full flex-col justify-between overflow-auto bg-slate-50">
+            <div className="flex h-full w-full flex-col justify-between overflow-auto">
               <div className="h-[calc(100%-36px)] overflow-auto">
                 <div className="flex items-center justify-between py-2">
                   <div className="flex items-center">

@@ -115,7 +115,10 @@ export function SingleComboBox({
                             active ? "text-white" : "text-blue-600"
                           )}
                         >
-                          <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                          <CheckIcon
+                            className="h-5 w-5 text-blue-500"
+                            aria-hidden="true"
+                          />
                         </span>
                       )}
                     </>
@@ -219,7 +222,10 @@ export function MultipleComboBox({
                               active ? "text-slate-600" : "text-slate-600"
                             )}
                           >
-                            <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                            <CheckIcon
+                              className="h-5 w-5 text-blue-500"
+                              aria-hidden="true"
+                            />
                           </span>
                         )}
                       </>
@@ -283,7 +289,7 @@ export function StyledOption(
         classNames(
           "relative cursor-default rounded select-none py-2 pl-3 pr-9",
           active ? "bg-slate-100 transition text-slate-600" : "text-slate-600",
-          selected ? "bg-slate-200" : ""
+          selected ? "" : ""
         )
       }
       {...props}
