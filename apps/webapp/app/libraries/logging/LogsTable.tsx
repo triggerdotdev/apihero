@@ -1,5 +1,6 @@
 import { LogRow } from "../request-response-viewer/src/LogViewer";
 import type { Log } from "internal-logs";
+import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 
 type LogsTableProps = {
   selectedLogId?: string;
@@ -81,18 +82,33 @@ export function LogsTable({ logs, selectedLogId, onSelected }: LogsTableProps) {
         </tr>
       </thead>
       <tbody className="divide-y divide-slate-200 bg-white">
-        {logs.map((log) => {
-          return (
-            <LogRow
-              key={log.id}
-              log={log}
-              isSelected={log.id === selectedLogId}
-              onClick={() => {
-                onSelected(log.id);
-              }}
-            />
-          );
-        })}
+        {logs.length > 0 ? (
+          logs.map((log) => {
+            return (
+              <LogRow
+                key={log.id}
+                log={log}
+                isSelected={log.id === selectedLogId}
+                onClick={() => {
+                  onSelected(log.id);
+                }}
+              />
+            );
+          })
+        ) : (
+          <tr>
+            <td colSpan={11} className="py-6 text-sm text-center">
+              <div className="flex items-center justify-center">
+                <div className="flex items-center justify-center p-3 gap-1 bg-yellow-200 border border-yellow-400 rounded-md text-yellow-700">
+                  <ExclamationTriangleIcon className="w-4 h-4 " />
+                  <span className="text-gray">
+                    No logs match your current filters.
+                  </span>
+                </div>
+              </div>
+            </td>
+          </tr>
+        )}
       </tbody>
     </table>
   );
