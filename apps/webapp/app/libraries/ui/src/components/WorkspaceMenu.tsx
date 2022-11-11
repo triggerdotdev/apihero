@@ -61,7 +61,7 @@ export default function WorkspaceMenu({ workspaces }: WorkspaceMenuProps) {
             <Popover.Button
               className={`
                 ${open ? "" : "text-opacity-90"}
-                group inline-flex min-w-[200px] justify-between items-center rounded text-slate-700 hover:text-blue-600 bg-white pl-2.5 pr-2 py-1 text-sm border border-slate-200 shadow-sm hover:bg-slate-50 transition focus:outline-none`}
+                group inline-flex min-w-[200px] justify-between items-center rounded text-slate-700 bg-white pl-2.5 pr-2 py-1 text-sm border border-slate-200 shadow-sm hover:bg-slate-50 transition focus:outline-none`}
             >
               <span className="transition">
                 {getMenuTitle(currentWorkspace, currentProject)}
