@@ -18,11 +18,7 @@
     "skipLibCheck": true,
     "lib": ["esnext"],
     "outDir": "dist",
-    "sourceMap": true,
-    "paths": {
-      "internal-logs/*": ["../../packages/internal-logs/src/*"],
-      "internal-logs": ["../../packages/internal-logs/src/index"]
-    }
+    "sourceMap": true
   },
   "include": ["src/**/*.ts"]
 }
