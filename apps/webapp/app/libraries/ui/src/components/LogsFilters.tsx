@@ -20,7 +20,7 @@ export function LogsFilters({ logs }: { logs: GetLogsSuccessResponse }) {
   return (
     <Form
       method="get"
-      className="py-4 flex gap-2"
+      className="pb-4 flex gap-2"
       onChange={submitForm}
       ref={formRef}
     >
@@ -101,7 +101,7 @@ function FilterTextField({
 function Label({ label, htmlFor }: { label: string; htmlFor: string }) {
   return (
     <label
-      className="block text-sm font-medium text-gray-700"
+      className="block text-xs uppercase font-medium text-slate-500 tracking-wide"
       htmlFor={htmlFor}
     >
       {label}
