@@ -6,7 +6,7 @@ export default function Alerts() {
   const user = useUser();
   return (
     <div className="bg-slate-50 w-full flex items-center justify-center">
-      <div className="flex flex-col gap-y-8 max-w-lg items-center text-center justify-center bg-slate-100 border border-slate-200 rounded-md p-10">
+      <div className="flex flex-col gap-y-8 max-w-lg items-center text-center justify-center bg-white shadow-lg border border-slate-200 rounded-md p-10">
         <FireIcon className="text-orange-600 h-20 w-20" />
         <p className="text-lg text-slate-600">
           Get alerted when any of your APIs return an error, get near their rate
@@ -29,7 +29,6 @@ export default function Alerts() {
                   type="hidden"
                   name="EMAIL"
                   value={user?.email}
-                  // className="hidden"
                   id="mce-EMAIL"
                 />
               </div>
