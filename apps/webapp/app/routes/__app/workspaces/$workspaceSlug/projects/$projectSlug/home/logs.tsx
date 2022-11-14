@@ -132,7 +132,18 @@ export default function Logs() {
               </div>
             </div>
             <div className="overflow-auto bg-blue-200">
-              <div className="h-[1000px]">Resizable content</div>
+              <Resizable
+                position="right"
+                initialSize={600}
+                minimumSize={270}
+                maximumSize={950}
+              >
+                <LogViewer
+                  log={openLog}
+                  position={position}
+                  setPosition={setPosition}
+                />
+              </Resizable>
             </div>
           </div>
         </div>
