@@ -1,9 +1,12 @@
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
+import { Form, useSearchParams, useSubmit } from "@remix-run/react";
 import type { LoaderArgs } from "@remix-run/server-runtime";
 import classNames from "classnames";
 import { GetCachedResponseSchema } from "internal-logs";
+import { useRef, useCallback } from "react";
 import { typedjson, useTypedLoaderData } from "remix-typedjson";
 import invariant from "tiny-invariant";
+import { DateRangeSelector } from "~/components/filters/DateRangeSelector";
 import { getProjectFromSlugs } from "~/models/project.server";
 import { requireUserId } from "~/services/session.server";
 
@@ -30,7 +33,17 @@ export const loader = async ({ request, params }: LoaderArgs) => {
     "LOGS_API_AUTHENTICATION_TOKEN env variables not defined"
   );
 
-  const apiUrl = `${logsOrigin}/caching/${project.id}`;
+  const url = new URL(request.url);
+  const searchParams = new URLSearchParams(url.search);
+  const searchObject = Object.fromEntries(searchParams.entries());
+
+  if (searchObject.days === undefined && searchObject.start === undefined) {
+    searchParams.set("days", "7");
+  }
+
+  const apiUrl = `${logsOrigin}/caching/${
+    project.id
+  }?${searchParams.toString()}`;
 
   try {
     const cachedResponse = await fetch(apiUrl, {
@@ -40,6 +53,7 @@ export const loader = async ({ request, params }: LoaderArgs) => {
     });
 
     const json = await cachedResponse.json();
+    console.log("json", json);
     const body = await GetCachedResponseSchema.parseAsync(json);
 
     return typedjson(body, { status: cachedResponse.status });
@@ -62,14 +76,35 @@ const cellRightAligned = classNames(cell, "text-right");
 
 export default function Caching() {
   const data = useTypedLoaderData<typeof loader>();
+  const submit = useSubmit();
+  const formRef = useRef<HTMLFormElement>(null);
+  const [searchParams] = useSearchParams();
+  const searchObject = Object.fromEntries(searchParams.entries());
+
+  const submitForm = useCallback(() => {
+    if (!formRef.current) return;
+    submit(formRef.current, { replace: true });
+  }, [submit]);
+
   return (
-    <div>
-      <div className="bg-slate-50 w-full flex items-center justify-center">
-        Caching
+    <div className="p-4">
+      <div className="pb-2">
+        <Form
+          method="get"
+          className="pb-4 flex gap-2"
+          onChange={submitForm}
+          ref={formRef}
+        >
+          <DateRangeSelector
+            searchObject={searchObject}
+            presets={[1, 7, 30, 90, 365]}
+            submitForm={submitForm}
+          />
+        </Form>
       </div>
       {"records" in data && (
-        <table className="w-full divide-y divide-slate-300">
-          <thead className="sticky top-0 bg-white outline outline-2 outline-slate-200">
+        <table className="w-full divide-y divide-slate-300 outline outline-slate-200">
+          <thead className="sticky top-0 bg-white outline outline-slate-200">
             <tr>
               <th scope="col" className={headerCell}>
                 API

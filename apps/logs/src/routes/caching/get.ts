@@ -30,6 +30,20 @@ const cached: FastifyPluginAsync = async (app, opts): Promise<void> => {
       params: z.object({
         projectId: z.string(),
       }),
+      querystring: z
+        .union([
+          z.object({
+            days: z.preprocess(
+              (arg) => arg !== undefined && parseInt(arg as string),
+              z.number()
+            ),
+          }),
+          z.object({
+            start: z.string(),
+            end: z.string(),
+          }),
+        ])
+        .default({ days: 7 }),
       response: {
         200: GetCachedSuccessResponseSchema,
         "4xx": ErrorObjectSchema,
@@ -58,24 +72,36 @@ const cached: FastifyPluginAsync = async (app, opts): Promise<void> => {
         return;
       }
 
-      const namedQuery = namedParameters(
-        `SELECT 
-          base_url as "baseUrl", 
-          is_cache_hit as "isCacheHit",
-          COUNT(*) as "total", 
-          PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY gateway_duration) AS "medianTime", 
-          PERCENTILE_CONT(0.95) WITHIN GROUP (ORDER BY gateway_duration) AS "p95Time", 
-          MIN(gateway_duration) as "minTime",
-          MAX(gateway_duration) as "maxTime"  
-        FROM "Log"
-        WHERE "method" = 'GET' AND "project_id" = :projectId
-        GROUP BY 
-          base_url, 
-          is_cache_hit`,
-        request.params
-      );
+      const queryParams: Record<string, string | number | boolean> = {
+        projectId: request.params.projectId,
+      };
+
+      let query = `SELECT 
+        base_url as "baseUrl", 
+        is_cache_hit as "isCacheHit",
+        COUNT(*) as "total", 
+        PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY gateway_duration) AS "medianTime", 
+        PERCENTILE_CONT(0.95) WITHIN GROUP (ORDER BY gateway_duration) AS "p95Time", 
+        MIN(gateway_duration) as "minTime",
+        MAX(gateway_duration) as "maxTime"  
+      FROM "Log"
+      WHERE "method" = 'GET' AND "project_id" = :projectId`;
+
+      //date range
+      if ("days" in request.query) {
+        query += ` AND time >= NOW() - INTERVAL '1 days' * :days`;
+        queryParams.days = request.query.days;
+      } else {
+        query += ` AND time >= :start AND time <= :end`;
+        queryParams.start = request.query.start;
+        queryParams.end = request.query.end;
+      }
+
+      //group by
+      query += ` GROUP BY base_url, is_cache_hit`;
 
       try {
+        const namedQuery = namedParameters(query, queryParams);
         const queryResult = await app.pg.pool.query(namedQuery);
 
         let result: Record<string, GetCachedResponseItem> = {};
