@@ -93,7 +93,7 @@ const cached: FastifyPluginAsync = async (app, opts): Promise<void> => {
 
             existingResult.total += parsedRow.total;
             existingResult.hitRate =
-              existingResult.hitCount / existingResult.missCount;
+              existingResult.hitCount / existingResult.total;
           } else {
             const newResult: GetCachedResponseItem = {
               baseUrl: parsedRow.baseUrl,
