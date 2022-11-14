@@ -66,16 +66,6 @@ export const loader = async ({ request, params }: LoaderArgs) => {
     return typedjson({ project, logs });
   }
 };
-
-export type ActionData = {
-  errors?: {
-    enabled?: { _errors: string[] };
-    time?: { _errors: string[] };
-    other?: string;
-  };
-};
-
-// export const action: ActionFunction = async ({ request, params }) => {
 //   const { workspaceSlug, projectSlug } = params;
 //   invariant(workspaceSlug, "workspaceSlug not found");
 //   invariant(projectSlug, "projectSlug not found");
