@@ -25,6 +25,7 @@ const validRequestBody: CreateLogRequestBody = {
   requestDuration: 100,
   gatewayDuration: 120,
   time: new Date().toISOString(),
+  environment: "test",
 };
 
 const projectId = "test-project";

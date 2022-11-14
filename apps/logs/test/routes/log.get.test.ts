@@ -144,5 +144,6 @@ function createLog(
     requestDuration: 100,
     gatewayDuration: 120,
     time: date.toISOString(),
+    environment: "test",
   };
 }
