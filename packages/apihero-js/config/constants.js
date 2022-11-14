@@ -1,15 +1,19 @@
-import { resolve, basename } from "path";
+/* eslint-disable @typescript-eslint/no-var-requires */
+const path = require("path");
 
-const SERVICE_WORKER_SOURCE_PATH = resolve(
+const SERVICE_WORKER_SOURCE_PATH = path.resolve(
   __dirname,
   "../",
   "src/proxyServiceWorker.js"
 );
 
-const SERVICE_WORKER_BUILD_PATH = resolve(
+const SERVICE_WORKER_BUILD_PATH = path.resolve(
   __dirname,
   "../lib",
-  basename(SERVICE_WORKER_SOURCE_PATH)
+  path.basename(SERVICE_WORKER_SOURCE_PATH)
 );
 
-export { SERVICE_WORKER_SOURCE_PATH, SERVICE_WORKER_BUILD_PATH };
+module.exports = {
+  SERVICE_WORKER_SOURCE_PATH,
+  SERVICE_WORKER_BUILD_PATH,
+};

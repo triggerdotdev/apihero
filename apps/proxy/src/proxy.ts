@@ -34,6 +34,9 @@ export async function proxyRequest(
     headers: stripHeaders(clonedRequest.headers),
     method: clonedRequest.method,
     body: clonedRequest.body,
+    cf: {
+      cacheEverything: true,
+    },
   });
 
   // Otherwise, fetch a new request with the url as the url, removing the x-destination-origin header

@@ -66,14 +66,14 @@ const proxy = setupProxy({
 proxy.start();
 ```
 
-### Browser (coming soon)
+### Browser
 
 This library uses a Service Worker approach to capture and proxy API requests performed in the browser, so the setup is slightly different from Node.
 
 You'll first need to add the Service Worker code to your public directly, using the `@apihero/js` cli:
 
 ```typescript
-npx @apihero/js init public/ --save
+npm exec apihero-js init public/ --save
 ```
 
 Next, create a file to setup the worker, for example in `src/apihero.js`:
@@ -83,8 +83,9 @@ Next, create a file to setup the worker, for example in `src/apihero.js`:
 import { setupWorker } from "@apihero/js";
 
 export const worker = setupWorker({
-  include: ["api.github.com", "api.twitter.com/users/*"],
-  exclude: ["myprivateapi.dev/*"],
+  // You MUST supply the allow option for setupWorker, to ensure too many requests are not sent to the API Hero proxy
+  allow: ["api.github.com", "api.twitter.com/users/*"],
+  deny: ["myprivateapi.dev/*"],
   projectKey: "hero_123abc",
   server: "proxy.apihero.run",
 });

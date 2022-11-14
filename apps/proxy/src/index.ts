@@ -8,6 +8,17 @@ export default {
     env: Bindings,
     context: ExecutionContext
   ): Promise<Response> {
+    if (request.method === "OPTIONS") {
+      return new Response(null, {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Headers": "*",
+          "Access-Control-Allow-Methods": "POST, OPTIONS",
+          "Access-Control-Max-Age": "86400",
+        },
+      });
+    }
+
     const logService = new LogService({
       url: env.LOGS_URL,
       context: context,

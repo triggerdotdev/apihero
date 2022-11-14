@@ -11,7 +11,7 @@ export default defineConfig([
     name: "main",
     entry: ["./src/index.ts"],
     outDir: "./lib",
-    format: ["cjs"],
+    format: ["esm", "cjs"],
     legacyOutput: true,
     sourcemap: true,
     clean: true,
