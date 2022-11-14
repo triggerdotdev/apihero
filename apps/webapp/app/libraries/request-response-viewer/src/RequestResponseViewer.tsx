@@ -7,15 +7,9 @@ import { RequestViewer } from "./RequestViewer";
 
 type RequestResponseViewerProps = {
   log: Log;
-  position: PanelPosition;
-  setPosition: (position: PanelPosition) => void;
 };
 
-export function RequestResponseViewer({
-  log,
-  position,
-  setPosition,
-}: RequestResponseViewerProps) {
+export function RequestResponseViewer({ log }: RequestResponseViewerProps) {
   return (
     <Tab.Group defaultIndex={1}>
       <Tab.List
@@ -30,12 +24,6 @@ export function RequestResponseViewer({
         <RequestUrlBar
           method={log.method}
           url={`${log.baseUrl}${log.path}${log.search ? log.search : ``}`}
-        />
-        <SwitchPanelPositionButton
-          className="mr-2"
-          position={position}
-          setPosition={setPosition}
-          options={["right", "bottom", "left", "top"]}
         />
       </Tab.List>
       <Tab.Panels className="h-full">

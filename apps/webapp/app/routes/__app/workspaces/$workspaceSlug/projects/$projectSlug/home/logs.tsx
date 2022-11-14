@@ -15,18 +15,15 @@ import { RequestResponseViewer } from "~/libraries/request-response-viewer";
 import { LogsFilters } from "~/libraries/ui/src/components/LogsFilters";
 import { LogsTabs } from "~/libraries/ui/src/components/LogsTabs";
 import { Body } from "~/libraries/ui/src/components/Primitives/Body";
-import Resizable from "~/libraries/ui/src/components/Resizable";
+import Resizable, {
+  ResizableChild,
+} from "~/libraries/ui/src/components/Resizable";
 
 export default function Logs() {
   const logs = useLogs();
   const submit = useSubmit();
   const transition = useTransition();
   const [selectedLog, setSelectedLog] = useState<string | null>(null);
-
-  const [position, setPosition] = usePanelPosition({
-    defaultPosition: "right",
-    key: "logs",
-  });
 
   const reload = useCallback(() => {
     document.location.reload();
@@ -90,7 +87,12 @@ export default function Logs() {
             <LogsFilters logs={logs} />
             <LogsTabs selected={"logs"} />
           </div>
-          <div className="grid grid-cols-[1fr_200px] overflow-hidden">
+          <Resizable
+            initialSize={600}
+            minimumSize={270}
+            maximumSize={950}
+            className="overflow-hidden"
+          >
             <div className="grid grid-row-[1fr_auto] overflow-hidden">
               <div className="overflow-hidden border-b border-slate-200">
                 <div className="flex items-center justify-between mt-1 pr-2 py-[5px]">
@@ -131,47 +133,20 @@ export default function Logs() {
                 </div>
               </div>
             </div>
-            <div className="overflow-auto bg-blue-200">
-              <Resizable
-                position="right"
-                initialSize={600}
-                minimumSize={270}
-                maximumSize={950}
-              >
-                <LogViewer
-                  log={openLog}
-                  position={position}
-                  setPosition={setPosition}
-                />
-              </Resizable>
-            </div>
-          </div>
+            <ResizableChild showHandle className="overflow-auto bg-blue-200">
+              <LogViewer log={openLog} />
+            </ResizableChild>
+          </Resizable>
         </div>
       )}
     </>
   );
 }
 
-function LogViewer({
-  log,
-  position,
-  setPosition,
-}: {
-  log: Log | undefined;
-  position: PanelPosition;
-  setPosition: (position: PanelPosition) => void;
-}) {
+function LogViewer({ log }: { log: Log | undefined }) {
   return (
     <div className="h-full bg-white mt-px">
-      {log ? (
-        <RequestResponseViewer
-          log={log}
-          position={position}
-          setPosition={setPosition}
-        />
-      ) : (
-        <NoLogSelected />
-      )}
+      {log ? <RequestResponseViewer log={log} /> : <NoLogSelected />}
     </div>
   );
 }
