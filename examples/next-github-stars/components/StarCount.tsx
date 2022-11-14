@@ -7,7 +7,7 @@ export function StarCount({ owner, repo }: { owner: string; repo: string }) {
       return fetch(`https://api.github.com/repos/${owner}/${repo}`, {
         headers: {
           Accept: "application/vnd.github.v3+json",
-          Authorization: `token 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`,
+          Authorization: `token ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`,
         },
       }).then((res) => res.json()) as Promise<{ stargazers_count: number }>;
     },
