@@ -7,7 +7,8 @@
     "test": "test"
   },
   "scripts": {
-    "test": "npm run build:ts && tsc -p test/tsconfig.json && tap --ts \"test/**/*.test.ts\"",
+    "test": "tap --ts \"test/**/*.test.ts\"",
+    "tap": "tap --ts",
     "start": "fastify start dist/app.js -l info --address ::",
     "clean": "rimraf dist",
     "build": "npm run clean && npm run build:ts",
