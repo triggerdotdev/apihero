@@ -53,7 +53,6 @@ export const loader = async ({ request, params }: LoaderArgs) => {
     });
 
     const json = await cachedResponse.json();
-    console.log("json", json);
     const body = await GetCachedResponseSchema.parseAsync(json);
 
     return typedjson(body, { status: cachedResponse.status });
