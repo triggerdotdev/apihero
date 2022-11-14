@@ -119,3 +119,27 @@ export const GetLogsResponseSchema = z.union([
   ErrorObjectSchema,
   GetLogsSuccessResponseSchema,
 ]);
+
+const GetCachedResponseItemSchema = z.object({
+  baseUrl: z.string(),
+  api: z.string(),
+  hitRate: z.number(),
+  total: z.number(),
+  hitCount: z.number(),
+  missCount: z.number(),
+  hitP50Time: z.number(),
+  hitP95Time: z.number(),
+  missP50Time: z.number(),
+  missP95Time: z.number(),
+});
+
+export type GetCachedResponseItem = z.infer<typeof GetCachedResponseItemSchema>;
+
+export const GetCachedSuccessResponseSchema = z.object({
+  records: z.array(GetCachedResponseItemSchema),
+});
+
+export const GetCachedResponseSchema = z.union([
+  ErrorObjectSchema,
+  GetCachedSuccessResponseSchema,
+]);
