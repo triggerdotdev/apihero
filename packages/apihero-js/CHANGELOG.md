@@ -1,5 +1,11 @@
 # @apihero/js
 
+## 1.1.1
+
+### Patch Changes
+
+- 4af7924: Remove extra logging from the Service Worker
+
 ## 1.1.0
 
 ### Minor Changes
