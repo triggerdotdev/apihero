@@ -81,6 +81,7 @@ jobs:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           command: publish --env=staging
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: "./apps/proxy"
       - name: 🚀 Deploy Production
         if: ${{ github.ref == 'refs/heads/main' }}
         uses: cloudflare/wrangler-action@2.0.0
@@ -88,4 +89,4 @@ jobs:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           command: publish --env=production
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          workingDirectory: "apps/proxy"
+          workingDirectory: "./apps/proxy"
