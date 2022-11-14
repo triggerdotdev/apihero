@@ -11,6 +11,16 @@ import {
 const logsToken = process.env.API_AUTHENTICATION_TOKEN;
 invariant(logsToken, "API_AUTHENTICATION_TOKEN is required");
 
+const rowSchema = z.object({
+  baseUrl: z.string(),
+  isCacheHit: z.boolean(),
+  total: z.preprocess((value) => parseInt(value as string), z.number()),
+  medianTime: z.number(),
+  p95Time: z.number(),
+  minTime: z.number(),
+  maxTime: z.number(),
+});
+
 const cached: FastifyPluginAsync = async (app, opts): Promise<void> => {
   app.withTypeProvider<ZodTypeProvider>().route({
     method: "GET",
@@ -65,41 +75,43 @@ const cached: FastifyPluginAsync = async (app, opts): Promise<void> => {
           [request.params.projectId]
         );
 
-        const result: Record<string, GetCachedResponseItem> = {};
+        let result: Record<string, GetCachedResponseItem> = {};
         queryResult.rows.forEach((row: any) => {
-          const existingResult = result[row.baseUrl];
-          if (existingResult) {
-            if (row.isCacheHit) {
-              existingResult.hitCount = row.total;
-              existingResult.hitP50Time = row.medianTime;
-              existingResult.hitP95Time = row.p95Time;
+          const parsedRow = rowSchema.parse(row);
+
+          const existingResult = result[parsedRow.baseUrl];
+          if (existingResult !== undefined) {
+            if (parsedRow.isCacheHit) {
+              existingResult.hitCount = parsedRow.total;
+              existingResult.hitP50Time = parsedRow.medianTime;
+              existingResult.hitP95Time = parsedRow.p95Time;
             } else {
-              existingResult.missCount = row.total;
-              existingResult.missP50Time = row.medianTime;
-              existingResult.missP95Time = row.p95Time;
+              existingResult.missCount = parsedRow.total;
+              existingResult.missP50Time = parsedRow.medianTime;
+              existingResult.missP95Time = parsedRow.p95Time;
             }
 
-            existingResult.total += row.total;
+            existingResult.total += parsedRow.total;
             existingResult.hitRate =
               existingResult.hitCount / existingResult.missCount;
           } else {
             const newResult: GetCachedResponseItem = {
-              baseUrl: row.base_url,
-              api: row.base_url.replace("https://").replace("http://"),
-              hitRate: 0,
-              total: row.total,
-              hitCount: row.isCacheHit ? row.total : 0,
-              missCount: row.isCacheHit ? 0 : row.total,
-              hitP50Time: row.isCacheHit ? row.medianTime : 0,
-              hitP95Time: row.isCacheHit ? row.p95Time : 0,
-              missP50Time: row.isCacheHit ? 0 : row.medianTime,
-              missP95Time: row.isCacheHit ? 0 : row.p95Time,
+              baseUrl: parsedRow.baseUrl,
+              api: parsedRow.baseUrl
+                .replace("https://", "")
+                .replace("http://", ""),
+              hitRate: parsedRow.isCacheHit ? 1 : 0,
+              total: parsedRow.total,
+              hitCount: parsedRow.isCacheHit ? parsedRow.total : 0,
+              missCount: parsedRow.isCacheHit ? 0 : parsedRow.total,
+              hitP50Time: parsedRow.isCacheHit ? parsedRow.medianTime : 0,
+              hitP95Time: parsedRow.isCacheHit ? parsedRow.p95Time : 0,
+              missP50Time: parsedRow.isCacheHit ? 0 : parsedRow.medianTime,
+              missP95Time: parsedRow.isCacheHit ? 0 : parsedRow.p95Time,
             };
             result[row.baseUrl] = newResult;
           }
         });
-
-        console.log(result);
 
         //create an array of the results, sorted by hit rate
         const sortedResults = Object.values(result).sort(
@@ -110,6 +122,7 @@ const cached: FastifyPluginAsync = async (app, opts): Promise<void> => {
           records: sortedResults,
         };
       } catch (error) {
+        console.error(error);
         reply.status(500).send({
           statusCode: 500,
           error: "Internal error",
