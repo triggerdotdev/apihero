@@ -1,3 +1,4 @@
+import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import { useSubmit, useTransition } from "@remix-run/react";
 import type { Log } from "internal-logs";
 import { useCallback, useMemo, useState } from "react";
@@ -82,68 +83,64 @@ export default function Logs() {
   }, [logs, selectedLog]);
 
   return (
-    <div>
+    <>
       {logs && (
         <>
           <LogsFilters logs={logs} />
           <LogsTabs selected={"logs"} />
-          <div className="flex h-full w-[calc(100vw-130px)] overflow-hidden">
-            <div className="flex h-full w-full flex-col justify-between overflow-auto">
-              <div className="h-[calc(100%-36px)] overflow-auto">
-                <div className="flex items-center justify-between py-2">
-                  <div className="flex items-center">
-                    <PreviousButton
-                      disabled={
-                        logs.previous !== undefined
-                          ? transition.state === "loading" ||
-                            transition.state === "submitting"
-                          : true
-                      }
-                      onClick={() => loadMore("previous")}
-                    />
+          <div className="flex h-full overflow-hidden">
+            <div className="flex h-full flex-shrink flex-col justify-between overflow-hidden mt-0.5">
+              <div className="flex flex-1 items-center justify-between pr-2 py-[5px] bg-slate-50">
+                <div className="flex items-center">
+                  <PreviousButton
+                    disabled={
+                      logs.previous !== undefined
+                        ? transition.state === "loading" ||
+                          transition.state === "submitting"
+                        : true
+                    }
+                    onClick={() => loadMore("previous")}
+                  />
 
-                    <NextButton
-                      disabled={
-                        logs.next !== undefined
-                          ? transition.state === "loading" ||
-                            transition.state === "submitting"
-                          : true
-                      }
-                      onClick={() => loadMore("next")}
-                    />
-                  </div>
-
-                  <RefreshButton
-                    disabled={false}
-                    onClick={() => reload()}
-                    lastUpdated={new Date()}
+                  <NextButton
+                    disabled={
+                      logs.next !== undefined
+                        ? transition.state === "loading" ||
+                          transition.state === "submitting"
+                        : true
+                    }
+                    onClick={() => loadMore("next")}
                   />
                 </div>
-                <LogsTable
-                  logs={logs.logs}
-                  selectedLogId={undefined}
-                  onSelected={onLogSelected}
+
+                <RefreshButton
+                  disabled={false}
+                  onClick={() => reload()}
+                  lastUpdated={new Date()}
                 />
               </div>
+              <LogsTable
+                logs={logs.logs}
+                selectedLogId={selectedLog ?? undefined}
+                onSelected={onLogSelected}
+              />
             </div>
-            {position === "right" && (
-              <Resizable
-                position="right"
-                initialSize={600}
-                minimumSize={270}
-                maximumSize={950}
-              >
-                <LogViewer
-                  log={openLog}
-                  position={position}
-                  setPosition={setPosition}
-                />
-              </Resizable>
-            )}
+            <Resizable
+              position="right"
+              initialSize={600}
+              minimumSize={270}
+              maximumSize={950}
+            >
+              <LogViewer
+                log={openLog}
+                position={position}
+                setPosition={setPosition}
+              />
+            </Resizable>
           </div>
         </>
       )}
-    </div>
+    </>
   );
 }
 
@@ -157,7 +154,7 @@ function LogViewer({
   setPosition: (position: PanelPosition) => void;
 }) {
   return (
-    <div className="h-full bg-white">
+    <div className="h-full bg-white mt-px">
       {log ? (
         <RequestResponseViewer
           log={log}
@@ -173,8 +170,11 @@ function LogViewer({
 
 function NoLogSelected() {
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center">
-      <Body className="text-center">Select a log to view details</Body>
+    <div className="flex h-full w-full flex-col gap-2 items-center justify-center">
+      <InformationCircleIcon className="h-8 w-8 text-blue-500" />
+      <Body className="text-center text-slate-600">
+        Select a log to view details
+      </Body>
     </div>
   );
 }

@@ -5,7 +5,7 @@ import classNames from "classnames";
 import { useCallback, useEffect, useState } from "react";
 import type { LoaderData } from "~/routes/__app/workspaces/$workspaceSlug/projects/$projectSlug/home";
 import { Spinner } from "../../../common/src/components/Spinner";
-import { PrimaryA, SecondaryLink } from "./Buttons/Buttons";
+import { SecondaryLink } from "./Buttons/Buttons";
 import { CopyTextButton } from "./Buttons/CopyTextButton";
 
 const listItemNumbered =

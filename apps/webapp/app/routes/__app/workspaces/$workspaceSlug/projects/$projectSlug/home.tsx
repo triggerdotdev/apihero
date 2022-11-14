@@ -128,7 +128,7 @@ export default function Page() {
   const { workspaceSlug } = useParams();
 
   return (
-    <main className="h-mainMobileContainerHeight xl:h-mainDesktopContainerHeight overflow-y-auto overflow-hidden w-full bg-slate-50 p-4">
+    <main className="h-mainMobileContainerHeight xl:h-mainDesktopContainerHeight w-full bg-slate-50 py-4 pl-4">
       <LogsOnboarding
         project={data.project}
         logs={data.logs}
