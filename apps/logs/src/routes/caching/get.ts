@@ -7,6 +7,7 @@ import {
   GetCachedResponseItem,
   GetCachedSuccessResponseSchema,
 } from "internal-logs";
+import { namedParameters } from "../../utilities/named-sql";
 
 const logsToken = process.env.API_AUTHENTICATION_TOKEN;
 invariant(logsToken, "API_AUTHENTICATION_TOKEN is required");
@@ -57,23 +58,25 @@ const cached: FastifyPluginAsync = async (app, opts): Promise<void> => {
         return;
       }
 
+      const namedQuery = namedParameters(
+        `SELECT 
+          base_url as "baseUrl", 
+          is_cache_hit as "isCacheHit",
+          COUNT(*) as "total", 
+          PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY gateway_duration) AS "medianTime", 
+          PERCENTILE_CONT(0.95) WITHIN GROUP (ORDER BY gateway_duration) AS "p95Time", 
+          MIN(gateway_duration) as "minTime",
+          MAX(gateway_duration) as "maxTime"  
+        FROM "Log"
+        WHERE "method" = 'GET' AND "project_id" = :projectId
+        GROUP BY 
+          base_url, 
+          is_cache_hit`,
+        request.params
+      );
+
       try {
-        const queryResult = await app.pg.pool.query(
-          `SELECT 
-            base_url as "baseUrl", 
-            is_cache_hit as "isCacheHit",
-            COUNT(*) as "total", 
-            PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY gateway_duration) AS "medianTime", 
-            PERCENTILE_CONT(0.95) WITHIN GROUP (ORDER BY gateway_duration) AS "p95Time", 
-            MIN(gateway_duration) as "minTime",
-            MAX(gateway_duration) as "maxTime"  
-          FROM "Log"
-          WHERE "method" = 'GET' AND "project_id" = $1
-          GROUP BY 
-            base_url, 
-            is_cache_hit`,
-          [request.params.projectId]
-        );
+        const queryResult = await app.pg.pool.query(namedQuery);
 
         let result: Record<string, GetCachedResponseItem> = {};
         queryResult.rows.forEach((row: any) => {
