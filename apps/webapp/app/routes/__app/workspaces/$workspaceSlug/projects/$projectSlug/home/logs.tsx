@@ -85,12 +85,14 @@ export default function Logs() {
   return (
     <>
       {logs && (
-        <>
-          <LogsFilters logs={logs} />
-          <LogsTabs selected={"logs"} />
-          <div className="flex h-full overflow-hidden">
-            <div className="flex h-full flex-shrink flex-col justify-between overflow-hidden mt-0.5">
-              <div className="flex flex-1 items-center justify-between pr-2 py-[5px] bg-slate-50">
+        <div className="grid grid-rows-[auto_1fr]">
+          <div className="bg-yellow-100">
+            <LogsFilters logs={logs} />
+            <LogsTabs selected={"logs"} />
+          </div>
+          <div className="grid grid-cols-[1fr_600px] bg-orange-50 max-h-full overflow-hidden">
+            <div className="overflow-hidden">
+              <div className="flex items-center justify-between pr-2 py-[5px] bg-slate-50">
                 <div className="flex items-center">
                   <PreviousButton
                     disabled={
@@ -119,11 +121,13 @@ export default function Logs() {
                   lastUpdated={new Date()}
                 />
               </div>
-              <LogsTable
-                logs={logs.logs}
-                selectedLogId={selectedLog ?? undefined}
-                onSelected={onLogSelected}
-              />
+              <div className="overflow-scroll bg-green-100">
+                <LogsTable
+                  logs={logs.logs}
+                  selectedLogId={selectedLog ?? undefined}
+                  onSelected={onLogSelected}
+                />
+              </div>
             </div>
             <Resizable
               position="right"
@@ -138,7 +142,7 @@ export default function Logs() {
               />
             </Resizable>
           </div>
-        </>
+        </div>
       )}
     </>
   );
