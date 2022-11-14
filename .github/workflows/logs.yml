@@ -37,7 +37,7 @@ jobs:
         run: pnpm install --ignore-scripts
 
       - name: 🔬 Lint
-        run: npm run lint
+        run: pnpm run lint --filters logs...
 
   typecheck:
     name: ʦ TypeScript
