@@ -132,7 +132,7 @@ async function handleRequest(event, requestId) {
 
   try {
     const response = await getResponse(event, client, requestId);
-    console.log(`[@apihero/js] handleRequest response`, response);
+
     return response;
   } catch (e) {
     console.error(`[@apihero/js] Error`, e);
@@ -182,19 +182,11 @@ async function getResponse(event, client, requestId) {
     // are immutable.
     delete headers["x-ah-bypass"];
 
-    console.log(
-      `[@apihero/js] Bypassing the "%s %s" request.`,
-      request.method,
-      request.url
-    );
-
     return fetch(clonedRequest, { headers });
   }
 
   // Bypass mocking when the client is not active.
   if (!client) {
-    console.log(`[@apihero/js] No active client found.`);
-
     return passthrough();
   }
 
@@ -203,46 +195,21 @@ async function getResponse(event, client, requestId) {
   // means that MSW hasn't dispatched the "PROXY_ACTIVATE" event yet
   // and is not ready to handle requests.
   if (!activeClientIds.has(client.id)) {
-    console.log(`[@apihero/js] The client "%s" is not active.`, client.id);
-
     return passthrough();
   }
 
   // Bypass requests with the explicit bypass header.
   // Such requests can be issued by "ctx.fetch()".
   if (request.headers.get("x-ah-bypass") === "true") {
-    console.log(
-      `[@apihero/js] Bypassing the "%s %s" request with the explicit bypass header.`,
-      request.method,
-      request.url
-    );
-
     return passthrough();
   }
-
-  // Skip the request if the the request is to the client itself
-  console.log(
-    `[@apihero/js] Requesting ${request.url}, client url is ${client.url}`
-  );
 
   const clientUrl = new URL(client.url);
   const requestUrl = new URL(request.url);
 
-  console.log(
-    `[@apihero/js] Requesting ${requestUrl}, client url is ${clientUrl}`
-  );
-
   if (clientUrl.origin === requestUrl.origin) {
-    console.log(
-      `[@apihero/js] Bypassing the "%s %s" request to the client origin.`,
-      request.method,
-      request.url
-    );
-
     return passthrough();
   }
-
-  console.log(`[@apihero/js] Sending REQUEST to the client ${requestId}`);
 
   // Notify the client that a request has been intercepted.
   const clientMessage = await sendToClient(client, {
@@ -290,16 +257,7 @@ async function requestWith(request, modifiedRequest) {
     modifiedRequest
   );
 
-  console.log(
-    `[@apihero/js] requestWith`,
-    request,
-    modifiedRequest,
-    integratedRequest
-  );
-
   const response = await fetch(integratedRequest);
-
-  console.log(`[@apihero/js] response`, response);
 
   return response;
 }

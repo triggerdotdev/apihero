@@ -41,7 +41,7 @@
     "env": "turbo run env",
     "changeset:add": "changeset",
     "changeset:version": "changeset version",
-    "changeset:release": "pnpm run build && changeset publish",
+    "changeset:release": "pnpm run build --filter @apihero/js --filter @apihero/interceptors-js --filter @apihero/contants-js && changeset publish",
     "env:pull": "turbo run env:pull"
   },
   "devDependencies": {
