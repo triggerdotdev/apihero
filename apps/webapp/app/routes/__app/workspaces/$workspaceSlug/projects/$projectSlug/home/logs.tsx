@@ -92,7 +92,7 @@ export default function Logs() {
           </div>
           <div className="grid grid-cols-[1fr_200px] overflow-hidden">
             <div className="grid grid-row-[1fr_auto] overflow-hidden">
-              <div className="overflow-hidden">
+              <div className="overflow-hidden border-b border-slate-200">
                 <div className="flex items-center justify-between mt-1 pr-2 py-[5px]">
                   <div className="flex items-center">
                     <PreviousButton
