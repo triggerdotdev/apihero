@@ -1,5 +1,6 @@
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
-import { LoaderArgs } from "@remix-run/server-runtime";
+import type { LoaderArgs } from "@remix-run/server-runtime";
+import classNames from "classnames";
 import { GetCachedResponseSchema } from "internal-logs";
 import { typedjson, useTypedLoaderData } from "remix-typedjson";
 import invariant from "tiny-invariant";
@@ -52,6 +53,13 @@ export const loader = async ({ request, params }: LoaderArgs) => {
   }
 };
 
+const headerCell = "px-2 py-3 text-left text-xs font-semibold text-slate-900";
+const headerCellRightAlign = classNames(headerCell, "text-right");
+
+const cell = "whitespace-nowrap py-2 px-2 text-xs text-slate-500";
+const cellLeftAligned = classNames(cell, "text-left");
+const cellRightAligned = classNames(cell, "text-right");
+
 export default function Caching() {
   const data = useTypedLoaderData<typeof loader>();
   return (
@@ -63,67 +71,63 @@ export default function Caching() {
         <table className="w-full divide-y divide-slate-300">
           <thead className="sticky top-0 bg-white outline outline-2 outline-slate-200">
             <tr>
-              <th
-                scope="col"
-                className="px-3 py-3 text-left text-xs font-semibold text-slate-900"
-              >
+              <th scope="col" className={headerCell}>
                 API
               </th>
-              <th
-                scope="col"
-                className="py-3 pl-4 pr-3 text-left text-xs font-semibold text-slate-900 sm:pl-6"
-              >
+              <th scope="col" className={headerCellRightAlign}>
                 Hit rate
               </th>
-              <th
-                scope="col"
-                className="py-3 pl-4 pr-3 text-left text-xs font-semibold text-slate-900 sm:pl-6"
-              >
+              <th scope="col" className={headerCellRightAlign}>
                 Hits <span className="font-normal">(p50)</span>
               </th>
-              <th
-                scope="col"
-                className="py-3 pl-4 pr-3 text-left text-xs font-semibold text-slate-900 sm:pl-6"
-              >
+              <th scope="col" className={headerCellRightAlign}>
                 Misses <span className="font-normal">(p50)</span>
               </th>
-              <th
-                scope="col"
-                className="py-3 pl-4 pr-3 text-left text-xs font-semibold text-slate-900 sm:pl-6"
-              >
+              <th scope="col" className={headerCellRightAlign}>
                 Speed boost
               </th>
-              <th
-                scope="col"
-                className="py-3 pl-4 pr-3 text-right text-xs font-semibold leading-tight text-slate-900 sm:pl-6"
-              ></th>
+              <th scope="col" className={headerCellRightAlign}></th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-200 bg-white">
             {data.records.length > 0 ? (
               data.records.map((record) => {
                 return (
-                  <tr
-                    key={record.baseUrl}
-                    className="w-full px-4 py-2 text-left bg-white hover:bg-slate-50"
-                  >
-                    <td className="whitespace-nowrap px-3 py-2 text-xs text-slate-500">
-                      {record.api}
-                    </td>
-                    <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm sm:pl-6">
+                  <tr key={record.baseUrl} className="w-full py-2 bg-white">
+                    <td className={cellLeftAligned}>{record.api}</td>
+                    <td className={cellRightAligned}>
                       {(record.hitRate * 100).toFixed(1)}%
                     </td>
-                    <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm sm:pl-6">
-                      {record.hitCount} ({record.hitP50Time.toFixed(0)}ms)
+                    <td className={cellRightAligned}>
+                      {record.hitCount}{" "}
+                      {record.hitCount > 0 ? (
+                        <ResponseTime time={record.hitP50Time} />
+                      ) : (
+                        ""
+                      )}
                     </td>
-                    <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm sm:pl-6">
-                      {record.missCount} ({record.missP50Time.toFixed(0)}ms)
+                    <td className={cellRightAligned}>
+                      {record.missCount}{" "}
+                      {record.missCount > 0 ? (
+                        <ResponseTime time={record.missP50Time} />
+                      ) : (
+                        ""
+                      )}
                     </td>
-                    <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm sm:pl-6">
-                      {(record.missP50Time / record.hitP50Time).toFixed(1)}x
+                    <td className={cellRightAligned}>
+                      {record.hitP50Time > 0 ? (
+                        <SpeedBoost
+                          hitTime={record.hitP50Time}
+                          missTime={record.missP50Time}
+                        />
+                      ) : (
+                        <span className="text-slate-300">–</span>
+                      )}
                     </td>
-                    <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm sm:pl-6">
-                      Cached from headers
+                    <td className={cellRightAligned}>
+                      {record.hitCount > 0
+                        ? "Cached from headers"
+                        : "Nothing caching"}
                     </td>
                   </tr>
                 );
@@ -147,4 +151,35 @@ export default function Caching() {
       )}
     </div>
   );
+}
+
+function ResponseTime({ time }: { time: number }) {
+  let colorClassname = "text-rose-500";
+  if (time <= 200) {
+    colorClassname = "text-orange-500";
+  }
+  if (time <= 100) {
+    colorClassname = "text-emerald-500";
+  }
+
+  return <span className={colorClassname}>({time.toFixed(0)}ms)</span>;
+}
+
+function SpeedBoost({
+  hitTime,
+  missTime,
+}: {
+  hitTime: number;
+  missTime: number;
+}) {
+  const speedBoost = missTime / hitTime;
+  let colorClassname = "text-slate-500";
+  if (speedBoost >= 2) {
+    colorClassname = "text-orange-500";
+  }
+  if (speedBoost >= 5) {
+    colorClassname = "text-emerald-500";
+  }
+
+  return <span className={colorClassname}>{speedBoost.toFixed(1)}x</span>;
 }
