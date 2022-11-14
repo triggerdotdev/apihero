@@ -1,19 +1,33 @@
-name = "apihero-proxy"
+name = "apihero-proxy-dev"
 main = "dist/index.mjs"
 compatibility_date = "2022-09-30"
+
+[vars]
+LOGS_URL = "http://localhost:3001"
+LOGS_DEBUG = true
+
+[env.staging]
+name = "apihero-proxy-staging"
+routes = [
+	{ pattern = "proxy-staging.apihero.run", custom_domain = true, zone_name = "apihero.run" }
+]
+
+[env.staging.vars]
+LOGS_URL = "https://logs-staging.apihero.run"
+LOGS_DEBUG = true
+
+[env.production]
+name = "apihero-proxy"
 routes = [
 	{ pattern = "proxy.apihero.run", custom_domain = true, zone_name = "apihero.run" }
 ]
 
+[env.production.vars]
+LOGS_URL = "https://logs.apihero.run"
+LOGS_DEBUG = false
+
 [build]
 command = "node build.js"
-
-[vars]
-LOGS_URL = "https://logs.apihero.run"
-
-[env.local.vars]
-LOGS_URL = "http://localhost:3001"
-LOGS_DEBUG = true
 
 [miniflare]
 kv_persist = true
