@@ -109,6 +109,7 @@ export function LogsTable({ logs, selectedLogId, onSelected }: LogsTableProps) {
             </td>
           </tr>
         )}
+        <tr className="spacer h-[43px]"></tr>
       </tbody>
     </table>
   );
