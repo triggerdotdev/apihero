@@ -144,36 +144,16 @@ export default function Logs() {
         //   </div>
         // </div>
 
-        <div className="main-container h-full grid grid-cols-[3fr_1fr] bg-red-100">
-          <div className="col-1 grid overflow-auto grid-rows-[1fr_1fr]">
-            <div className="row-1 grid grid-rows-[1fr_2fr] overflow-auto bg-green-100">
-              <div className="row-1-1 overflow-auto bg-blue-100">
-                <div className="test-height">row-1-1</div>
-              </div>
-              <div className="row-1-2 overflow-auto bg-yellow-100">
-                <div className="test-height h-[1000px]">row-1-2</div>
-              </div>
-            </div>
-            <div className="row-2 bg-orange-100 overflow-auto grid grid-rows-[3fr_1fr]">
-              <div className="row-2-1 overflow-auto bg-lime-100">
-                <div className="test-height h-[1000px]">row-2-1</div>
-              </div>
-              <div className="row-2-2 overflow-auto bg-indigo-100">
-                <div className="test-height h-[1000px]">row-2-2</div>
-              </div>
-            </div>
+        <div className="main-container h-full grid grid-rows-[auto_3fr] bg-red-100">
+          <div className="row-1 overflow-auto bg-green-100">
+            <div className="test-height h-[150px]">Text content</div>
           </div>
-          <div className="col-2 grid grid-rows-[90px_1fr_90px] overflow-auto">
-            <div className="row-3 bg-emerald-100"></div>
-            <div className="row-4 grid grid-rows-[1fr] overflow-auto bg-stone-200">
-              <div className="row-4-1 grid grid-rows-[1fr] overflow-auto p-5">
-                <div className="text-editor grid grid-rows-[auto_1fr] overflow-auto">
-                  <div className="toolbar bg-black text-white">Toolbar</div>
-                  <div className="content overflow-auto bg-amber-200">
-                    <div className="test-height h-[1000px]">Text content</div>
-                  </div>
-                </div>
-              </div>
+          <div className="row-2 grid grid-cols-[1fr_200px] overflow-auto">
+            <div className="col-1 bg-blue-200 overflow-auto">
+              <div className="test-height h-[1000px]">Text content</div>
+            </div>
+            <div className="col-2 overflow-auto bg-stone-200">
+              <div className="test-height h-[1000px]">Text content</div>
             </div>
             <div className="row-5 bg-red-100"></div>
           </div>
