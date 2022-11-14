@@ -10,8 +10,8 @@ type LogsTableProps = {
 
 export function LogsTable({ logs, selectedLogId, onSelected }: LogsTableProps) {
   return (
-    <table className="divide-y divide-slate-300 border-l border-b border-slate-200">
-      <thead className="sticky top-[40px] bg-white outline outline-1 outline-slate-200 rounded-tl-sm">
+    <table className="divide-y divide-slate-300">
+      <thead className="sticky top-0 bg-white outline outline-1 outline-slate-200 rounded-tl-sm">
         <tr>
           <th
             scope="col"

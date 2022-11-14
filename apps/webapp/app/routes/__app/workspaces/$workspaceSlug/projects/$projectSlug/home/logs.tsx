@@ -85,77 +85,55 @@ export default function Logs() {
   return (
     <>
       {logs && (
-        // <div className="grid grid-rows-[auto_1fr]">
-        //   <div className="bg-yellow-100">
-        //     <LogsFilters logs={logs} />
-        //     <LogsTabs selected={"logs"} />
-        //   </div>
-        //   <div className="grid grid-cols-[1fr_600px] bg-orange-50 max-h-full overflow-hidden">
-        //     <div className="overflow-hidden">
-        //       <div className="flex items-center justify-between pr-2 py-[5px] bg-slate-50">
-        //         <div className="flex items-center">
-        //           <PreviousButton
-        //             disabled={
-        //               logs.previous !== undefined
-        //                 ? transition.state === "loading" ||
-        //                   transition.state === "submitting"
-        //                 : true
-        //             }
-        //             onClick={() => loadMore("previous")}
-        //           />
-
-        //           <NextButton
-        //             disabled={
-        //               logs.next !== undefined
-        //                 ? transition.state === "loading" ||
-        //                   transition.state === "submitting"
-        //                 : true
-        //             }
-        //             onClick={() => loadMore("next")}
-        //           />
-        //         </div>
-
-        //         <RefreshButton
-        //           disabled={false}
-        //           onClick={() => reload()}
-        //           lastUpdated={new Date()}
-        //         />
-        //       </div>
-        //       <div className="overflow-scroll bg-green-100">
-        //         <LogsTable
-        //           logs={logs.logs}
-        //           selectedLogId={selectedLog ?? undefined}
-        //           onSelected={onLogSelected}
-        //         />
-        //       </div>
-        //     </div>
-        //     <Resizable
-        //       position="right"
-        //       initialSize={600}
-        //       minimumSize={270}
-        //       maximumSize={950}
-        //     >
-        //       <LogViewer
-        //         log={openLog}
-        //         position={position}
-        //         setPosition={setPosition}
-        //       />
-        //     </Resizable>
-        //   </div>
-        // </div>
-
-        <div className="main-container h-full grid grid-rows-[auto_3fr] bg-red-100">
-          <div className="row-1 overflow-auto bg-green-100">
-            <div className="test-height h-[150px]">Text content</div>
+        <div className="h-full grid grid-rows-[auto_3fr]">
+          <div className="">
+            <LogsFilters logs={logs} />
+            <LogsTabs selected={"logs"} />
           </div>
-          <div className="row-2 grid grid-cols-[1fr_200px] overflow-auto">
-            <div className="col-1 bg-blue-200 overflow-auto">
-              <div className="test-height h-[1000px]">Text content</div>
+          <div className="grid grid-cols-[1fr_200px] overflow-hidden">
+            <div className="grid grid-row-[1fr_auto] overflow-hidden">
+              <div className="overflow-hidden">
+                <div className="flex items-center justify-between mt-1 pr-2 py-[5px]">
+                  <div className="flex items-center">
+                    <PreviousButton
+                      disabled={
+                        logs.previous !== undefined
+                          ? transition.state === "loading" ||
+                            transition.state === "submitting"
+                          : true
+                      }
+                      onClick={() => loadMore("previous")}
+                    />
+
+                    <NextButton
+                      disabled={
+                        logs.next !== undefined
+                          ? transition.state === "loading" ||
+                            transition.state === "submitting"
+                          : true
+                      }
+                      onClick={() => loadMore("next")}
+                    />
+                  </div>
+
+                  <RefreshButton
+                    disabled={false}
+                    onClick={() => reload()}
+                    lastUpdated={new Date()}
+                  />
+                </div>
+                <div className="overflow-auto h-full border-y border-l border-slate-200">
+                  <LogsTable
+                    logs={logs.logs}
+                    selectedLogId={selectedLog ?? undefined}
+                    onSelected={onLogSelected}
+                  />
+                </div>
+              </div>
             </div>
-            <div className="col-2 overflow-auto bg-stone-200">
-              <div className="test-height h-[1000px]">Text content</div>
+            <div className="overflow-auto bg-blue-200">
+              <div className="h-[1000px]">Resizable content</div>
             </div>
-            <div className="row-5 bg-red-100"></div>
           </div>
         </div>
       )}
@@ -190,7 +168,7 @@ function LogViewer({
 function NoLogSelected() {
   return (
     <div className="flex h-full w-full flex-col gap-2 items-center justify-center">
-      <InformationCircleIcon className="h-8 w-8 text-blue-500" />
+      <InformationCircleIcon className="h-8 w-8" />
       <Body className="text-center text-slate-600">
         Select a log to view details
       </Body>
