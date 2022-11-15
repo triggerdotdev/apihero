@@ -109,7 +109,7 @@ export function LogsTable({ logs, selectedLogId, onSelected }: LogsTableProps) {
             </td>
           </tr>
         )}
-        <tr className="spacer h-[43px]"></tr>
+        <tr className="spacer h-[39px]"></tr>
       </tbody>
     </table>
   );
