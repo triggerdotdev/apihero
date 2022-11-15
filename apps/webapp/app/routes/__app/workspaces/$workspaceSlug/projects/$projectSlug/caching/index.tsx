@@ -7,6 +7,7 @@ import { useRef, useCallback } from "react";
 import { typedjson, useTypedLoaderData } from "remix-typedjson";
 import invariant from "tiny-invariant";
 import { DateRangeSelector } from "~/components/filters/DateRangeSelector";
+import { FormField } from "~/libraries/ui/src/components/Primitives/FormField";
 import { getProjectFromSlugs } from "~/models/project.server";
 import { requireUserId } from "~/services/session.server";
 
@@ -86,23 +87,25 @@ export default function Caching() {
   }, [submit]);
 
   return (
-    <div className="p-4">
+    <div className="p-4 w-full bg-slate-50">
       <div className="pb-2">
-        <Form
-          method="get"
-          className="pb-4 flex gap-2"
-          onChange={submitForm}
-          ref={formRef}
-        >
-          <DateRangeSelector
-            searchObject={searchObject}
-            presets={[1, 7, 30, 90, 365]}
-            submitForm={submitForm}
-          />
-        </Form>
+        <FormField label={"Date range"} name={"date"}>
+          <Form
+            method="get"
+            className="pb-4 flex gap-2"
+            onChange={submitForm}
+            ref={formRef}
+          >
+            <DateRangeSelector
+              searchObject={searchObject}
+              presets={[1, 7, 30, 90, 365]}
+              submitForm={submitForm}
+            />
+          </Form>
+        </FormField>
       </div>
       {"records" in data && (
-        <table className="w-full divide-y divide-slate-300 outline outline-slate-200">
+        <table className="w-full divide-y divide-slate-300 outline outline-slate-200 rounded">
           <thead className="sticky top-0 bg-white outline outline-slate-200">
             <tr>
               <th scope="col" className={headerCell}>
@@ -120,7 +123,9 @@ export default function Caching() {
               <th scope="col" className={headerCellRightAlign}>
                 Speed boost
               </th>
-              <th scope="col" className={headerCellRightAlign}></th>
+              <th scope="col" className={headerCellRightAlign}>
+                Cache status
+              </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-200 bg-white">

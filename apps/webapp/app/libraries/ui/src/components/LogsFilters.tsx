@@ -5,6 +5,7 @@ import { ComboBox } from "./ComboBox";
 import { Input } from "./Primitives/Input";
 import { statusCodes } from "./StatusCode";
 import { DateRangeSelector } from "~/components/filters/DateRangeSelector";
+import { FormField } from "./Primitives/FormField";
 
 export function LogsFilters({ logs }: { logs: GetLogsSuccessResponse }) {
   const submit = useSubmit();
@@ -58,23 +59,6 @@ export function LogsFilters({ logs }: { logs: GetLogsSuccessResponse }) {
   );
 }
 
-function FormField({
-  label,
-  name,
-  children,
-}: {
-  label: string;
-  name: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="sm:col-span-2">
-      <Label label={label} htmlFor={name} />
-      <div className="mt-1">{children}</div>
-    </div>
-  );
-}
-
 function FilterTextField({
   name,
   label,
@@ -95,17 +79,6 @@ function FilterTextField({
         placeholder={placeholder}
       />
     </FormField>
-  );
-}
-
-function Label({ label, htmlFor }: { label: string; htmlFor: string }) {
-  return (
-    <label
-      className="block text-xs uppercase font-medium text-slate-500 tracking-wide"
-      htmlFor={htmlFor}
-    >
-      {label}
-    </label>
   );
 }
 
