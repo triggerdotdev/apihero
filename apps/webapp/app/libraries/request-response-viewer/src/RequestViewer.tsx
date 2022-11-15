@@ -34,13 +34,6 @@ export function RequestViewer({
               </StyledTabs.Underlined>
               <StyledTabs.Underlined>Headers</StyledTabs.Underlined>
             </div>
-            <div className="flex w-full max-w-fit items-center">
-              <ResponseInfo
-                status={status}
-                duration={duration}
-                responseSize={responseSize}
-              />
-            </div>
           </div>
         </Tab.List>
         <Tab.Panels className="flex-grow overflow-y-auto">

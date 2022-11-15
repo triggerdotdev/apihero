@@ -1,6 +1,7 @@
 import { Tab } from "@headlessui/react";
 import type { HttpMethod, Log } from "internal-logs";
 import { StyledTabs } from "~/libraries/common";
+import { ResponseInfo } from "~/libraries/ui";
 import { RequestViewer } from "./RequestViewer";
 
 type RequestResponseViewerProps = {
@@ -10,18 +11,27 @@ type RequestResponseViewerProps = {
 export function RequestResponseViewer({ log }: RequestResponseViewerProps) {
   return (
     <Tab.Group defaultIndex={1}>
-      <RequestUrlBar
-        method={log.method}
-        url={`${log.baseUrl}${log.path}${log.search ? log.search : ``}`}
-      />
+      <div className="bg-slate-50 p-1">
+        <RequestUrlBar
+          method={log.method}
+          url={`${log.baseUrl}${log.path}${log.search ? log.search : ``}`}
+        />
+      </div>
       <Tab.List
         className={
-          "flex sticky top-[1px] items-center justify-between border-b border-slate-200 bg-slate-50"
+          "flex sticky items-center justify-between border-b border-slate-200 bg-slate-50"
         }
       >
         <div className="-mb-px flex">
           <StyledTabs.Classic>Request</StyledTabs.Classic>
           <StyledTabs.Classic>Response</StyledTabs.Classic>
+        </div>
+        <div className="flex w-full max-w-fit items-center">
+          <ResponseInfo
+            status={log.statusCode}
+            duration={log.gatewayDuration}
+            responseSize={log.responseSize}
+          />
         </div>
       </Tab.List>
       <Tab.Panels className="h-full">
@@ -60,11 +70,11 @@ export function RequestUrlBar({
   url: string;
 }) {
   return (
-    <div className="m-1 flex min-w-0 items-baseline overflow-hidden rounded-md border border-slate-200 bg-white p-2 gap-1">
+    <div className="flex min-w-0 items-baseline rounded-md border border-slate-200 bg-white p-2 gap-1">
       <span className="shrink-0 text-xs text-slate-600 font-semibold">
         {method}
       </span>
-      <span className="flex-1 select-all overflow-hidden overflow-ellipsis whitespace-nowrap text-sm text-slate-900">
+      <span className="flex-1 select-all overflow-ellipsis whitespace-nowrap text-sm text-slate-900">
         {url}
       </span>
     </div>

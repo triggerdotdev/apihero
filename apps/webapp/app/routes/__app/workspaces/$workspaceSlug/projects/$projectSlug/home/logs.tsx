@@ -146,7 +146,7 @@ export default function Logs() {
 
 function LogViewer({ log }: { log: Log | undefined }) {
   return (
-    <div className="h-full bg-white mt-px">
+    <div className="h-full bg-white border-t border-slate-200">
       {log ? <RequestResponseViewer log={log} /> : <NoLogSelected />}
     </div>
   );
