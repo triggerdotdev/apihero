@@ -10,14 +10,19 @@ const timeAgo = new TimeAgo("en-US");
 type PaginationButtonProps = {
   onClick: () => void;
   disabled?: boolean;
+  className?: string;
 };
 
-export function NextButton({ onClick, disabled }: PaginationButtonProps) {
+export function NextButton({
+  onClick,
+  disabled,
+  className,
+}: PaginationButtonProps) {
   return (
     <PaginationButton
       onClick={onClick}
       disabled={disabled}
-      className="rounded-r-md"
+      className={`rounded-r-md ${className}`}
     >
       Next
       <ChevronRightIcon className="h-4 w-4" />
