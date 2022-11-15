@@ -1,6 +1,6 @@
 import { EditorView } from "@codemirror/view";
 import type { Extension } from "@codemirror/state";
-import { HighlightStyle } from "@codemirror/highlight";
+import { HighlightStyle } from "@codemirror/language";
 import { tagHighlighter, tags } from "@lezer/highlight";
 import { syntaxHighlighting } from "@codemirror/language";
 
@@ -158,7 +158,7 @@ export function darkTheme(): Extension {
     { tag: tags.invalid, color: invalid },
   ]);
 
-  return [jsonHeroEditorTheme, jsonHeroHighlightStyle];
+  return [jsonHeroEditorTheme, syntaxHighlighting(jsonHeroHighlightStyle)];
 }
 
 export function lightTheme(): Extension[] {

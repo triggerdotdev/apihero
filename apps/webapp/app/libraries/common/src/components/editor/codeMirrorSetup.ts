@@ -3,14 +3,14 @@ import {
   drawSelection,
   highlightActiveLine,
   dropCursor,
+  lineNumbers,
+  highlightActiveLineGutter,
 } from "@codemirror/view";
 import type { Extension } from "@codemirror/state";
-import { highlightActiveLineGutter } from "@codemirror/gutter";
-import { bracketMatching } from "@codemirror/matchbrackets";
 import { highlightSelectionMatches } from "@codemirror/search";
 import { json as jsonLang } from "@codemirror/lang-json";
-import { lineNumbers } from "@codemirror/gutter";
 import { closeBrackets } from "@codemirror/autocomplete";
+import { bracketMatching } from "@codemirror/language";
 
 export function getPreviewSetup(): Array<Extension> {
   return [
