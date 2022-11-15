@@ -1,6 +1,5 @@
 import {
   BoltIcon,
-  Cog8ToothIcon,
   FireIcon,
   RectangleGroupIcon,
 } from "@heroicons/react/24/outline";
