@@ -13,7 +13,7 @@ export function StarCount({ owner, repo }: { owner: string; repo: string }) {
     },
   });
 
-  if (isLoading) return <>Loading..."</>;
+  if (isLoading) return <>Loading...</>;
 
   if (error) return <>Error!</>;
 
