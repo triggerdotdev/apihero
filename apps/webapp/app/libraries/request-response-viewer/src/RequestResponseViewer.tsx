@@ -64,7 +64,7 @@ export function RequestUrlBar({
   return (
     <>
       {url.length <= 150 ? (
-        <div className="mr-1 ml-1.5 flex min-w-0 max-w-fit flex-1 items-baseline overflow-hidden rounded-md border border-slate-200 bg-white px-2 py-1">
+        <div className="mr-1 ml-1.5 flex min-w-full max-w-fit flex-1 items-baseline overflow-hidden rounded-md border border-slate-200 bg-white px-2 py-1">
           <span className="mr-1 shrink-0 text-xs text-slate-900">{method}</span>
           <span className="flex-1 select-all overflow-hidden overflow-ellipsis whitespace-nowrap text-sm text-slate-900">
             {url}
