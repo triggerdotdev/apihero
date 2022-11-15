@@ -8,8 +8,6 @@ import {
   NextButton,
 } from "~/libraries/common/src/components/Pagination";
 import { useLogs } from "~/libraries/common/src/hooks/useLogs";
-import type { PanelPosition } from "~/libraries/common/src/hooks/usePanelPosition";
-import { usePanelPosition } from "~/libraries/common/src/hooks/usePanelPosition";
 import { LogsTable } from "~/libraries/logging/LogsTable";
 import { RequestResponseViewer } from "~/libraries/request-response-viewer";
 import { LogsFilters } from "~/libraries/ui/src/components/LogsFilters";
@@ -133,7 +131,10 @@ export default function Logs() {
                 </div>
               </div>
             </div>
-            <ResizableChild showHandle className="overflow-auto bg-blue-200">
+            <ResizableChild
+              showHandle
+              className="overflow-auto border-b-2 border-slate-200"
+            >
               <LogViewer log={openLog} />
             </ResizableChild>
           </Resizable>
@@ -153,8 +154,8 @@ function LogViewer({ log }: { log: Log | undefined }) {
 
 function NoLogSelected() {
   return (
-    <div className="flex h-full w-full flex-col gap-2 items-center justify-center">
-      <InformationCircleIcon className="h-8 w-8" />
+    <div className="flex h-full w-full flex-col gap-2 items-center justify-center border-b-2 border-slate-200">
+      <InformationCircleIcon className="h-8 w-8 text-slate-600" />
       <Body className="text-center text-slate-600">
         Select a log to view details
       </Body>

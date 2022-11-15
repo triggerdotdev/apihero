@@ -66,62 +66,6 @@ export const loader = async ({ request, params }: LoaderArgs) => {
     return typedjson({ project, logs });
   }
 };
-//   const { workspaceSlug, projectSlug } = params;
-//   invariant(workspaceSlug, "workspaceSlug not found");
-//   invariant(projectSlug, "projectSlug not found");
-
-//   const formData = await request.formData();
-
-//   const toggleFormSchema = z.object({
-//     type: z.literal("toggle"),
-//     enabled: z.preprocess((a) => (a as string) === "true", z.boolean()),
-//     clientId: z.string(),
-//   });
-//   const updateTimeSchema = z.object({
-//     type: z.literal("updateTime"),
-//     time: z.preprocess(
-//       (a) => parseFloat(a as string),
-//       z.number().positive().min(0)
-//     ),
-//     clientId: z.string(),
-//   });
-//   const schema = z.discriminatedUnion("type", [
-//     toggleFormSchema,
-//     updateTimeSchema,
-//   ]);
-
-//   const result = schema.safeParse(Object.fromEntries(formData));
-
-//   if (!result.success) {
-//     return typedjson(
-//       {
-//         errors: result.error.format(),
-//       },
-//       { status: 400 }
-//     );
-//   }
-
-//   if (result.data.type === "toggle") {
-//     await updateCacheSettings({
-//       clientId: result.data.clientId,
-//       enabled: result.data.enabled,
-//     });
-//   } else {
-//     await updateCacheSettings({
-//       clientId: result.data.clientId,
-//       enabled: true,
-//       ttl: result.data.time,
-//     });
-//   }
-
-//   await syncIntegrationsSettingsWithGateway({
-//     workspaceSlug,
-//     projectSlug,
-//     clientId: result.data.clientId,
-//   });
-
-//   return typedjson({});
-// };
 
 export default function Page() {
   const data = useTypedLoaderData<typeof loader>();
