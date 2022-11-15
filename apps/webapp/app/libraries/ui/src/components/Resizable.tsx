@@ -109,13 +109,15 @@ export function ResizableChild({
   }
 
   return (
-    <div className={`relative flex h-full flex-none border-slate-200 border-l`}>
+    <div
+      className={`relative flex h-full flex-none overflow-x-auto border-slate-200 border-l`}
+    >
       <div className={"flex-1"} style={{ width: "inherit" }}>
         {children}
       </div>
       <div
         className={
-          "absolute -left-[5px] z-40 my-0 h-full w-1.5 cursor-col-resize transition-all hover:bg-blue-500 hover:opacity-100"
+          "absolute left-0 z-40 my-0 h-full w-1.5 cursor-col-resize transition hover:bg-blue-500 hover:opacity-100"
         }
         onMouseDown={handleDragStart}
       ></div>
