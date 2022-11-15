@@ -8,7 +8,7 @@ npm install @apihero/js
 
 ## Usage
 
-### Node
+### Node / Server
 
 Automatically proxy all 3rd-party requests through API Hero in Node.js
 
@@ -25,11 +25,6 @@ proxy.start();
 
 // You can always stop intercepting requests
 proxy.stop();
-
-// You can also pause during the execution of a callback
-proxy.pause(async () => {
-  await makeSomeSuperSecretCall();
-});
 ```
 
 You can also setup matchers for only capturing some traffic:
@@ -64,6 +59,26 @@ const proxy = setupProxy({
 
 // Start intercepting requests and sending them to proxy.apihero.run
 proxy.start();
+```
+
+### Cloudflare Workers
+
+If you would like to use API Hero in a Cloudflare Worker environment, simply change the import above from `@apihero/js/node` to `@apihero/js`, like so:
+
+```typescript
+import { setupProxy } from "@apihero/js";
+
+// This will now intercept requests made to `globalThis.fetch` and proxy them through proxy.apihero.run
+const proxy = setupProxy({
+  projectKey: "hero_123abc",
+  server: "proxy.apihero.run",
+});
+
+// Start intercepting requests and sending them to proxy.apihero.run
+proxy.start();
+
+// You can always stop intercepting requests
+proxy.stop();
 ```
 
 ### Browser
