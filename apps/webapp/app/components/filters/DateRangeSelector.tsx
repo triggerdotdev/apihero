@@ -6,6 +6,10 @@ import { DateRange } from "react-date-range";
 import type { DateRange as MyDateRange } from "~/libraries/common";
 import { utcNow } from "~/libraries/common";
 import { addDays } from "~/libraries/common";
+import {
+  PrimaryButton,
+  SecondaryButton,
+} from "~/libraries/ui/src/components/Buttons/Buttons";
 
 type DateRangeSelectorProps = {
   searchObject: Record<string, string>;
@@ -101,62 +105,60 @@ export function DateRangeSelector({
         <ChevronDownIcon className="ml-1 h-5 w-5 text-slate-500 transition group-hover:text-slate-600" />
       </button>
       {showPicker && (
-        <div className="absolute top-8 left-0 z-50 mr-2 flex items-stretch rounded-md border border-slate-300 bg-white">
-          <div className="flex w-40 flex-col items-stretch border-r border-slate-200">
-            {presets.map((days) => {
-              return (
-                <PresetButton
-                  key={days}
-                  label={lastDaysTitle(days)}
-                  selected={
-                    pendingRange.mode === "last" && pendingRange.days === days
-                  }
-                  onClick={() => {
-                    setPreset(days);
-                  }}
-                />
-              );
-            })}
-            <PresetButton
-              label={"Custom"}
-              selected={pendingRange.mode === "custom"}
-              onClick={() => {
-                setPreset(0);
-              }}
-            />
-          </div>
-          <div>
-            <DateRange
-              onChange={(item) => rangeChanged(item["range"])}
-              minDate={addDays(new Date(), -180)}
-              maxDate={new Date()}
-              scroll={{ enabled: true }}
-              weekStartsOn={1}
-              showDateDisplay={false}
-              ranges={[
-                {
-                  startDate: pendingRange.start,
-                  endDate: pendingRange.end,
-                  key: "range",
-                },
-              ]}
-            />
-            <div className="flex justify-end gap-2 border-t border-slate-300 p-3">
-              <button
-                onClick={cancelDate}
-                className="rounded-md bg-slate-500 p-2 text-sm text-white"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={saveDate}
-                className="rounded-md bg-emerald-500 p-2 text-sm text-white"
-              >
-                Save date
-              </button>
+        <>
+          <div className="absolute top-11 overflow-hidden -left-20 z-50 mr-2 flex items-stretch rounded-md border border-slate-300 bg-white">
+            <div className="flex w-40 flex-col items-stretch border-r border-slate-200">
+              {presets.map((days) => {
+                return (
+                  <PresetButton
+                    key={days}
+                    label={lastDaysTitle(days)}
+                    selected={
+                      pendingRange.mode === "last" && pendingRange.days === days
+                    }
+                    onClick={() => {
+                      setPreset(days);
+                    }}
+                  />
+                );
+              })}
+              <PresetButton
+                label={"Custom"}
+                selected={pendingRange.mode === "custom"}
+                onClick={() => {
+                  setPreset(0);
+                }}
+              />
+            </div>
+            <div>
+              <DateRange
+                onChange={(item) => rangeChanged(item["range"])}
+                minDate={addDays(new Date(), -180)}
+                maxDate={new Date()}
+                scroll={{ enabled: true }}
+                weekStartsOn={1}
+                showDateDisplay={false}
+                ranges={[
+                  {
+                    startDate: pendingRange.start,
+                    endDate: pendingRange.end,
+                    key: "range",
+                  },
+                ]}
+              />
+              <div className="flex justify-end gap-2 border-t border-slate-300 p-3">
+                <SecondaryButton onClick={cancelDate}>Cancel</SecondaryButton>
+                <PrimaryButton onClick={saveDate}>Save date</PrimaryButton>
+              </div>
             </div>
           </div>
-        </div>
+          <button
+            onClick={cancelDate}
+            className="fixed h-screen w-screen top-0 left-0 z-30 hover:cursor-default"
+          >
+            Cancel
+          </button>
+        </>
       )}
     </div>
   );
@@ -172,8 +174,10 @@ function PresetButton({ label, onClick, selected }: PresetButtonProps) {
   return (
     <button
       className={classNames(
-        "block p-3 text-left text-sm",
-        selected ? "bg-slate-300" : "bg-white"
+        "block p-3 text-left text-sm transition rounded mx-1 my-0.5",
+        selected
+          ? "bg-blue-500 text-white hover:bg-blue-600"
+          : "bg-white text-slate-600 hover:bg-slate-100"
       )}
       onClick={onClick}
     >
