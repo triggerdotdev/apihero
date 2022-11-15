@@ -13,7 +13,7 @@ routes = [
 ]
 
 [env.staging.vars]
-LOGS_URL = "https://apihero-logs-staging.fly.dev"
+LOGS_URL = "https://ah-logs-staging.fly.dev"
 LOGS_DEBUG = true
 
 [env.production]
