@@ -37,7 +37,7 @@ jobs:
         run: pnpm install --ignore-scripts
 
       - name: 🔬 Lint
-        run: npm run lint
+        run: pnpm run lint --filter webapp...
 
   typecheck:
     name: ʦ TypeScript
@@ -66,10 +66,10 @@ jobs:
         run: pnpm install --ignore-scripts
 
       - name: 🛠 Setup PrismaClient
-        run: npm run generate
+        run: pnpm run generate --filter=webapp
 
       - name: 🔎 Type check
-        run: pnpm run typecheck
+        run: pnpm run typecheck --filter webapp...
 
   build:
     name: 🐳 Build
