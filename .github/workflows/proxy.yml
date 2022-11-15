@@ -1,6 +1,11 @@
 name: 🚀 Deploy Proxy
 on:
   push:
+    paths:
+      - "apps/proxy/**"
+      - "packages/internal-logs/**"
+      - "packages/constants-js/**"
+      - ".github/workflows/proxy.yml"
     branches:
       - main
       - dev

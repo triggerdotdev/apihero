@@ -1,6 +1,9 @@
 name: 🚀 WebApp CI
 on:
   push:
+    paths:
+      - "apps/webapp/**"
+      - ".github/workflows/webapp.yml"
     branches:
       - dev
       - legacy

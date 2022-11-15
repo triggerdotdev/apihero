@@ -1,6 +1,11 @@
 name: 🚀 Logs CI
 on:
   push:
+    paths:
+      - "apps/logs/**"
+      - "packages/internal-logs/**"
+      - "packages/constants-js/**"
+      - ".github/workflows/logs.yml"
     branches:
       - dev
       - main
