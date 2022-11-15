@@ -1,5 +1,16 @@
 # @apihero/js
 
+## 1.2.0
+
+### Minor Changes
+
+- 8f3dd26: Add support for API Hero in Cloudflare Workers (or any other web-fetch environment)
+
+### Patch Changes
+
+- Updated dependencies [8f3dd26]
+  - @apihero/interceptors-js@1.0.2
+
 ## 1.1.1
 
 ### Patch Changes
