@@ -54,7 +54,7 @@ export default function ProjectMenu() {
           </ul>
           <ul>
             <li>
-              <NavLink
+              {/* <NavLink
                 to="settings"
                 className={({ isActive }) =>
                   isActive ? activeStyle : defaultStyle
@@ -62,7 +62,7 @@ export default function ProjectMenu() {
               >
                 <Cog8ToothIcon className="h-10 w-10" />
                 <span className="">Settings</span>
-              </NavLink>
+              </NavLink> */}
             </li>
           </ul>
         </nav>
