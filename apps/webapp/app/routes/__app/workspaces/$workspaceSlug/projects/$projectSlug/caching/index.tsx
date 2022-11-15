@@ -67,10 +67,10 @@ export const loader = async ({ request, params }: LoaderArgs) => {
   }
 };
 
-const headerCell = "px-2 py-3 text-left text-xs font-semibold text-slate-900";
+const headerCell = "px-4 py-5 text-left text-base font-semibold text-slate-600";
 const headerCellRightAlign = classNames(headerCell, "text-right");
 
-const cell = "whitespace-nowrap py-2 px-2 text-xs text-slate-500";
+const cell = "whitespace-nowrap py-4 px-4 text-sm text-slate-600";
 const cellLeftAligned = classNames(cell, "text-left");
 const cellRightAligned = classNames(cell, "text-right");
 
@@ -105,8 +105,8 @@ export default function Caching() {
         </FormField>
       </div>
       {"records" in data && (
-        <table className="w-full divide-y divide-slate-300 outline outline-slate-200 rounded">
-          <thead className="sticky top-0 bg-white outline outline-slate-200">
+        <table className="w-full divide-y divide-slate-300 outline outline-slate-200 rounded-md">
+          <thead className="sticky top-0 bg-white outline outline-slate-200 rounded-t-md">
             <tr>
               <th scope="col" className={headerCell}>
                 API

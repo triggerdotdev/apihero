@@ -94,9 +94,9 @@ export function DateRangeSelector({
       )}
       <button
         onClick={() => setShowPicker((s) => !s)}
-        className="group flex items-center rounded-md border border-slate-200 bg-white py-2 px-2 text-sm text-slate-500 transition hover:border-slate-300 hover:text-slate-600"
+        className="group flex items-center rounded-md border border-slate-200 bg-white py-2 px-2.5 text-sm text-slate-500 transition hover:border-slate-300 hover:text-slate-600"
       >
-        <CalendarIcon className="mr-1 h-3.5 w-3.5 text-slate-500 transition group-hover:text-slate-600" />
+        <CalendarIcon className="mr-1.5 h-4 w-4 text-slate-500 transition group-hover:text-slate-600" />
         <span>{pickerTitle(currentRange)}</span>
         <ChevronDownIcon className="ml-1 h-5 w-5 text-slate-500 transition group-hover:text-slate-600" />
       </button>
