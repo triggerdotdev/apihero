@@ -22,5 +22,9 @@
   },
   "apihero": {
     "workerDirectory": "public"
+  },
+  "devDependencies": {
+    "eslint": "^8.24.0",
+    "eslint-config-next": "^13.0.3"
   }
 }
