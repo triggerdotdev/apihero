@@ -10,6 +10,10 @@ type RequestResponseViewerProps = {
 export function RequestResponseViewer({ log }: RequestResponseViewerProps) {
   return (
     <Tab.Group defaultIndex={1}>
+      <RequestUrlBar
+        method={log.method}
+        url={`${log.baseUrl}${log.path}${log.search ? log.search : ``}`}
+      />
       <Tab.List
         className={
           "flex sticky top-[1px] items-center justify-between border-b border-slate-200 bg-slate-50"
@@ -19,11 +23,6 @@ export function RequestResponseViewer({ log }: RequestResponseViewerProps) {
           <StyledTabs.Classic>Request</StyledTabs.Classic>
           <StyledTabs.Classic>Response</StyledTabs.Classic>
         </div>
-        <RequestUrlBar
-          method={log.method}
-          url={`${log.baseUrl}${log.path}${log.search ? log.search : ``}`}
-        />
-        <div></div>
       </Tab.List>
       <Tab.Panels className="h-full">
         <Tab.Panel className={"h-full p-4"}>
@@ -61,22 +60,13 @@ export function RequestUrlBar({
   url: string;
 }) {
   return (
-    <>
-      {url.length <= 150 ? (
-        <div className="mr-1 ml-1.5 flex max-w-fit flex-1 items-baseline overflow-hidden rounded-md border border-slate-200 bg-white px-2 py-1">
-          <span className="mr-1 shrink-0 text-xs text-slate-600">{method}</span>
-          <span className="flex-1 select-all overflow-hidden overflow-ellipsis whitespace-nowrap text-sm text-slate-600">
-            {url}
-          </span>
-        </div>
-      ) : (
-        <div className="mr-1 ml-1.5 flex min-w-0 max-w-[700px] flex-1 items-baseline overflow-hidden rounded-md border border-slate-200 bg-white px-2 py-1">
-          <span className="mr-1 shrink-0 text-xs text-slate-600">{method}</span>
-          <span className="flex-1 select-all overflow-hidden overflow-ellipsis whitespace-nowrap text-sm text-slate-900">
-            {url}
-          </span>
-        </div>
-      )}
-    </>
+    <div className="m-1 flex min-w-0 items-baseline overflow-hidden rounded-md border border-slate-200 bg-white p-2 gap-1">
+      <span className="shrink-0 text-xs text-slate-600 font-semibold">
+        {method}
+      </span>
+      <span className="flex-1 select-all overflow-hidden overflow-ellipsis whitespace-nowrap text-sm text-slate-900">
+        {url}
+      </span>
+    </div>
   );
 }
