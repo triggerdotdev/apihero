@@ -2,12 +2,12 @@
 /* tslint:disable */
 
 /**
- * Proxy Service Worker (1.0.0).
+ * Proxy Service Worker (1.2.0).
  * @see https://github.com/apihero-run/apihero
  * - Please do NOT modify this file.
  */
 
-const INTEGRITY_CHECKSUM = "000839f72e658ce7c2b6e8d8561a3dd0";
+const INTEGRITY_CHECKSUM = "bad2cff9bae58d052e7ad9ebd0e8cb29";
 const activeClientIds = new Set();
 
 self.addEventListener("install", function () {
@@ -51,17 +51,17 @@ self.addEventListener("message", async function (event) {
       break;
     }
 
-    case "MOCK_ACTIVATE": {
+    case "PROXY_ACTIVATE": {
       activeClientIds.add(clientId);
 
       sendToClient(client, {
-        type: "MOCKING_ENABLED",
+        type: "PROXYING_ENABLED",
         payload: true,
       });
       break;
     }
 
-    case "MOCK_DEACTIVATE": {
+    case "PROXY_DEACTIVATE": {
       activeClientIds.delete(clientId);
       break;
     }
@@ -115,15 +115,6 @@ self.addEventListener("fetch", function (event) {
 
   event.respondWith(
     handleRequest(event, requestId).catch((error) => {
-      if (error.name === "NetworkError") {
-        console.warn(
-          '[@apihero/js] Successfully emulated a network error for the "%s %s" request.',
-          request.method,
-          request.url
-        );
-        return;
-      }
-
       // At this point, any exception indicates an issue with the original request/response.
       console.error(
         `\
@@ -138,32 +129,15 @@ self.addEventListener("fetch", function (event) {
 
 async function handleRequest(event, requestId) {
   const client = await resolveMainClient(event);
-  const response = await getResponse(event, client, requestId);
 
-  // Send back the response clone for the "response:*" life-cycle events.
-  // Ensure @apihero/js is active and ready to handle the message, otherwise
-  // this message will pend indefinitely.
-  if (client && activeClientIds.has(client.id)) {
-    (async function () {
-      const clonedResponse = response.clone();
-      sendToClient(client, {
-        type: "RESPONSE",
-        payload: {
-          requestId,
-          type: clonedResponse.type,
-          ok: clonedResponse.ok,
-          status: clonedResponse.status,
-          statusText: clonedResponse.statusText,
-          body:
-            clonedResponse.body === null ? null : await clonedResponse.text(),
-          headers: Object.fromEntries(clonedResponse.headers.entries()),
-          redirected: clonedResponse.redirected,
-        },
-      });
-    })();
+  try {
+    const response = await getResponse(event, client, requestId);
+
+    return response;
+  } catch (e) {
+    console.error(`[@apihero/js] Error`, e);
+    throw e;
   }
-
-  return response;
 }
 
 // Resolve the main client for the given event.
@@ -202,11 +176,11 @@ async function getResponse(event, client, requestId) {
     // (i.e. its body has been read and sent to the client).
     const headers = Object.fromEntries(clonedRequest.headers.entries());
 
-    // Remove MSW-specific request headers so the bypassed requests
+    // Remove APIHero-specific request headers so the bypassed requests
     // comply with the server's CORS preflight check.
     // Operate with the headers as an object because request "Headers"
     // are immutable.
-    delete headers["x-msw-bypass"];
+    delete headers["x-ah-bypass"];
 
     return fetch(clonedRequest, { headers });
   }
@@ -218,7 +192,7 @@ async function getResponse(event, client, requestId) {
 
   // Bypass initial page load requests (i.e. static assets).
   // The absence of the immediate/parent client in the map of the active clients
-  // means that MSW hasn't dispatched the "MOCK_ACTIVATE" event yet
+  // means that MSW hasn't dispatched the "PROXY_ACTIVATE" event yet
   // and is not ready to handle requests.
   if (!activeClientIds.has(client.id)) {
     return passthrough();
@@ -226,7 +200,14 @@ async function getResponse(event, client, requestId) {
 
   // Bypass requests with the explicit bypass header.
   // Such requests can be issued by "ctx.fetch()".
-  if (request.headers.get("x-msw-bypass") === "true") {
+  if (request.headers.get("x-ah-bypass") === "true") {
+    return passthrough();
+  }
+
+  const clientUrl = new URL(client.url);
+  const requestUrl = new URL(request.url);
+
+  if (clientUrl.origin === requestUrl.origin) {
     return passthrough();
   }
 
@@ -238,36 +219,16 @@ async function getResponse(event, client, requestId) {
       url: request.url,
       method: request.method,
       headers: Object.fromEntries(request.headers.entries()),
-      cache: request.cache,
-      mode: request.mode,
-      credentials: request.credentials,
-      destination: request.destination,
-      integrity: request.integrity,
-      redirect: request.redirect,
-      referrer: request.referrer,
-      referrerPolicy: request.referrerPolicy,
-      body: await request.text(),
-      bodyUsed: request.bodyUsed,
-      keepalive: request.keepalive,
     },
   });
 
   switch (clientMessage.type) {
-    case "MOCK_RESPONSE": {
-      return respondWithMock(clientMessage.data);
+    case "PROXY_REQUEST": {
+      return requestWith(clonedRequest, clientMessage.data);
     }
 
-    case "MOCK_NOT_FOUND": {
+    case "PROXY_BYPASS": {
       return passthrough();
-    }
-
-    case "NETWORK_ERROR": {
-      const { name, message } = clientMessage.data;
-      const networkError = new Error(message);
-      networkError.name = name;
-
-      // Rejecting a "respondWith" promise emulates a network error.
-      throw networkError;
     }
   }
 
@@ -290,13 +251,70 @@ function sendToClient(client, message) {
   });
 }
 
-function sleep(timeMs) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, timeMs);
-  });
+async function requestWith(request, modifiedRequest) {
+  const integratedRequest = await integrateModifiedRequest(
+    request,
+    modifiedRequest
+  );
+
+  const response = await fetch(integratedRequest);
+
+  return response;
 }
 
-async function respondWithMock(response) {
-  await sleep(response.delay);
-  return new Response(response.body, response);
+async function integrateModifiedRequest(request, modifiedRequest) {
+  const method = modifiedRequest.method ?? request.method;
+  const headers = integrateModifiedHeaders(
+    request.headers,
+    modifiedRequest.headers
+  );
+
+  const body = request.body !== null ? await request.text() : null;
+
+  const newRequest = {
+    method,
+    headers,
+    body,
+    cache: request.cache,
+    mode: request.mode,
+    credentials: request.credentials,
+    redirect: request.redirect,
+    referrer: request.referrer,
+    referrerPolicy: request.referrerPolicy,
+    integrity: request.integrity,
+    keepalive: request.keepalive,
+    signal: request.signal,
+    duplex: "half",
+  };
+
+  return new Request(modifiedRequest.url ?? request.url, newRequest);
+}
+
+function integrateModifiedHeaders(headers, modifiedHeaders) {
+  if (!modifiedHeaders) {
+    headers.add("x-ah-bypass", "true");
+    return headers;
+  }
+
+  const normalizedHeaders = recordToHeaders(modifiedHeaders);
+
+  const newHeaders = new Headers(headers);
+
+  normalizedHeaders.forEach((value, name) => {
+    newHeaders.set(name, value);
+  });
+
+  newHeaders.set("x-ah-bypass", "true");
+
+  return newHeaders;
+}
+
+function recordToHeaders(recordHeaders) {
+  const headers = new Headers();
+
+  Object.entries(recordHeaders).forEach(([name, value]) => {
+    headers.set(name, value);
+  });
+
+  return headers;
 }
