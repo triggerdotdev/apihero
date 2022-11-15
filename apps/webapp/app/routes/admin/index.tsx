@@ -1,13 +1,8 @@
 import { Form } from "@remix-run/react";
-import type { ActionArgs } from "@remix-run/server-runtime";
 import { typedjson, useTypedLoaderData } from "remix-typedjson";
-import { z } from "zod";
 import { SecondaryButton } from "~/libraries/common";
 import { sorted } from "~/libraries/common/src/multi-sort";
 import { adminGetUsers } from "~/models/admin.server";
-import { syncIntegrationsSettingsWithGateway } from "~/models/gateway.server";
-import { getProjectFromSlugs } from "~/models/project.server";
-import { getWorkspacesWithProjects } from "~/models/workspace.server";
 
 export async function loader() {
   const dbUsers = await adminGetUsers();
@@ -72,48 +67,6 @@ export async function loader() {
   return typedjson({ users: sortedUsers });
 }
 
-export async function action({ request }: ActionArgs) {
-  if (request.method != "POST") {
-    return { status: 405 };
-  }
-
-  const formPayload = Object.fromEntries(await request.formData());
-
-  const { userId, perform } = z
-    .object({ userId: z.string(), perform: z.string() })
-    .parse(formPayload);
-
-  if (perform === "sync") {
-    const projectWorkspaces = await getWorkspacesWithProjects({ userId });
-
-    const projects = projectWorkspaces.flatMap((workspace) =>
-      workspace.projects.map((project) => ({
-        projectSlug: project.slug,
-        workspaceSlug: workspace.slug,
-      }))
-    );
-
-    for (const project of projects) {
-      const fullProject = await getProjectFromSlugs({
-        workspaceSlug: project.workspaceSlug,
-        slug: project.projectSlug,
-      });
-
-      if (fullProject == null) continue;
-
-      for (const client of fullProject.httpClients) {
-        await syncIntegrationsSettingsWithGateway({
-          workspaceSlug: project.workspaceSlug,
-          projectSlug: project.projectSlug,
-          clientId: client.id,
-        });
-      }
-    }
-
-    return { success: true };
-  }
-}
-
 const headerClassName =
   "py-3 px-2 pr-3 text-xs font-semibold leading-tight text-slate-900 text-left";
 const cellClassName = "whitespace-nowrap px-2 py-2 text-xs text-slate-500";
@@ -157,9 +110,6 @@ export default function AdminDashboardRoute() {
               <th scope="col" className={headerClassName}>
                 Admin?
               </th>
-              <th scope="col" className={headerClassName}>
-                Sync with gateway
-              </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-200 bg-white">
@@ -186,18 +136,6 @@ export default function AdminDashboardRoute() {
                   <td className={cellClassName}>{user.requestsCount}</td>
                   <td className={cellClassName}>{user.id}</td>
                   <td className={cellClassName}>{user.admin ? "✅" : ""}</td>
-                  <td>
-                    <Form method="post">
-                      <input type="hidden" name="userId" value={user.id} />
-                      <SecondaryButton
-                        type="submit"
-                        name="perform"
-                        value="sync"
-                      >
-                        Sync
-                      </SecondaryButton>
-                    </Form>
-                  </td>
                 </tr>
               );
             })}
