@@ -110,7 +110,10 @@ export function ResizableChild({
 
   return (
     <div
-      className={`relative flex h-full flex-none overflow-x-auto border-slate-200 border-l`}
+      className={classNames(
+        `relative flex h-full flex-none border-slate-200 border-l`,
+        className
+      )}
     >
       <div className={"flex-1"} style={{ width: "inherit" }}>
         {children}
