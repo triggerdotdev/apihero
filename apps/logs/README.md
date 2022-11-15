@@ -15,26 +15,28 @@ Prior to your first deployment, you'll need to do a few things:
 2. Create two apps on Fly, one for staging and one for production:
 
 ```
-fly apps create apihero-logs
-fly apps create apihero-logs-staging
+fly apps create ah-logs
+fly regions set mia -a ah-logs
+fly apps create ah-logs-staging
+fly regions set mia -a ah-logs-staging
 ```
 
-> **Note:** Once you've successfully created an app, double-check the `fly.toml` file to ensure that the `app` key is the name of the production app you created. This Stack [automatically appends a unique suffix at init](https://github.com/remix-run/blues-stack/blob/4c2f1af416b539187beb8126dd16f6bc38f47639/remix.init/index.js#L29) which may not match the apps you created on Fly. You will likely see [404 errors in your Github Actions CI logs](https://community.fly.io/t/404-failure-with-deployment-with-remix-blues-stack/4526/3) if you have this mismatch.
+1. Add a `FLY_API_TOKEN` to your GitHub repo. To do this, go to your user settings on Fly and create a new [token](https://web.fly.io/user/personal_access_tokens/new), then add it to [your repo secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets) with the name `FLY_API_TOKEN`.
 
-3. Add a `FLY_API_TOKEN` to your GitHub repo. To do this, go to your user settings on Fly and create a new [token](https://web.fly.io/user/personal_access_tokens/new), then add it to [your repo secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets) with the name `FLY_API_TOKEN`.
-
-4. Create a database for both your staging and production environments. Run the following:
+2. Create a database for both your staging and production environments. Make sure to select the `mia` region and a High-Availability cluster. Run the following:
 
 ```sh
-fly postgres create --name apihero-logs-db
-fly pg config update --shared-preload-libraries timescaledb --app apihero-logs-db
-fly postgres restart --app apihero-logs-db
-fly postgres attach --app apihero-logs apihero-logs-db
+fly postgres create --name ah-logs-db
+fly pg config update --shared-preload-libraries timescaledb --app ah-logs-db
+fly postgres restart --app ah-logs-db
+fly postgres attach --app ah-logs ah-logs-db
+fly checks list -a ah-logs-db-stg
 
-fly postgres create --name apihero-logs-db-staging
-fly pg config update --shared-preload-libraries timescaledb --app apihero-logs-db-staging
-fly postgres restart --app apihero-logs-db-staging
-fly postgres attach --app apihero-logs-staging apihero-logs-db-staging
+fly postgres create --name ah-logs-db-stg
+fly pg config update --shared-preload-libraries timescaledb --app ah-logs-db-stg
+fly postgres restart --app ah-logs-db-stg
+fly postgres attach --app ah-logs-staging ah-logs-db-stg
+fly checks list -a ah-logs-db-stg
 ```
 
 > **Note:** You'll get the same warning for the same reason when attaching the staging database that you did in the `fly set secret` step above. No worries. Proceed!
@@ -44,11 +46,20 @@ Fly will take care of setting the `DATABASE_URL` secret for you.
 5. Set the `API_AUTHENTICATION_TOKEN` secret (this is used as a shared Bearer token so the proxy and webapp can talk to the logs service)
 
 ```sh
-fly secrets set API_AUTHENTICATION_TOKEN='<staging secret here>' -a apihero-logs-staging
-fly secrets set API_AUTHENTICATION_TOKEN='<production secret here>' -a apihero-logs
+fly secrets set API_AUTHENTICATION_TOKEN='<staging secret here>' -a ah-logs-staging
+fly secrets set API_AUTHENTICATION_TOKEN='<production secret here>' -a ah-logs
 ```
 
-6. When you push to the `dev` branch it should deploy to `apihero-logs-staging`, `main` will deploy to `apihero-logs`.
+6. When you push to the `dev` branch it should deploy to `ah-logs-staging`, `main` will deploy to `ah-logs`.
+
+7. At this point, if you'd like to test out the deploying of the app from your local machine, you can run these commands:
+
+```sh
+# Deploy staging
+fly deploy -e PRIMARY_REGION=mia -a ah-logs-staging --config ./apps/logs/fly.toml --dockerfile ./apps/logs/Dockerfile
+# Deploy production
+fly deploy -e PRIMARY_REGION=mia -a ah-logs --config ./apps/logs/fly.toml --dockerfile ./apps/logs/Dockerfile
+```
 
 # Development
 
