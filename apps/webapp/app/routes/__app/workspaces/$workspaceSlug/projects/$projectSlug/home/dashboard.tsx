@@ -5,12 +5,18 @@ import dashboardDisabled from "~/libraries/images/ui/dashboard-disabled.png";
 import { RectangleGroupIcon, MegaphoneIcon } from "@heroicons/react/24/outline";
 import { PrimaryButton } from "~/libraries/ui/src/components/Buttons/Buttons";
 import { useUser } from "~/libraries/common/src/hooks/useUser";
+import { useCurrentProject } from "~/libraries/common/src/hooks/useCurrentProject";
+import { ProjectKey } from "~/libraries/ui/src/components/ProjectKey";
 
 export default function Dashboard() {
   const logs = useLogs();
+  const project = useCurrentProject();
   return (
     <div className="relative h-full overflow-hidden">
-      {logs && <LogsFilters logs={logs} />}
+      <div className="flex items-end justify-between flex-wrap-reverse gap-y-5 mr-4">
+        {logs && <LogsFilters logs={logs} />}
+        {project && <ProjectKey projectId={project.id} />}
+      </div>
       <LogsTabs selected={"dashboard"} />
       <DashboardComingSoon />
       <div className="">
