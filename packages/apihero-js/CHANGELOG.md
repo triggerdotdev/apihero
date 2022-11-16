@@ -1,5 +1,15 @@
 # @apihero/js
 
+## 1.3.0
+
+### Minor Changes
+
+- 68a0011: Add support for intercepting node native fetch calls
+
+### Patch Changes
+
+- dd6a9f2: Added a default proxy url so including the url is optional
+
 ## 1.2.0
 
 ### Minor Changes
