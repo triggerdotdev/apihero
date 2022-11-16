@@ -14,7 +14,7 @@ const activeStyle =
 export default function ProjectMenu() {
   return (
     <>
-      <div className="flex h-full">
+      <div className="flex h-[calc(100%-65px)]">
         <nav className="flex flex-col justify-between border-r border-slate-200 h-full bg-white p-2">
           <ul className="flex flex-col gap-2">
             <li>
@@ -65,9 +65,7 @@ export default function ProjectMenu() {
             </li>
           </ul>
         </nav>
-        <div className="flex flex-grow h-full">
-          <Outlet />
-        </div>
+        <Outlet />
       </div>
     </>
   );

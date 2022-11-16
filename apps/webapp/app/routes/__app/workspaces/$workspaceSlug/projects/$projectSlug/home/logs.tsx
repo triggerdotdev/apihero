@@ -80,8 +80,8 @@ export default function Logs() {
   return (
     <>
       {logs && (
-        <div className="h-full grid grid-rows-[auto_3fr]">
-          <div className="">
+        <>
+          <div>
             <LogsFilters logs={logs} />
             <LogsTabs selected={"logs"} />
           </div>
@@ -138,7 +138,7 @@ export default function Logs() {
               <LogViewer log={openLog} />
             </ResizableChild>
           </Resizable>
-        </div>
+        </>
       )}
     </>
   );

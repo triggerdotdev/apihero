@@ -37,7 +37,7 @@ function OnboardingIncomplete({ projectId }: { projectId: string }) {
   const copyCode3 = `setupProxy({ projectKey: “${projectId}” }).start();`;
 
   return (
-    <div className="flex gap-2 mb-4 mr-4">
+    <div className="grid grid-col-1 mb-4 mr-4">
       <div className="bg-slate-100 flex-grow p-4 border border-slate-200 rounded-md">
         <h2 className="font-semibold text-xl mb-4 text-slate-600">
           Get started
