@@ -1,7 +1,3 @@
-# Getting Started with [Fastify-CLI](https://www.npmjs.com/package/fastify-cli)
-
-This project was bootstrapped with Fastify-CLI.
-
 ## Deployment
 
 ## Setup Deployment to fly.io
@@ -30,13 +26,15 @@ fly postgres create --name ah-logs-db
 fly pg config update --shared-preload-libraries timescaledb --app ah-logs-db
 fly postgres restart --app ah-logs-db
 fly postgres attach --app ah-logs ah-logs-db
-fly checks list -a ah-logs-db-stg
+fly checks list -a ah-logs-db
+fly postgres connect -a ah-logs-db -d ah_logs
 
 fly postgres create --name ah-logs-db-stg
 fly pg config update --shared-preload-libraries timescaledb --app ah-logs-db-stg
 fly postgres restart --app ah-logs-db-stg
 fly postgres attach --app ah-logs-staging ah-logs-db-stg
 fly checks list -a ah-logs-db-stg
+fly postgres connect -a ah-logs-db-stg -d ah_logs_staging
 ```
 
 > **Note:** You'll get the same warning for the same reason when attaching the staging database that you did in the `fly set secret` step above. No worries. Proceed!
