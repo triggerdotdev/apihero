@@ -122,7 +122,7 @@ function OnboardingComplete({
   projectSlug: string;
   projectId: string;
 }) {
-  const copyCode = `apihero({ projectKey: “${projectId}, allows: [“*.github.com”] });`;
+  const copyCode = `setupProxy({ projectKey: “${projectId}", allow: ["https://api.github.com/*”] }).start();`;
 
   return (
     <div className="mb-5">
