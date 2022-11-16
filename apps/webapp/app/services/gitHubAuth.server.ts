@@ -4,7 +4,7 @@ import { createFirstProject } from "~/models/project.server";
 import { findOrCreateUser } from "~/models/user.server";
 import { createFirstWorkspace } from "~/models/workspace.server";
 import type { AuthUser } from "./authUser";
-import { addToEmailList } from "./email.server";
+import { sendWelcomeEmail } from "./email.server";
 
 const gitHubStrategy = new GitHubStrategy(
   {
@@ -28,11 +28,10 @@ const gitHubStrategy = new GitHubStrategy(
         authenticationExtraParams: extraParams,
       });
 
-      await addToEmailList(user);
-
       if (isNewUser) {
         const firstWorkspace = await createFirstWorkspace(user.id);
         await createFirstProject(user.id, firstWorkspace.id);
+        await sendWelcomeEmail(user);
       }
 
       return {

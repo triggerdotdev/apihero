@@ -56,11 +56,16 @@ const emailStrategy = new EmailLinkStrategy(
         authenticationMethod: "MAGIC_LINK",
       });
 
-      await emailProvider.addToEmailList(user);
+      console.log(
+        `User ${user.id} logged in with magic link. ${
+          isNewUser ? "New user." : ""
+        }`
+      );
 
       if (isNewUser) {
         const firstWorkspace = await createFirstWorkspace(user.id);
         await createFirstProject(user.id, firstWorkspace.id);
+        await emailProvider.sendWelcomeEmail(user);
       }
 
       return { userId: user.id };
