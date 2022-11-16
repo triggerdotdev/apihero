@@ -29,7 +29,7 @@ export function UserProfileMenu({ user }: { user: User }) {
             </h2>
           ) : (
             <h2 className="mb-2 block border-b border-slate-200 py-2 pl-5 pr-2 text-sm font-semibold text-slate-600">
-              Unnamed User
+              {user.email}
             </h2>
           )}
 
