@@ -290,9 +290,9 @@ export async function main() {
     await httpBin.do404("DELETE");
     await httpBin.do500("GET");
     await httpBin.doBearerAuth("foo123");
-    await httpBin.doCachedGet(5);
-    await httpBin.doCachedGet(5);
-    await httpBin.doBrotli();
+    await httpBin.doCachedGet(60);
+    await httpBin.doCachedGet(60);
+    // await httpBin.doBrotli();
     await httpBin.doHTML();
     await httpBin.doXML();
     await httpBin.doDelay(0.25);

@@ -58,15 +58,6 @@ export const loader = async ({ request, params }: LoaderArgs) => {
 };
 
 export default function PlaceholderDashboard() {
-  //auto reload the page
-  useEffect(() => {
-    const interval = setInterval(() => {
-      window.location.reload();
-    }, logCheckingInterval);
-
-    return () => clearInterval(interval);
-  }, []);
-
   return (
     <div className="overflow-hidden">
       <img src={dashboardDisabled} alt="Placeholder dashboard" />

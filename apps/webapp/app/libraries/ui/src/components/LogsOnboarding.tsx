@@ -84,29 +84,12 @@ function OnboardingIncomplete({ projectId }: { projectId: string }) {
                 Send any API request from your project, then come back here.
               </p>
               <div className="flex items-center gap-4">
-                <CountdownToRefreshButton lastUpdated={new Date()} />
+                <CountdownToRefreshButton projectId={projectId} />
               </div>
             </div>
           </li>
         </ul>
       </div>
-      {/* <div className="bg-blue-50 w-80 border border-blue-100 rounded-md text-slate-700 p-4 mr-4">
-        <h3 className="text-xl font-semibold mb-2">No project yet?</h3>
-        <p className="mb-1 text-sm">
-          Check out a live demo to see API Hero in action.
-        </p>
-        <SecondaryLink to="/" target="_blank" className="mb-4">
-          <ArrowTopRightOnSquareIcon className="h-4 w-4 -ml-1" />
-          View in Code Sandbox
-        </SecondaryLink>
-        <p className="mb-1 text-sm">
-          Or read more about how it all works in our documentation.
-        </p>
-        <SecondaryLink to="https://docs.apihero.run" target="_blank">
-          <ArrowTopRightOnSquareIcon className="h-4 w-4 -ml-1" />
-          Documentation
-        </SecondaryLink>
-      </div> */}
     </div>
   );
 }
@@ -173,20 +156,35 @@ function OnboardingComplete({
   );
 }
 
-type RefreshButtonProps = {
-  lastUpdated: Date;
-};
-
 export const logCheckingInterval = 5000;
 
-export function CountdownToRefreshButton({ lastUpdated }: RefreshButtonProps) {
+export function CountdownToRefreshButton({ projectId }: { projectId: string }) {
+  const [lastUpdated, setLastUpdated] = useState(new Date());
   const [countdown, setCountdown] = useState(logCheckingInterval / 1000);
 
   const refreshTime = useCallback(() => {
     const elapsed = new Date().getTime() - lastUpdated.getTime();
     const remaining = Math.round((logCheckingInterval - elapsed) / 1000);
-    if (remaining <= 0) return;
-    setCountdown(remaining);
+
+    if (remaining < 0) {
+      fetch(`/api/projects/${projectId}/check-logs-onboarding`)
+        .then(async (response) => {
+          const data = await response.json();
+
+          if (data.hasLogs) {
+            window.location.reload();
+          } else {
+            setLastUpdated(new Date());
+            setCountdown(logCheckingInterval / 1000);
+          }
+        })
+        .catch(() => {
+          setLastUpdated(new Date());
+          setCountdown(logCheckingInterval / 1000);
+        });
+    } else {
+      setCountdown(remaining);
+    }
   }, [lastUpdated]);
 
   useEffect(() => {
@@ -201,7 +199,11 @@ export function CountdownToRefreshButton({ lastUpdated }: RefreshButtonProps) {
         <p className="text-slate-600 text-sm">Listening for events…</p>
       </div>
       <p className="flex gap-2 items-center text-xs text-slate-600">
-        Checking again in {countdown}
+        {countdown === 0 ? (
+          <>Checking for requests...</>
+        ) : (
+          <>Checking again in {countdown}</>
+        )}
       </p>
     </div>
   );

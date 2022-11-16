@@ -7,6 +7,7 @@ import { Outlet, useParams } from "@remix-run/react";
 import type { GetLogsSuccessResponse } from "internal-logs";
 import { LogsOnboarding } from "~/libraries/ui/src/components/LogsOnboarding";
 import type { UseDataFunctionReturn } from "remix-typedjson/dist/remix";
+import { searchLogsInProject } from "~/services/logs.server";
 
 export type LoaderData = UseDataFunctionReturn<typeof loader>;
 
@@ -25,46 +26,12 @@ export const loader = async ({ request, params }: LoaderArgs) => {
     throw new Response("Not Found", { status: 404 });
   }
 
-  const logsOrigin = process.env.LOGS_ORIGIN;
-  invariant(logsOrigin, "LOGS_ORIGIN env variables not defined");
-  const authenticationToken = process.env.LOGS_API_AUTHENTICATION_TOKEN;
-  invariant(
-    authenticationToken,
-    "LOGS_API_AUTHENTICATION_TOKEN env variables not defined"
-  );
-
-  let logs: GetLogsSuccessResponse | undefined = undefined;
-
   const url = new URL(request.url);
   const searchParams = new URLSearchParams(url.search);
-  const searchObject = Object.fromEntries(searchParams.entries());
 
-  if (searchObject.page === undefined) {
-    searchParams.set("page", "1");
-  }
-  if (searchObject.days === undefined && searchObject.start === undefined) {
-    searchParams.set("days", "7");
-  }
+  const logs = await searchLogsInProject(searchParams, project.id);
 
-  const apiUrl = `${logsOrigin}/logs/${project.id}?${searchParams.toString()}`;
-
-  try {
-    const logsResponse = await fetch(apiUrl, {
-      headers: {
-        Authorization: `Bearer ${authenticationToken}`,
-      },
-    });
-
-    if (logsResponse.ok && logsResponse.status === 200) {
-      const json = await logsResponse.json();
-      logs = json;
-    }
-
-    return typedjson({ project, logs });
-  } catch (error) {
-    console.error(error);
-    return typedjson({ project, logs });
-  }
+  return typedjson({ project, logs });
 };
 
 export default function Page() {
