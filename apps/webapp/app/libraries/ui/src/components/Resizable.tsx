@@ -111,28 +111,19 @@ export function ResizableChild({
   return (
     <div
       className={classNames(
-        `relative flex h-full flex-none border-slate-200 border-l`,
+        `relative h-full flex-none border-slate-200 border-l`,
         className
       )}
     >
-      <div className={"flex-1"} style={{ width: "inherit" }}>
+      <div className="h-full" style={{ width: "inherit" }}>
         {children}
       </div>
       <div
         className={
-          "absolute left-0 z-40 my-0 h-full w-1.5 cursor-col-resize transition hover:bg-blue-500 hover:opacity-100"
+          "absolute left-0 top-0 z-40 my-0 h-full w-1.5 cursor-col-resize transition hover:bg-blue-500 hover:opacity-100"
         }
         onMouseDown={handleDragStart}
       ></div>
     </div>
-  );
-}
-
-function Example() {
-  return (
-    <Resizable initialSize={600} minimumSize={270} maximumSize={950}>
-      <ResizableChild>Logs table</ResizableChild>
-      <ResizableChild showHandle>Log detail view</ResizableChild>
-    </Resizable>
   );
 }

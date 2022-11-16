@@ -11,11 +11,9 @@ import { useCurrentProject } from "~/libraries/common/src/hooks/useCurrentProjec
 import { useLogs } from "~/libraries/common/src/hooks/useLogs";
 import { LogsTable } from "~/libraries/logging/LogsTable";
 import { RequestResponseViewer } from "~/libraries/request-response-viewer";
-import { CopyTextButton } from "~/libraries/ui/src/components/Buttons/CopyTextButton";
 import { LogsFilters } from "~/libraries/ui/src/components/LogsFilters";
 import { LogsTabs } from "~/libraries/ui/src/components/LogsTabs";
 import { Body } from "~/libraries/ui/src/components/Primitives/Body";
-import { Label } from "~/libraries/ui/src/components/Primitives/Label";
 import { ProjectKey } from "~/libraries/ui/src/components/ProjectKey";
 import Resizable, {
   ResizableChild,
@@ -137,10 +135,7 @@ export default function Logs() {
                 </div>
               </div>
             </div>
-            <ResizableChild
-              showHandle
-              className="overflow-auto border-b-2 border-slate-200"
-            >
+            <ResizableChild showHandle className="border-b-2 border-slate-200">
               <LogViewer log={openLog} />
             </ResizableChild>
           </Resizable>

@@ -39,21 +39,21 @@ export function RequestViewer({
         <Tab.Panels className="flex-grow overflow-y-auto">
           <Tab.Panel className="relative h-full">
             {requestBody == null ? (
-              <div>No body</div>
+              <div className="py-2 text-slate-600 text-sm">No body</div>
             ) : (
               <>
                 <JSONEditor
                   content={JSON.stringify(requestBody, null, 2)}
                   readOnly={true}
-                  className="h-[calc(100%-40px)]"
+                  className=""
                 />
-                <div className="absolute bottom-10 right-0">
+                {/* <div className="absolute bottom-20 right-0">
                   <JSONHeroButton
                     to={`/requestLog/${logId}/${
                       type === "request" ? "requestBody" : "responseBody"
                     }`}
                   />
-                </div>
+                </div> */}
               </>
             )}
           </Tab.Panel>

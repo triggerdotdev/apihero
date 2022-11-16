@@ -11,7 +11,7 @@ type RequestResponseViewerProps = {
 export function RequestResponseViewer({ log }: RequestResponseViewerProps) {
   return (
     <Tab.Group defaultIndex={1}>
-      <div className="bg-slate-50 p-1">
+      <div className="bg-slate-50 p-[5px]">
         <RequestUrlBar
           method={log.method}
           url={`${log.baseUrl}${log.path}${log.search ? log.search : ``}`}
@@ -19,14 +19,14 @@ export function RequestResponseViewer({ log }: RequestResponseViewerProps) {
       </div>
       <Tab.List
         className={
-          "flex sticky items-center justify-between border-b border-slate-200 bg-slate-50"
+          "flex items-center justify-between flex-wrap-reverse gap-y-4 border-b border-slate-200 bg-slate-50"
         }
       >
         <div className="-mb-px flex">
           <StyledTabs.Classic>Request</StyledTabs.Classic>
           <StyledTabs.Classic>Response</StyledTabs.Classic>
         </div>
-        <div className="flex w-full max-w-fit items-center pr-3">
+        <div className="flex w-full max-w-fit items-center pr-3 pl-2">
           <ResponseInfo
             status={log.statusCode}
             duration={log.gatewayDuration}
@@ -70,7 +70,7 @@ export function RequestUrlBar({
   url: string;
 }) {
   return (
-    <div className="flex min-w-0 items-baseline rounded-md border border-slate-200 bg-white p-2 gap-1">
+    <div className="flex min-w-0 items-baseline rounded-md border border-slate-200 bg-white px-2.5 py-1 gap-1">
       <span className="shrink-0 text-xs text-slate-600 font-semibold">
         {method}
       </span>

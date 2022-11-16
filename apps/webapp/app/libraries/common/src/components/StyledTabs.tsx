@@ -18,8 +18,8 @@ export function Classic({ children, ...props }: HeadlessTabProps) {
       className={({ selected }: { selected: boolean }) =>
         classnames(
           selected
-            ? " border-t border-slate-200 bg-white text-slate-600"
-            : "border-b border-slate-200 bg-slate-50 text-slate-700 hover:border-slate-200 hover:text-slate-800",
+            ? "border-t border-slate-200 bg-white text-slate-600"
+            : "border-b border-t border-slate-200 bg-slate-50 text-slate-700 hover:border-slate-200 hover:text-slate-800",
           "flex whitespace-nowrap border-r  py-3 px-3 text-xs focus:outline-none"
         )
       }
