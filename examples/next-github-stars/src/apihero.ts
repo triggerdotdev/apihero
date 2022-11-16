@@ -9,6 +9,15 @@ async function initProxy() {
       env: process.env.NODE_ENV,
     });
     await worker.start();
+  } else {
+    const { setupProxy } = await import("@apihero/js/node");
+    const proxy = setupProxy({
+      projectKey: "hero_123abc",
+      url: "http://localhost:8787",
+      env: process.env.NODE_ENV,
+    });
+
+    await proxy.start();
   }
 }
 
