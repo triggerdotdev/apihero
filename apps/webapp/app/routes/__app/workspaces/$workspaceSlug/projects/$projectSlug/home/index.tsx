@@ -68,7 +68,7 @@ export default function PlaceholderDashboard() {
   }, []);
 
   return (
-    <div>
+    <div className="overflow-hidden">
       <img src={dashboardDisabled} alt="Placeholder dashboard" />
     </div>
   );
