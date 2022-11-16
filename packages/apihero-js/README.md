@@ -17,10 +17,10 @@ import { setupProxy } from "@apihero/js/node";
 
 const proxy = setupProxy({
   projectKey: "hero_123abc",
-  server: "proxy.apihero.run",
+  url: "https://proxy.apihero.run",
 });
 
-// Start intercepting requests and sending them to proxy.apihero.run
+// Start intercepting requests and sending them to https://proxy.apihero.run
 proxy.start();
 
 // You can always stop intercepting requests
@@ -39,10 +39,10 @@ const proxy = setupProxy({
     { url: "https://httpbin.org/*", method: "GET" },
   ],
   projectKey: "hero_123abc",
-  server: "proxy.apihero.run",
+  url: "https://proxy.apihero.run",
 });
 
-// Start intercepting requests and sending them to proxy.apihero.run
+// Start intercepting requests and sending them to https://proxy.apihero.run
 proxy.start();
 ```
 
@@ -54,10 +54,10 @@ import { setupProxy } from "@apihero/js/node";
 const proxy = setupProxy({
   deny: ["https://myprivateapi.dev/*"]
   projectKey: "hero_123abc",
-  server: "proxy.apihero.run",
+  url: "https://proxy.apihero.run",
 });
 
-// Start intercepting requests and sending them to proxy.apihero.run
+// Start intercepting requests and sending them to https://proxy.apihero.run
 proxy.start();
 ```
 
@@ -68,13 +68,13 @@ If you would like to use API Hero in a Cloudflare Worker environment, simply cha
 ```typescript
 import { setupProxy } from "@apihero/js";
 
-// This will now intercept requests made to `globalThis.fetch` and proxy them through proxy.apihero.run
+// This will now intercept requests made to `globalThis.fetch` and proxy them through https://proxy.apihero.run
 const proxy = setupProxy({
   projectKey: "hero_123abc",
-  server: "proxy.apihero.run",
+  url: "https://proxy.apihero.run",
 });
 
-// Start intercepting requests and sending them to proxy.apihero.run
+// Start intercepting requests and sending them to https://proxy.apihero.run
 proxy.start();
 
 // You can always stop intercepting requests
@@ -102,7 +102,7 @@ export const worker = setupWorker({
   allow: ["api.github.com", "api.twitter.com/users/*"],
   deny: ["myprivateapi.dev/*"],
   projectKey: "hero_123abc",
-  server: "proxy.apihero.run",
+  url: "https://proxy.apihero.run",
 });
 ```
 

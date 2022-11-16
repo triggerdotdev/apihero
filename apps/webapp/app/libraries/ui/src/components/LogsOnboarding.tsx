@@ -32,8 +32,9 @@ export function LogsOnboarding({
 }
 
 function OnboardingIncomplete({ projectId }: { projectId: string }) {
-  const copyCode =
-    "apihero({ platform: “node”, projectKey: “" + projectId + "” });";
+  const copyCode0 = `npm install @apihero/js@latest`;
+  const copyCode1 = `import { setupProxy } from "@apihero/js/node";`;
+  const copyCode2 = `setupProxy({ projectKey: “${projectId}” }).start();`;
 
   return (
     <div className="flex gap-2">
@@ -46,16 +47,40 @@ function OnboardingIncomplete({ projectId }: { projectId: string }) {
             <span className={classNames(listItemNumbered)}>1</span>
             <div className="flex flex-col gap-2">
               <p className="text-sm text-slate-700">
-                Copy paste the code into your project.
+                Install the <code>@apihero/js</code> package
               </p>
               <div className={codeContainer}>
-                {copyCode}
-                <CopyTextButton value={copyCode} variant="blue" />
+                {copyCode0}
+                <CopyTextButton value={copyCode0} variant="blue" />
               </div>
             </div>
           </li>
           <li className="flex gap-2">
             <span className={classNames(listItemNumbered)}>2</span>
+            <div className="flex flex-col gap-2">
+              <p className="text-sm text-slate-700">
+                Import the <code>setupProxy</code> function.
+              </p>
+              <div className={codeContainer}>
+                {copyCode1}
+                <CopyTextButton value={copyCode1} variant="blue" />
+              </div>
+            </div>
+          </li>
+          <li className="flex gap-2">
+            <span className={classNames(listItemNumbered)}>3</span>
+            <div className="flex flex-col gap-2">
+              <p className="text-sm text-slate-700">
+                Setup the proxy with your project key.
+              </p>
+              <div className={codeContainer}>
+                {copyCode2}
+                <CopyTextButton value={copyCode2} variant="blue" />
+              </div>
+            </div>
+          </li>
+          <li className="flex gap-2">
+            <span className={classNames(listItemNumbered)}>4</span>
             <div className="flex flex-col gap-2">
               <p className="text-sm text-slate-700">
                 Send any API request from your project, then come back here.

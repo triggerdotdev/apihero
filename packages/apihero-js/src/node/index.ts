@@ -20,6 +20,8 @@ export interface ProxyInstance {
 export function setupProxy(options: SetupProxyOptions): ProxyInstance {
   const interceptor = new ClientRequestInterceptor();
 
+  const proxyUrl = options.url || "https://proxy.apihero.run";
+
   interceptor.on("request", (request) => {
     if (
       (options.allow && !isAllowed(request, options.allow)) ||
@@ -49,7 +51,7 @@ export function setupProxy(options: SetupProxyOptions): ProxyInstance {
       return;
     }
 
-    const newUrl = new URL(request.url.pathname, options.url);
+    const newUrl = new URL(request.url.pathname, proxyUrl);
 
     log(`proxying ${request.url.href} to ${newUrl.href}`);
 

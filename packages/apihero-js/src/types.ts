@@ -9,7 +9,7 @@ export type PolicyRule = string | PolicyMatcher;
 
 export type SetupProxyOptions = {
   projectKey: string;
-  url: string;
+  url?: string;
   allow?: Array<PolicyRule>;
   deny?: Array<PolicyRule>;
   env?: string;
