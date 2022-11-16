@@ -26,7 +26,7 @@ export function RequestResponseViewer({ log }: RequestResponseViewerProps) {
           <StyledTabs.Classic>Request</StyledTabs.Classic>
           <StyledTabs.Classic>Response</StyledTabs.Classic>
         </div>
-        <div className="flex w-full max-w-fit items-center">
+        <div className="flex w-full max-w-fit items-center pr-3">
           <ResponseInfo
             status={log.statusCode}
             duration={log.gatewayDuration}
