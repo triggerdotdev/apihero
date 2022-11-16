@@ -6,6 +6,7 @@ import {
 } from "@apihero/constants-js";
 import { IsomorphicRequest } from "@apihero/interceptors-js";
 import { ClientRequestInterceptor } from "@apihero/interceptors-js/lib/interceptors/ClientRequest";
+import { FetchInterceptor } from "@apihero/interceptors-js/lib/interceptors/fetch";
 import { isMatch } from "matcher";
 import debug from "debug";
 import { SetupProxyOptions, PolicyRule } from "../types";
@@ -19,6 +20,7 @@ export interface ProxyInstance {
 
 export function setupProxy(options: SetupProxyOptions): ProxyInstance {
   const interceptor = new ClientRequestInterceptor();
+  const fetchInterceptor = new FetchInterceptor();
 
   const proxyUrl = options.url || "https://proxy.apihero.run";
 
@@ -36,6 +38,31 @@ export function setupProxy(options: SetupProxyOptions): ProxyInstance {
     request.requestWith({
       headers: {
         ...Object.fromEntries(request.headers.entries()),
+        [PROJECT_KEY_HEADER_NAME]: options.projectKey,
+        [PAYLOAD_HEADER_NAME]: JSON.stringify({ env }),
+      },
+    });
+  });
+
+  fetchInterceptor.on("request", (request) => {
+    if (
+      (options.allow && !isAllowed(request, options.allow)) ||
+      (options.deny && isAllowed(request, options.deny))
+    ) {
+      log("request not proxied", request.url.href);
+      return;
+    }
+
+    const newUrl = new URL(request.url.pathname, proxyUrl);
+
+    const env = options.env || process.env.NODE_ENV || "development";
+
+    request.requestWith({
+      url: newUrl,
+      headers: {
+        ...Object.fromEntries(request.headers.entries()),
+        [DESTINATION_HEADER_NAME]: request.url.host,
+        [PROTOCOL_HEADER_NAME]: request.url.protocol,
         [PROJECT_KEY_HEADER_NAME]: options.projectKey,
         [PAYLOAD_HEADER_NAME]: JSON.stringify({ env }),
       },
@@ -68,9 +95,11 @@ export function setupProxy(options: SetupProxyOptions): ProxyInstance {
   return {
     start: async () => {
       interceptor.apply();
+      fetchInterceptor.apply();
     },
     stop: async () => {
       interceptor.dispose();
+      fetchInterceptor.dispose();
     },
   };
 }
