@@ -32,12 +32,12 @@ export function LogsOnboarding({
 }
 
 function OnboardingIncomplete({ projectId }: { projectId: string }) {
-  const copyCode0 = `npm install @apihero/js@latest`;
-  const copyCode1 = `import { setupProxy } from "@apihero/js/node";`;
-  const copyCode2 = `setupProxy({ projectKey: “${projectId}” }).start();`;
+  const copyCode1 = `npm install @apihero/js@latest`;
+  const copyCode2 = `import { setupProxy } from "@apihero/js/node";`;
+  const copyCode3 = `setupProxy({ projectKey: “${projectId}” }).start();`;
 
   return (
-    <div className="flex gap-2">
+    <div className="flex gap-2 mb-4 mr-4">
       <div className="bg-slate-100 flex-grow p-4 border border-slate-200 rounded-md">
         <h2 className="font-semibold text-xl mb-4 text-slate-600">
           Get started
@@ -47,11 +47,11 @@ function OnboardingIncomplete({ projectId }: { projectId: string }) {
             <span className={classNames(listItemNumbered)}>1</span>
             <div className="flex flex-col gap-2">
               <p className="text-sm text-slate-700">
-                Install the <code>@apihero/js</code> package
+                Install the <code>@apihero/js</code> package.
               </p>
               <div className={codeContainer}>
-                {copyCode0}
-                <CopyTextButton value={copyCode0} variant="blue" />
+                {copyCode1}
+                <CopyTextButton value={copyCode1} variant="blue" />
               </div>
             </div>
           </li>
@@ -62,8 +62,8 @@ function OnboardingIncomplete({ projectId }: { projectId: string }) {
                 Import the <code>setupProxy</code> function.
               </p>
               <div className={codeContainer}>
-                {copyCode1}
-                <CopyTextButton value={copyCode1} variant="blue" />
+                {copyCode2}
+                <CopyTextButton value={copyCode2} variant="blue" />
               </div>
             </div>
           </li>
@@ -74,8 +74,8 @@ function OnboardingIncomplete({ projectId }: { projectId: string }) {
                 Setup the proxy with your project key.
               </p>
               <div className={codeContainer}>
-                {copyCode2}
-                <CopyTextButton value={copyCode2} variant="blue" />
+                {copyCode3}
+                <CopyTextButton value={copyCode3} variant="blue" />
               </div>
             </div>
           </li>
@@ -92,7 +92,7 @@ function OnboardingIncomplete({ projectId }: { projectId: string }) {
           </li>
         </ul>
       </div>
-      <div className="bg-blue-50 w-80 border border-blue-100 rounded-md text-slate-700 p-4">
+      {/* <div className="bg-blue-50 w-80 border border-blue-100 rounded-md text-slate-700 p-4 mr-4">
         <h3 className="text-xl font-semibold mb-2">No project yet?</h3>
         <p className="mb-1 text-sm">
           Check out a live demo to see API Hero in action.
@@ -108,7 +108,7 @@ function OnboardingIncomplete({ projectId }: { projectId: string }) {
           <ArrowTopRightOnSquareIcon className="h-4 w-4 -ml-1" />
           Documentation
         </SecondaryLink>
-      </div>
+      </div> */}
     </div>
   );
 }
