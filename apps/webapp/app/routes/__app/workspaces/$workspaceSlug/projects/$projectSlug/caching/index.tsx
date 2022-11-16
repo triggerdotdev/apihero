@@ -105,8 +105,8 @@ export default function Caching() {
         </FormField>
       </div>
       {"records" in data && (
-        <table className="w-full divide-y divide-slate-300 outline outline-slate-200 rounded-md">
-          <thead className="sticky top-0 bg-white outline outline-slate-200 rounded-t-md">
+        <table className="w-full divide-y divide-slate-300 outline outline-1 overflow-hidden outline-slate-200 rounded-md">
+          <thead className="bg-white">
             <tr>
               <th scope="col" className={headerCell}>
                 API
