@@ -7,18 +7,22 @@ import {
   PreviousButton,
   NextButton,
 } from "~/libraries/common/src/components/Pagination";
+import { useCurrentProject } from "~/libraries/common/src/hooks/useCurrentProject";
 import { useLogs } from "~/libraries/common/src/hooks/useLogs";
 import { LogsTable } from "~/libraries/logging/LogsTable";
 import { RequestResponseViewer } from "~/libraries/request-response-viewer";
+import { CopyTextButton } from "~/libraries/ui/src/components/Buttons/CopyTextButton";
 import { LogsFilters } from "~/libraries/ui/src/components/LogsFilters";
 import { LogsTabs } from "~/libraries/ui/src/components/LogsTabs";
 import { Body } from "~/libraries/ui/src/components/Primitives/Body";
+import { Label } from "~/libraries/ui/src/components/Primitives/Label";
 import Resizable, {
   ResizableChild,
 } from "~/libraries/ui/src/components/Resizable";
 
 export default function Logs() {
   const logs = useLogs();
+  const project = useCurrentProject();
   const submit = useSubmit();
   const transition = useTransition();
   const [selectedLog, setSelectedLog] = useState<string | null>(null);
@@ -81,10 +85,11 @@ export default function Logs() {
     <>
       {logs && (
         <>
-          <div>
+          <div className="flex items-end justify-between flex-wrap-reverse gap-y-5 mr-4">
             <LogsFilters logs={logs} />
-            <LogsTabs selected={"logs"} />
+            {project && <ProjectKey projectId={project.id} />}
           </div>
+          <LogsTabs selected={"logs"} />
           <Resizable
             initialSize={600}
             minimumSize={270}
@@ -159,6 +164,20 @@ function NoLogSelected() {
       <Body className="text-center text-slate-600">
         Select a log to view details
       </Body>
+    </div>
+  );
+}
+
+function ProjectKey({ projectId }: { projectId: string }) {
+  return (
+    <div className="flex flex-col gap-1">
+      <Label label="Project key" />
+      <div className="flex items-center justify-between min-w-[200px] bg-white rounded border border-slate-200 pr-1.5">
+        <span className="py-2 px-3 text-slate-600 text-sm select-all">
+          {projectId}
+        </span>
+        <CopyTextButton value={projectId} variant="slate" className="text-xs" />
+      </div>
     </div>
   );
 }
