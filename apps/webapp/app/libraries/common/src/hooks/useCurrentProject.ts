@@ -12,6 +12,5 @@ export function useCurrentProject(): Project | undefined {
   const appRoute = matches.find((match) =>
     match.id.endsWith("/$projectSlug/home")
   );
-  console.log(matches);
   return appRoute?.data?.project;
 }
