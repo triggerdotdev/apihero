@@ -5,12 +5,12 @@ import { CopyText } from "../CopyText";
 
 const variantStyle = {
   slate:
-    "bg-slate-600 text-white transition hover:text-slate-700 hover:bg-black/10 bg-black/[5%] hover:bg-slate-700 hover:text-slate-100 active:bg-slate-800 active:text-slate-300 focus-visible:outline-slate-900",
+    "bg-slate-600 text-white transition hover:text-slate-700 hover:bg-slate-700 hover:bg-slate-700 hover:text-slate-100 active:bg-slate-800 active:text-slate-300 focus-visible:outline-slate-900",
   blue: "bg-blue-500 transition text-white hover:text-slate-100 hover:bg-blue-600 active:bg-blue-800 active:text-blue-100 focus-visible:outline-blue-600",
   darkTransparent:
-    "bg-white text-slate-900 transition hover:bg-blue-50 active:bg-blue-200 active:text-slate-600 focus-visible:outline-white",
+    "bg-black/10 text-slate-900 transition hover:bg-blue-50 active:bg-blue-200 active:text-slate-600 focus-visible:outline-white",
   lightTransparent:
-    "bg-white text-slate-900 transition hover:bg-blue-50 active:bg-blue-200 active:text-slate-600 focus-visible:outline-white",
+    "bg-white/10 text-white-900 transition hover:bg-blue-50 active:bg-blue-200 active:text-slate-600 focus-visible:outline-white",
 };
 
 export type CopyTextButtonProps = {
