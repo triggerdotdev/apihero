@@ -1,9 +1,16 @@
-import { CheckCircleIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowTopRightOnSquareIcon,
+  CheckCircleIcon,
+  EnvelopeIcon,
+  PhoneIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
 import { Form } from "@remix-run/react";
 import classNames from "classnames";
 import { useCallback, useEffect, useState } from "react";
 import type { LoaderData } from "~/routes/__app/workspaces/$workspaceSlug/projects/$projectSlug/home";
 import { Spinner } from "../../../common/src/components/Spinner";
+import { SecondaryA, SecondaryLink } from "./Buttons/Buttons";
 import { CopyTextButton } from "./Buttons/CopyTextButton";
 
 const listItemNumbered =
@@ -35,8 +42,8 @@ function OnboardingIncomplete({ projectId }: { projectId: string }) {
   const copyCode3 = `setupProxy({ projectKey: “${projectId}” }).start();`;
 
   return (
-    <div className="grid grid-col-1 mb-4 mr-4">
-      <div className="bg-slate-100 flex-grow p-4 border border-slate-200 rounded-md">
+    <div className="grid grid-cols-[1fr_auto] gap-2 mb-4 mr-4">
+      <div className="bg-slate-100 p-4 border border-slate-200 rounded-md">
         <h2 className="font-semibold text-xl mb-4 text-slate-600">
           Get started
         </h2>
@@ -90,6 +97,7 @@ function OnboardingIncomplete({ projectId }: { projectId: string }) {
           </li>
         </ul>
       </div>
+      <HavingTroublePanel />
     </div>
   );
 }
@@ -106,52 +114,55 @@ function OnboardingComplete({
   const copyCode = `setupProxy({ projectKey: “${projectId}", allow: ["https://api.github.com/*”] }).start();`;
 
   return (
-    <div className="mb-5">
-      <div className="bg-green-100 flex-grow p-4 border border-slate-200 rounded-md mb-4">
-        <div className="flex gap-2.5 items-center ml-0.5">
-          <CheckCircleIcon className="h-7 w-7 text-green-500" />
-          <h2 className="font-semibold text-xl text-slate-600">
-            Awesome, setup complete!
-          </h2>
-        </div>
-      </div>
-      <div className="bg-slate-100 flex gap-2 justify-between p-4 border border-slate-200 rounded-md mb-4">
-        <div className="flex flex-col gap-y-2">
-          <h2 className="font-semibold text-xl text-slate-600">
-            Optional configuration
-          </h2>
-          <div className="flex flex-col gap-2">
-            <p className="text-sm text-slate-700">
-              Choose which requests are proxied. Use the example below or read
-              the{" "}
-              <a
-                href="https://docs.apihero.run"
-                target="_blank"
-                rel="noreferrer"
-                className="underline hover:text-blue-500 transition"
-              >
-                full documentation
-              </a>
-              .
-            </p>
-            <div className={codeContainer}>
-              {copyCode}
-              <CopyTextButton value={copyCode} variant="blue" />
-            </div>
+    <div className="grid grid-cols-[1fr_auto] gap-4 mb-4 mr-4">
+      <div className="mb-5">
+        <div className="bg-green-100 flex-grow p-4 border border-slate-200 rounded-md mb-4">
+          <div className="flex gap-2.5 items-center ml-0.5">
+            <CheckCircleIcon className="h-7 w-7 text-green-500" />
+            <h2 className="font-semibold text-xl text-slate-600">
+              Awesome, setup complete!
+            </h2>
           </div>
         </div>
-        <Form
-          method="post"
-          action={`/resources/workspaces/${workspaceSlug}/projects/${projectSlug}/completed-logs-onboarding`}
-        >
-          <button
-            type="submit"
-            className="-mt-2 -mr-2 bg-transparent hover:bg-white border border-transparent hover:border-slate-300 transition rounded p-1"
+        <div className="bg-slate-100 flex gap-2 justify-between p-4 border border-slate-200 rounded-md mb-4">
+          <div className="flex flex-col gap-y-2">
+            <h2 className="font-semibold text-xl text-slate-600">
+              Optional configuration
+            </h2>
+            <div className="flex flex-col gap-2">
+              <p className="text-sm text-slate-700">
+                Choose which requests are proxied. Use the example below or read
+                the{" "}
+                <a
+                  href="https://docs.apihero.run"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="underline hover:text-blue-500 transition"
+                >
+                  full documentation
+                </a>
+                .
+              </p>
+              <div className={codeContainer}>
+                {copyCode}
+                <CopyTextButton value={copyCode} variant="blue" />
+              </div>
+            </div>
+          </div>
+          <Form
+            method="post"
+            action={`/resources/workspaces/${workspaceSlug}/projects/${projectSlug}/completed-logs-onboarding`}
           >
-            <XMarkIcon className="h-5 w-5 text-slate-600" />
-          </button>
-        </Form>
+            <button
+              type="submit"
+              className="-mt-2 -mr-2 bg-transparent hover:bg-white border border-transparent hover:border-slate-300 transition rounded p-1"
+            >
+              <XMarkIcon className="h-5 w-5 text-slate-600" />
+            </button>
+          </Form>
+        </div>
       </div>
+      <HavingTroublePanel />
     </div>
   );
 }
@@ -205,6 +216,37 @@ export function CountdownToRefreshButton({ projectId }: { projectId: string }) {
           <>Checking again in {countdown}</>
         )}
       </p>
+    </div>
+  );
+}
+
+function HavingTroublePanel() {
+  return (
+    <div className="bg-blue-50 w-80 border border-blue-100 rounded-md text-slate-700 p-4">
+      <h3 className="text-xl font-semibold mb-2">Having trouble?</h3>
+      <p className="mb-2 text-sm">
+        If you're having trouble getting API Hero setup in your project, please
+        get in touch with us below and we'll happily get you up and running.
+      </p>
+      <SecondaryA href="mailto:hello@apihero.run" className="mb-2">
+        <EnvelopeIcon className="h-4 w-4 -ml-1" />
+        Send us an email
+      </SecondaryA>
+      <SecondaryA
+        target="_blank"
+        href="https://cal.com/team/apihero/product-feedback"
+        className="mb-3"
+      >
+        <PhoneIcon className="h-4 w-4 -ml-1" />
+        Schedule a call
+      </SecondaryA>
+      <p className="mb-1 text-sm">
+        Or read more about how it all works in our documentation.
+      </p>
+      <SecondaryA href="https://docs.apihero.run" target="_blank">
+        <ArrowTopRightOnSquareIcon className="h-4 w-4 -ml-1" />
+        Documentation
+      </SecondaryA>
     </div>
   );
 }
