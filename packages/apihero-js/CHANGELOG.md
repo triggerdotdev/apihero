@@ -1,5 +1,11 @@
 # @apihero/js
 
+## 1.3.5
+
+### Patch Changes
+
+- a9bcb3b: Use legacy esm output to avoid mjs extensions
+
 ## 1.3.4
 
 ### Patch Changes
