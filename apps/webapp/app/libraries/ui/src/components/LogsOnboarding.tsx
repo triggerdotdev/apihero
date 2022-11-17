@@ -60,13 +60,16 @@ function OnboardingIncomplete({ projectId }: { projectId: string }) {
           >
             <div className="flex w-full flex-wrap-reverse justify-between border-b border-slate-200">
               <div className="flex max-w-fit">
-                <StyledTabs.Segmented>Next.js</StyledTabs.Segmented>
                 <StyledTabs.Underlined>Node</StyledTabs.Underlined>
+                <StyledTabs.Segmented>Next.js</StyledTabs.Segmented>
                 <StyledTabs.Underlined>React</StyledTabs.Underlined>
               </div>
             </div>
           </StyledTabs.SegmentedList>
           <Tab.Panels className="flex-grow overflow-y-auto pt-4">
+            <Tab.Panel className="relative h-full">
+              <NodeJs projectId={projectId} />
+            </Tab.Panel>
             <Tab.Panel className="relative h-full">
               <NextJs projectId={projectId} />
             </Tab.Panel>
@@ -321,17 +324,17 @@ function CodeBlock({ code }: { code: string }) {
 
 function NextJs({ projectId }: { projectId: string }) {
   const nextJs = `async function initProxy() {
-    const projectKey = "${projectId}";
-    if (typeof window !== "undefined") {
-      const { setupWorker } = await import("apihero-js");
-      //update the allow list with the APIs you're using
-      await setupWorker({ allow: ["https://api.github.com/*"], projectKey, env: process.env.NODE_ENV }).start();
-    } else {
-      const { setupProxy } = await import("apihero-js/node");
-      await setupProxy({ projectKey, env: process.env.NODE_ENV }).start();
-    }
+  const projectKey = "${projectId}";
+  if (typeof window !== "undefined") {
+    const { setupWorker } = await import("apihero-js");
+    //update the allow list with the APIs you're using
+    await setupWorker({ allow: ["https://api.github.com/*"], projectKey, env: process.env.NODE_ENV }).start();
+  } else {
+    const { setupProxy } = await import("apihero-js/node");
+    await setupProxy({ projectKey, env: process.env.NODE_ENV }).start();
   }
-  initProxy();`;
+}
+initProxy();`;
   return (
     <Instructions>
       <InstallPackage />
@@ -352,6 +355,38 @@ function NextJs({ projectId }: { projectId: string }) {
         </p>
       </Instruction>
       <Instruction step={6}>
+        <p className="text-sm text-slate-700">
+          Send any API request from your project, then come back here.
+        </p>
+        <div className="flex items-center gap-4">
+          <CountdownToRefreshButton projectId={projectId} />
+        </div>
+      </Instruction>
+    </Instructions>
+  );
+}
+
+function NodeJs({ projectId }: { projectId: string }) {
+  const nodeJs = `async function initProxy() {
+const { setupProxy } = await import("apihero-js/node");
+  await setupProxy({
+    projectKey: "${projectId}",
+    env: process.env.NODE_ENV,
+    allow: ["https://api.github.com/*"], // remove this line if you want all traffic to be proxied
+  }).start();
+}
+initProxy();`;
+  return (
+    <Instructions>
+      <InstallPackage />
+      <Instruction step={3}>
+        <p className="text-sm text-slate-700">
+          Place this code anywhere that is executed when your application
+          starts:
+        </p>
+        <CodeBlock code={nodeJs} />
+      </Instruction>
+      <Instruction step={4}>
         <p className="text-sm text-slate-700">
           Send any API request from your project, then come back here.
         </p>
