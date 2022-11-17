@@ -1,5 +1,11 @@
 # @apihero/js
 
+## 1.3.8
+
+### Patch Changes
+
+- e2c0ef6: Rename @apihero/js to apihero-js
+
 ## 1.3.7
 
 ### Patch Changes
