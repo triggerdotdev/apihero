@@ -1,5 +1,11 @@
 # @apihero/js
 
+## 1.3.1
+
+### Patch Changes
+
+- 41c71ed: Try fixing ERR_UNSUPPORTED_DIR_IMPORT error
+
 ## 1.3.0
 
 ### Minor Changes
