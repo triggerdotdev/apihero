@@ -1,5 +1,11 @@
 # @apihero/js
 
+## 1.3.6
+
+### Patch Changes
+
+- 3853e5a: Remove default from exports
+
 ## 1.3.5
 
 ### Patch Changes
