@@ -62,7 +62,7 @@ export function Underlined({ children, ...props }: HeadlessTabProps) {
 
 export function SegmentedList({ children, ...props }: HeadlessTabListProps) {
   return (
-    <HeadlessTab.List className={"flex space-x-4"} {...props}>
+    <HeadlessTab.List className={""} {...props}>
       {children}
     </HeadlessTab.List>
   );

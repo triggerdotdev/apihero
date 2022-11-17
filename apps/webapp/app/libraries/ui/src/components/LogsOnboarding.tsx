@@ -47,15 +47,13 @@ function OnboardingIncomplete({ projectId }: { projectId: string }) {
 
         <Tab.Group>
           <StyledTabs.SegmentedList
-            className={"flex flex-shrink-0 flex-grow-0 ml-8"}
+            className={
+              "flex ml-8 gap-0.5 max-w-fit bg-slate-200 rounded-md p-0.5 border border-slate-300"
+            }
           >
-            <div className="flex w-full flex-wrap-reverse justify-between">
-              <div className="flex gap-0.5 max-w-fit bg-slate-200 rounded p-0.5 border border-slate-300">
-                <StyledTabs.Segmented>Node</StyledTabs.Segmented>
-                <StyledTabs.Segmented>Next.js</StyledTabs.Segmented>
-                <StyledTabs.Segmented>React</StyledTabs.Segmented>
-              </div>
-            </div>
+            <StyledTabs.Segmented>Next.js</StyledTabs.Segmented>
+            <StyledTabs.Segmented>Node</StyledTabs.Segmented>
+            <StyledTabs.Segmented>React</StyledTabs.Segmented>
           </StyledTabs.SegmentedList>
           <Tab.Panels className="flex-grow overflow-y-auto pt-4">
             <Tab.Panel className="relative h-full">
