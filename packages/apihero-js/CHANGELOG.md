@@ -1,5 +1,11 @@
 # @apihero/js
 
+## 1.3.9
+
+### Patch Changes
+
+- 83426ad: Added the node/package.json file
+
 ## 1.3.8
 
 ### Patch Changes
