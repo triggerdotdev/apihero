@@ -5,7 +5,7 @@ import {
   PROTOCOL_HEADER_NAME,
 } from "@apihero/constants-js";
 import { IsomorphicRequest } from "@apihero/interceptors-js";
-import { FetchInterceptor } from "@apihero/interceptors-js/lib/interceptors/fetch";
+import { FetchInterceptor } from "@apihero/interceptors-js/lib/interceptors/fetch/index.js";
 import { isMatch } from "matcher";
 import debug from "debug";
 import { SetupProxyOptions, PolicyRule } from "../types";
