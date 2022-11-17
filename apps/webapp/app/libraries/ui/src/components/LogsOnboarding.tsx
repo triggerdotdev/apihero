@@ -244,7 +244,7 @@ function CodeBlock({
   language: "shell" | "typescript";
 }) {
   return (
-    <div className="flex items-start justify-between gap-2.5 rounded-md border py-2 pl-4 pr-2 text-sm">
+    <div className="flex items-start justify-between gap-2.5 rounded-md border py-2 pl-4 pr-2 text-sm bg-[rgb(15,23,42)]">
       <CodeEditor
         content={code}
         language={language}
