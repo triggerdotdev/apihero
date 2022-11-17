@@ -1,16 +1,13 @@
 import { Tab } from "@headlessui/react";
 import {
   ArrowTopRightOnSquareIcon,
-  CheckCircleIcon,
   EnvelopeIcon,
   PhoneIcon,
-  XMarkIcon,
 } from "@heroicons/react/24/outline";
-import { Form } from "@remix-run/react";
 import classNames from "classnames";
 import type { ReactNode } from "react";
 import { useCallback, useEffect, useState } from "react";
-import { JSONEditor, StyledTabs } from "~/libraries/common";
+import { StyledTabs } from "~/libraries/common";
 import { CodeEditor } from "~/libraries/common/src/components/editor/JavascriptEditor";
 import type { LoaderData } from "~/routes/__app/workspaces/$workspaceSlug/projects/$projectSlug/home";
 import { Spinner } from "../../../common/src/components/Spinner";
@@ -34,8 +31,8 @@ const tip =
 
 function OnboardingIncomplete({ projectId }: { projectId: string }) {
   return (
-    <div className="grid grid-cols-[1fr_auto] gap-2 mb-4 mr-4">
-      <div className="bg-slate-100 p-4 border border-slate-200 rounded-md">
+    <div className="grid grid-cols-[4fr_1fr] gap-2 mb-4 mr-4">
+      <div className="bg-slate-100 p-4 border border-slate-200 rounded-md overflow-hidden">
         <h2 className="font-semibold text-xl mb-4 text-slate-600">
           Get started
         </h2>
@@ -52,7 +49,7 @@ function OnboardingIncomplete({ projectId }: { projectId: string }) {
             <StyledTabs.Segmented>Next.js</StyledTabs.Segmented>
             <StyledTabs.Segmented>React</StyledTabs.Segmented>
           </StyledTabs.SegmentedList>
-          <Tab.Panels className="flex-grow overflow-y-auto pt-4">
+          <Tab.Panels className="flex-grow pt-4">
             <Tab.Panel className="relative h-full">
               <NodeJs projectId={projectId} />
             </Tab.Panel>
@@ -244,14 +241,16 @@ function CodeBlock({
   language: "shell" | "typescript";
 }) {
   return (
-    <div className="flex items-start justify-between gap-2.5 rounded-md border py-2 pl-4 pr-2 text-sm bg-[rgb(15,23,42)]">
+    <div className="relative rounded-md border py-2 pl-4 pr-2 text-sm bg-[rgb(15,23,42)]">
       <CodeEditor
         content={code}
         language={language}
         showLineNumbers={false}
         showHighlights={false}
       />
-      <CopyTextButton value={code} variant="blue" />
+      <div className="absolute top-2 right-2">
+        <CopyTextButton value={code} variant="blue" />
+      </div>
     </div>
   );
 }
@@ -275,7 +274,11 @@ function NextJs({ projectId }: { projectId: string }) {
   if (typeof window !== "undefined") {
     const { setupWorker } = await import("apihero-js");
     //update the allow list with the APIs you're using
-    await setupWorker({ allow: ["https://api.github.com/*"], projectKey, env: process.env.NODE_ENV }).start();
+    await setupWorker({ 
+      allow: ["https://api.github.com/*"], 
+      projectKey, 
+      env: process.env.NODE_ENV 
+    }).start();
   } else {
     const { setupProxy } = await import("apihero-js/node");
     await setupProxy({ projectKey, env: process.env.NODE_ENV }).start();
@@ -308,11 +311,12 @@ initProxy();`;
 
 function NodeJs({ projectId }: { projectId: string }) {
   const code = `async function initProxy() {
-const { setupProxy } = await import("apihero-js/node");
+  const { setupProxy } = await import("apihero-js/node");
   await setupProxy({
     projectKey: "${projectId}",
     env: process.env.NODE_ENV,
-    allow: ["https://api.github.com/*"] // remove this line if you want all traffic to be proxied
+    // remove this line if you want all traffic to be proxied
+    allow: ["https://api.github.com/*"] 
   }).start();
 }
 initProxy();`;
