@@ -15,13 +15,12 @@
     ".": {
       "require": "./lib/index.js",
       "import": "./lib/esm/index.js",
-      "default": "./lib/index.js"
+      "types": "./lib/index.d.ts"
     },
     "./node": {
       "types": "./lib/node/index.d.ts",
       "import": "./lib/node/esm/index.js",
-      "require": "./lib/node/index.js",
-      "default": "./lib/node/index.js"
+      "require": "./lib/node/index.js"
     }
   },
   "files": [
