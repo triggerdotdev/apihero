@@ -22,16 +22,7 @@ export function LogsOnboarding({
   workspaceSlug,
 }: LoaderData & { workspaceSlug: string }) {
   return (
-    <>
-      {!project.hasLogs && <OnboardingIncomplete projectId={project.id} />}
-      {project.hasLogs && !project.hasCompletedOnboarding && (
-        <OnboardingComplete
-          workspaceSlug={workspaceSlug}
-          projectSlug={project.slug}
-          projectId={project.id}
-        />
-      )}
-    </>
+    <>{!project.hasLogs && <OnboardingIncomplete projectId={project.id} />}</>
   );
 }
 
@@ -78,68 +69,6 @@ function OnboardingIncomplete({ projectId }: { projectId: string }) {
             </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>
-      </div>
-      <HavingTroublePanel />
-    </div>
-  );
-}
-
-function OnboardingComplete({
-  workspaceSlug,
-  projectSlug,
-  projectId,
-}: {
-  workspaceSlug: string;
-  projectSlug: string;
-  projectId: string;
-}) {
-  const copyCode = `setupProxy({ projectKey: “${projectId}", allow: ["https://api.github.com/*”] }).start();`;
-
-  return (
-    <div className="grid grid-cols-[1fr_auto] gap-4 mb-4 mr-4">
-      <div className="mb-5">
-        <div className="bg-green-100 flex-grow p-4 border border-slate-200 rounded-md mb-4">
-          <div className="flex gap-2.5 items-center ml-0.5">
-            <CheckCircleIcon className="h-7 w-7 text-green-500" />
-            <h2 className="font-semibold text-xl text-slate-600">
-              Awesome, setup complete!
-            </h2>
-          </div>
-        </div>
-        <div className="bg-slate-100 flex gap-2 justify-between p-4 border border-slate-200 rounded-md mb-4">
-          <div className="flex flex-col gap-y-2">
-            <h2 className="font-semibold text-xl text-slate-600">
-              Optional configuration
-            </h2>
-            <div className="flex flex-col gap-2">
-              <p className="text-sm text-slate-700">
-                Choose which requests are proxied. Use the example below or read
-                the{" "}
-                <a
-                  href="https://docs.apihero.run"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="underline hover:text-blue-500 transition"
-                >
-                  full documentation
-                </a>
-                .
-              </p>
-              <CodeBlock code={copyCode} />
-            </div>
-          </div>
-          <Form
-            method="post"
-            action={`/resources/workspaces/${workspaceSlug}/projects/${projectSlug}/completed-logs-onboarding`}
-          >
-            <button
-              type="submit"
-              className="-mt-2 -mr-2 bg-transparent hover:bg-white border border-transparent hover:border-slate-300 transition rounded p-1"
-            >
-              <XMarkIcon className="h-5 w-5 text-slate-600" />
-            </button>
-          </Form>
-        </div>
       </div>
       <HavingTroublePanel />
     </div>
