@@ -1,5 +1,11 @@
 # @apihero/js
 
+## 1.3.2
+
+### Patch Changes
+
+- 7332423: Converted @apihero/constants-js to an internal package
+
 ## 1.3.1
 
 ### Patch Changes
