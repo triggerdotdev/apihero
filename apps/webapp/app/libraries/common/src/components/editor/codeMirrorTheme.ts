@@ -19,7 +19,7 @@ export function darkTheme(): Extension {
     highlightBackground = "rgba(234,179,8,0.3)",
     background = "rgb(51 65 85)",
     tooltipBackground = "#353a42",
-    selection = "#3E4451",
+    selection = "rgb(71 85 105)",
     cursor = "#528bff";
 
   const jsonHeroEditorTheme = EditorView.theme(
