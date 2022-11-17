@@ -47,8 +47,8 @@ function OnboardingIncomplete({ projectId }: { projectId: string }) {
 
         <Tab.Group>
           <StyledTabs.SegmentedList>
-            <StyledTabs.Segmented>Next.js</StyledTabs.Segmented>
             <StyledTabs.Segmented>Node</StyledTabs.Segmented>
+            <StyledTabs.Segmented>Next.js</StyledTabs.Segmented>
             <StyledTabs.Segmented>React</StyledTabs.Segmented>
           </StyledTabs.SegmentedList>
           <Tab.Panels className="flex-grow overflow-y-auto pt-4">
@@ -168,7 +168,7 @@ function Instruction({
     "inline-flex text-slate-600 -mt-0.5 h-6 w-6 text-sm bg-white p-2 items-center justify-center rounded border border-slate-200";
 
   return (
-    <li className="flex gap-2">
+    <li className="flex gap-2 items-baseline">
       <span className={classNames(classes)}>{step}</span>
       <div className="flex flex-col gap-2 w-full">{children}</div>
     </li>
@@ -211,7 +211,7 @@ function CommandLine({
 
   return (
     <Instruction step={step}>
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-baseline">
         <p className="text-sm text-slate-700">{children}</p>
         <Select
           className="w-max"
@@ -302,7 +302,7 @@ const { setupProxy } = await import("apihero-js/node");
   await setupProxy({
     projectKey: "${projectId}",
     env: process.env.NODE_ENV,
-    allow: ["https://api.github.com/*"], // remove this line if you want all traffic to be proxied
+    allow: ["https://api.github.com/*"] // remove this line if you want all traffic to be proxied
   }).start();
 }
 initProxy();`;
