@@ -41,19 +41,19 @@ function OnboardingIncomplete({ projectId }: { projectId: string }) {
 
         <ul className="flex gap-2 mb-2">
           <Instruction step={1}>
-            <p className="text-sm text-slate-700">Select your framework</p>
+            <p className="text-sm text-slate-700">Select your framework:</p>
           </Instruction>
         </ul>
 
         <Tab.Group>
           <StyledTabs.SegmentedList
-            className={"-mb-px flex flex-shrink-0 flex-grow-0"}
+            className={"flex flex-shrink-0 flex-grow-0 ml-8"}
           >
-            <div className="flex w-full flex-wrap-reverse justify-between border-b border-slate-200">
-              <div className="flex max-w-fit">
-                <StyledTabs.Underlined>Node</StyledTabs.Underlined>
+            <div className="flex w-full flex-wrap-reverse justify-between">
+              <div className="flex gap-0.5 max-w-fit bg-slate-200 rounded p-0.5 border border-slate-300">
+                <StyledTabs.Segmented>Node</StyledTabs.Segmented>
                 <StyledTabs.Segmented>Next.js</StyledTabs.Segmented>
-                <StyledTabs.Underlined>React</StyledTabs.Underlined>
+                <StyledTabs.Segmented>React</StyledTabs.Segmented>
               </div>
             </div>
           </StyledTabs.SegmentedList>
