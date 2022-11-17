@@ -3,7 +3,7 @@ import {
   PAYLOAD_HEADER_NAME,
   PROJECT_KEY_HEADER_NAME,
   PROTOCOL_HEADER_NAME,
-} from "@apihero/constants-js";
+} from "./constants";
 
 export async function proxyRequest(
   request: Request

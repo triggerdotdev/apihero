@@ -41,7 +41,6 @@
     "test": "vitest -c vitest.config.ts --run"
   },
   "dependencies": {
-    "@apihero/constants-js": "workspace:*",
     "@apihero/interceptors-js": "workspace:*",
     "@open-draft/until": "^2.0.0",
     "chalk": "^4.1.1",

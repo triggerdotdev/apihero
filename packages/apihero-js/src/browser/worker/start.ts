@@ -3,7 +3,7 @@ import {
   PAYLOAD_HEADER_NAME,
   PROJECT_KEY_HEADER_NAME,
   PROTOCOL_HEADER_NAME,
-} from "@apihero/constants-js";
+} from "../../constants";
 import { until } from "@open-draft/until";
 import { isMatch } from "matcher";
 import {

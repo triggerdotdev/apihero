@@ -1,8 +1,0 @@
-{
-  "name": "@apihero/constants-js",
-  "version": "0.0.0",
-  "license": "MIT",
-  "main": "./index.ts",
-  "types": "./index.ts",
-  "type": "module"
-}

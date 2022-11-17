@@ -464,7 +464,6 @@ importers:
 
   packages/apihero-js:
     specifiers:
-      '@apihero/constants-js': workspace:*
       '@apihero/eslint-config-vite': '*'
       '@apihero/interceptors-js': workspace:*
       '@apihero/tsconfig': '*'
@@ -500,7 +499,6 @@ importers:
       webpack: ^5.74.0
       yargs: ^17.6.2
     dependencies:
-      '@apihero/constants-js': link:../constants-js
       '@apihero/interceptors-js': link:../interceptors-js
       '@open-draft/until': 2.0.0
       chalk: 4.1.2

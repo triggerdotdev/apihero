@@ -1,8 +1,5 @@
 import { CreateLogRequestBody, HttpMethod } from "internal-logs";
-import {
-  PAYLOAD_HEADER_NAME,
-  PROJECT_KEY_HEADER_NAME,
-} from "@apihero/constants-js";
+import { PAYLOAD_HEADER_NAME, PROJECT_KEY_HEADER_NAME } from "./constants";
 import { z } from "zod";
 
 const PayloadSchema = z.object({

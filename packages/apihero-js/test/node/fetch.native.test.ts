@@ -1,4 +1,3 @@
-import https from "https";
 import { HttpServer } from "../support/httpServer";
 import { setupProxy } from "../../src/node";
 import {
@@ -14,8 +13,8 @@ import {
   DESTINATION_HEADER_NAME,
   PROJECT_KEY_HEADER_NAME,
   PROTOCOL_HEADER_NAME,
-} from "@apihero/constants-js";
-import { PAYLOAD_HEADER_NAME } from "@apihero/constants-js";
+  PAYLOAD_HEADER_NAME,
+} from "../../src/constants";
 
 const proxyServer = new HttpServer((app) => {
   app.get("/get", (req, res) => {

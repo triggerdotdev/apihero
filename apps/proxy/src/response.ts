@@ -1,4 +1,4 @@
-import { REQUEST_ID_HEADER_NAME } from "@apihero/constants-js";
+import { REQUEST_ID_HEADER_NAME } from "./constants";
 
 export function createResponse(
   originResponse: Response,

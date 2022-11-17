@@ -19,7 +19,6 @@ export default defineConfig([
     splitting: false,
     dts: true,
     esbuildPlugins: [workerScriptPlugin()],
-    noExternal: ["@apihero/constants-js"],
   },
   {
     name: "iife",
@@ -34,7 +33,6 @@ export default defineConfig([
     splitting: false,
     dts: true,
     esbuildPlugins: [workerScriptPlugin()],
-    noExternal: ["@apihero/constants-js"],
   },
   {
     name: "node",
@@ -56,6 +54,5 @@ export default defineConfig([
     sourcemap: true,
     dts: true,
     esbuildPlugins: [workerScriptPlugin()],
-    noExternal: ["@apihero/constants-js"],
   },
 ]);

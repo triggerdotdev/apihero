@@ -3,7 +3,7 @@ import { LogService } from "../src/logger";
 import {
   DESTINATION_HEADER_NAME,
   PROJECT_KEY_HEADER_NAME,
-} from "@apihero/constants-js";
+} from "../src/constants";
 
 const describe = setupMiniflareIsolatedStorage();
 

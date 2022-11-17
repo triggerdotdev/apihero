@@ -7,5 +7,9 @@
   "access": "restricted",
   "baseBranch": "dev",
   "updateInternalDependencies": "patch",
-  "ignore": []
+  "ignore": [
+    "proxy",
+    "webapp",
+    "logs"
+  ]
 }

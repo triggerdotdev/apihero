@@ -3,7 +3,7 @@ import {
   PAYLOAD_HEADER_NAME,
   PROJECT_KEY_HEADER_NAME,
   PROTOCOL_HEADER_NAME,
-} from "@apihero/constants-js";
+} from "../constants";
 import { IsomorphicRequest } from "@apihero/interceptors-js";
 import { ClientRequestInterceptor } from "@apihero/interceptors-js/lib/interceptors/ClientRequest/index.js";
 import { FetchInterceptor } from "@apihero/interceptors-js/lib/interceptors/fetch/index.js";

@@ -1,9 +1,6 @@
 import { expect, test } from "vitest";
 import { createResponse } from "../src/response";
-import {
-  DESTINATION_HEADER_NAME,
-  REQUEST_ID_HEADER_NAME,
-} from "@apihero/constants-js";
+import { REQUEST_ID_HEADER_NAME } from "../src/constants";
 
 const describe = setupMiniflareIsolatedStorage();
 
