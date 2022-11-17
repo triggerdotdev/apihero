@@ -1,5 +1,11 @@
 # @apihero/js
 
+## 1.3.3
+
+### Patch Changes
+
+- 5d425fc: Removed @apihero/constants-js internal package
+
 ## 1.3.2
 
 ### Patch Changes
