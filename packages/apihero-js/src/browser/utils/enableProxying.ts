@@ -39,7 +39,7 @@ export function printStartMessage(args: PrintStartMessageArgs = {}) {
     return;
   }
 
-  const message = args.message || "Mocking enabled.";
+  const message = args.message || "Proxying enabled.";
 
   console.groupCollapsed(
     `%c${formatMessage(message)}`,
