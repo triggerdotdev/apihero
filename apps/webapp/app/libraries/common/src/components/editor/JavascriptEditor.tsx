@@ -8,33 +8,40 @@ import { useCodeMirror } from "@uiw/react-codemirror";
 import clsx from "clsx";
 import { useRef, useEffect } from "react";
 import { getEditorSetup } from "./codeMirrorSetup";
-import { lightTheme } from "./codeMirrorTheme";
+import { darkTheme } from "./codeMirrorTheme";
 
-export interface JavascriptEditorProps
-  extends Omit<ReactCodeMirrorProps, "onBlur"> {
+export interface CodeEditorProps extends Omit<ReactCodeMirrorProps, "onBlur"> {
   content: string;
+  language?: "typescript" | "shell";
+  showLineNumbers?: boolean;
+  showHighlights?: boolean;
   readOnly?: boolean;
   onChange?: (value: string) => void;
   onUpdate?: (update: ViewUpdate) => void;
   onBlur?: (code: string) => void;
 }
 
-type JavascriptEditorDefaultProps = Partial<JavascriptEditorProps>;
+type CodeEditorDefaultProps = Partial<CodeEditorProps>;
 
-const defaultProps: JavascriptEditorDefaultProps = {
+const defaultProps: CodeEditorDefaultProps = {
+  language: "typescript",
+  showLineNumbers: true,
+  showHighlights: true,
   readOnly: true,
   basicSetup: false,
 };
 
-export function JavascriptEditor(opts: JavascriptEditorProps) {
+export function CodeEditor(opts: CodeEditorProps) {
   const { content, readOnly, onChange, onUpdate, onBlur } = {
     ...defaultProps,
     ...opts,
   };
 
-  const extensions = getEditorSetup();
+  const extensions = getEditorSetup(opts.showLineNumbers, opts.showHighlights);
 
-  extensions.push(javascript({ typescript: true }));
+  if (opts.language === "typescript") {
+    extensions.push(javascript({ typescript: true }));
+  }
 
   const editor = useRef<HTMLDivElement>(null);
   const settings: Omit<UseCodeMirror, "onBlur"> = {
@@ -45,7 +52,7 @@ export function JavascriptEditor(opts: JavascriptEditorProps) {
     contentEditable: !readOnly,
     value: content,
     autoFocus: false,
-    theme: lightTheme(),
+    theme: darkTheme(),
     indentWithTab: false,
     basicSetup: false,
     onChange,

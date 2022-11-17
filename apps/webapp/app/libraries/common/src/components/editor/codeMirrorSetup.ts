@@ -28,16 +28,29 @@ export function getViewerSetup(): Array<Extension> {
   return [drawSelection(), dropCursor(), bracketMatching(), lineNumbers()];
 }
 
-export function getEditorSetup(): Array<Extension> {
-  return [
-    highlightActiveLineGutter(),
-    highlightSpecialChars(),
+export function getEditorSetup(
+  showLineNumbers = true,
+  showHighlights = true
+): Array<Extension> {
+  const options = [
     drawSelection(),
     dropCursor(),
     bracketMatching(),
-    highlightActiveLine(),
-    highlightSelectionMatches(),
-    lineNumbers(),
     closeBrackets(),
   ];
+
+  if (showLineNumbers) {
+    options.push(lineNumbers());
+  }
+
+  if (showHighlights) {
+    options.push([
+      highlightActiveLineGutter(),
+      highlightSpecialChars(),
+      highlightActiveLine(),
+      highlightSelectionMatches(),
+    ]);
+  }
+
+  return options;
 }

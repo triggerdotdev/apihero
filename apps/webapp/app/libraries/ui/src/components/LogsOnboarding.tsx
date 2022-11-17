@@ -10,7 +10,8 @@ import { Form } from "@remix-run/react";
 import classNames from "classnames";
 import type { ReactNode } from "react";
 import { useCallback, useEffect, useState } from "react";
-import { StyledTabs } from "~/libraries/common";
+import { JSONEditor, StyledTabs } from "~/libraries/common";
+import { CodeEditor } from "~/libraries/common/src/components/editor/JavascriptEditor";
 import type { LoaderData } from "~/routes/__app/workspaces/$workspaceSlug/projects/$projectSlug/home";
 import { Spinner } from "../../../common/src/components/Spinner";
 import { SecondaryA } from "./Buttons/Buttons";
@@ -226,7 +227,7 @@ function CommandLine({
         </Select>
       </div>
 
-      <CodeBlock code={`${packageManager} ${code}`} />
+      <CodeBlock code={`${packageManager} ${code}`} language="shell" />
     </Instruction>
   );
 }
@@ -235,14 +236,23 @@ function InlineCode({ children }: { children: ReactNode }) {
   return <code className={inlineCode}>{children}</code>;
 }
 
-function CodeBlock({ code }: { code: string }) {
-  const codeContainer =
-    "flex items-start font-mono justify-between gap-2.5 rounded-md border bg-slate-700 py-2 pl-4 pr-2 text-sm text-white";
+function CodeBlock({
+  code,
+  language,
+}: {
+  code: string;
+  language: "shell" | "typescript";
+}) {
   return (
-    <pre className={codeContainer}>
-      {code}
+    <div className="flex items-start justify-between gap-2.5 rounded-md border py-2 pl-4 pr-2 text-sm">
+      <CodeEditor
+        content={code}
+        language={language}
+        showLineNumbers={false}
+        showHighlights={false}
+      />
       <CopyTextButton value={code} variant="blue" />
-    </pre>
+    </div>
   );
 }
 
@@ -281,7 +291,7 @@ initProxy();`;
           Add the following code to the bottom of your root page (e.g.
           pages/_app.tsx):
         </p>
-        <CodeBlock code={code} />
+        <CodeBlock code={code} language="typescript" />
       </Instruction>
       <ModuleResolution step={5} />
       <Instruction step={6}>
@@ -314,7 +324,7 @@ initProxy();`;
           Place this code anywhere that is executed when your application
           starts:
         </p>
-        <CodeBlock code={code} />
+        <CodeBlock code={code} language="typescript" />
       </Instruction>
       <ModuleResolution step={4} />
       <Instruction step={5}>
@@ -351,7 +361,7 @@ initProxy();`;
           Add the following code at the bottom of your root component file (e.g.
           App.tsx):
         </p>
-        <CodeBlock code={code} />
+        <CodeBlock code={code} language="typescript" />
       </Instruction>
       <Instruction step={5}>
         <p className="text-sm text-slate-700">
