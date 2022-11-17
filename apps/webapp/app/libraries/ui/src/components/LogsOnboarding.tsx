@@ -264,10 +264,8 @@ function InstallServiceWorker({ step }: { step: number }) {
 
   return (
     <CommandLine step={step} code={installServiceWorkerCode}>
-      <p className="text-sm text-slate-700">
-        Install the Service Worker to forward specified browser traffic through
-        a proxy server.
-      </p>
+      Install the Service Worker to forward specified browser traffic through a
+      proxy server.
     </CommandLine>
   );
 }
