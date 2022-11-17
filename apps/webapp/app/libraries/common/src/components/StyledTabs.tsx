@@ -59,3 +59,33 @@ export function Underlined({ children, ...props }: HeadlessTabProps) {
     </HeadlessTab>
   );
 }
+
+export function SegmentedList({ children, ...props }: HeadlessTabListProps) {
+  return (
+    <HeadlessTab.List
+      className={"-mb-px flex space-x-4 border-b border-slate-200"}
+      {...props}
+    >
+      {children}
+    </HeadlessTab.List>
+  );
+}
+
+export function Segmented({ children, ...props }: HeadlessTabProps) {
+  return (
+    <HeadlessTab
+      className={({ selected }: { selected: boolean }) =>
+        classnames(
+          selected
+            ? "border-blue-500 text-slate-900 outline-none"
+            : "border-transparent text-slate-800 hover:border-slate-200 hover:text-slate-700",
+          "disabled:text-slate-300 disabled:hover:border-transparent",
+          "flex whitespace-nowrap border-b-2 py-2 px-4 text-xs font-medium"
+        )
+      }
+      {...props}
+    >
+      {children}
+    </HeadlessTab>
+  );
+}
