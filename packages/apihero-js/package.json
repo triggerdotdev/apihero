@@ -6,21 +6,18 @@
   },
   "license": "MIT",
   "main": "./lib/index.js",
-  "module": "./lib/index.mjs",
   "types": "./lib/index.d.ts",
   "bin": {
     "apihero-js": "cli/index.js"
   },
   "exports": {
     ".": {
-      "require": "./lib/index.js",
-      "import": "./lib/esm/index.js",
-      "types": "./lib/index.d.ts"
+      "default": "./lib/index.js"
     },
     "./node": {
       "types": "./lib/node/index.d.ts",
-      "import": "./lib/node/esm/index.js",
-      "require": "./lib/node/index.js"
+      "require": "./lib/node/index.js",
+      "default": "./lib/node/index.mjs"
     }
   },
   "files": [
@@ -31,6 +28,7 @@
     "LICENSE.md",
     "README.md"
   ],
+  "sideEffects": false,
   "scripts": {
     "build": "npm run clean && npm run build:tsup",
     "build:tsup": "tsup",
