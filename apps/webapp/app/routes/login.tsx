@@ -3,6 +3,7 @@ import type { LoaderFunction, MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, Link, useLoaderData } from "@remix-run/react";
 import { GitHubLoginButton } from "~/libraries/ui";
+import { LoginPromoPanel } from "~/libraries/ui/src/components/LoginPromoPanel";
 import { Logo } from "~/libraries/ui/src/components/Logo";
 import { commitSession, setRedirectTo } from "~/services/redirectTo.server";
 import { getUserId } from "~/services/session.server";
@@ -43,8 +44,9 @@ export const meta: MetaFunction = () => {
 export default function LoginPage() {
   const data = useLoaderData<LoaderData>();
   return (
-    <div className="flex flex-row">
-      <div className="flex h-screen w-screen flex-col justify-center gap-4 overflow-y-scroll bg-gradient-to-r from-[#4669E5] via-[#2B52DE] to-[#644DF5] p-4 sm:items-center lg:flex-row lg:p-0">
+    <div className="flex h-screen w-screen justify-between overflow-y-scroll">
+      <LoginPromoPanel />
+      <div className="flex grow items-center justify-center bg-gradient-background h-full w-full p-4">
         <div className="mt-[100px] flex w-full max-w-xl flex-col justify-between rounded-lg border bg-white shadow-md lg:mt-0 lg:min-h-[430px]">
           <Form
             className="flex flex-col"
