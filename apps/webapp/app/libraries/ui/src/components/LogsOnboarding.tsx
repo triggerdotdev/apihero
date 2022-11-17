@@ -241,7 +241,7 @@ function CodeBlock({
   language: "shell" | "typescript";
 }) {
   return (
-    <div className="relative rounded-md border py-2 pl-4 pr-2 text-sm bg-[rgb(15,23,42)]">
+    <div className="relative rounded-md border py-2 pl-4 pr-2 text-sm bg-slate-700">
       <CodeEditor
         content={code}
         language={language}
