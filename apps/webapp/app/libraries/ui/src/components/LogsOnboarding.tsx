@@ -1,3 +1,4 @@
+import { Tab } from "@headlessui/react";
 import {
   ArrowTopRightOnSquareIcon,
   CheckCircleIcon,
@@ -7,16 +8,14 @@ import {
 } from "@heroicons/react/24/outline";
 import { Form } from "@remix-run/react";
 import classNames from "classnames";
+import type { ReactNode } from "react";
 import { useCallback, useEffect, useState } from "react";
+import { StyledTabs } from "~/libraries/common";
 import type { LoaderData } from "~/routes/__app/workspaces/$workspaceSlug/projects/$projectSlug/home";
 import { Spinner } from "../../../common/src/components/Spinner";
 import { SecondaryA } from "./Buttons/Buttons";
 import { CopyTextButton } from "./Buttons/CopyTextButton";
-
-const listItemNumbered =
-  "inline-flex text-slate-600 -mt-0.5 h-6 w-6 text-sm bg-white p-2 items-center justify-center rounded border border-slate-200";
-const codeContainer =
-  "flex items-center font-mono justify-between gap-2.5 rounded-md border bg-slate-700 py-2 pl-4 pr-2 text-sm text-white";
+import { Select } from "./Select";
 
 export function LogsOnboarding({
   project,
@@ -36,103 +35,43 @@ export function LogsOnboarding({
   );
 }
 
-function OnboardingIncomplete({ projectId }: { projectId: string }) {
-  const copyCode1 = `npm install apihero-js@latest`;
-  const copyCode2 = `import { setupProxy } from "apihero-js/node";`;
-  const copyCode4 = "npm exec apihero-js init public/";
-  const copyCode3 = `setupProxy({ projectKey: “${projectId}” }).start();`;
-  const inlineCode =
-    "px-1 py-0.5 bg-slate-200 border border-slate-300 rounded text-slate-700";
-  const tip =
-    "bg-yellow-100 border border-yellow-300 font-semibold text-xs text-orange-400 rounded px-1.5 py-1 uppercase tracking-wider";
+const inlineCode =
+  "px-1 py-0.5 bg-slate-200 border border-slate-300 rounded text-slate-700";
+const tip =
+  "bg-yellow-100 border border-yellow-300 font-semibold text-xs text-orange-400 rounded px-1.5 py-1 uppercase tracking-wider";
 
+function OnboardingIncomplete({ projectId }: { projectId: string }) {
   return (
     <div className="grid grid-cols-[1fr_auto] gap-2 mb-4 mr-4">
       <div className="bg-slate-100 p-4 border border-slate-200 rounded-md">
         <h2 className="font-semibold text-xl mb-4 text-slate-600">
           Get started
         </h2>
-        <ul className="flex flex-col gap-5">
-          <li className="flex gap-2">
-            <span className={classNames(listItemNumbered)}>1</span>
-            <div className="flex flex-col gap-2 w-full">
-              <p className="text-sm text-slate-700">
-                Install the <code className={inlineCode}>apihero-js</code>{" "}
-                package. <span className={tip}>Tip:</span> You can swap{" "}
-                <code className={inlineCode}>npm</code> for{" "}
-                <code className={inlineCode}>yarn</code> or{" "}
-                <code className={inlineCode}>pnpm</code> if you prefer.
-              </p>
-              <div className={codeContainer}>
-                {copyCode1}
-                <CopyTextButton value={copyCode1} variant="blue" />
-              </div>
-            </div>
-          </li>
-          <li className="flex gap-2">
-            <span className={classNames(listItemNumbered)}>2</span>
-            <div className="flex flex-col gap-2 w-full">
-              <p className="text-sm text-slate-700">
-                Import the <code className={inlineCode}>setupProxy</code>{" "}
-                function.
-              </p>
-              <div className={codeContainer}>
-                {copyCode2}
-                <CopyTextButton value={copyCode2} variant="blue" />
-              </div>
-            </div>
-          </li>
-          <li className="flex gap-2">
-            <span className={classNames(listItemNumbered)}>2</span>
-            <div className="flex flex-col gap-2 w-full">
-              <p className="text-sm text-slate-700">
-                Install the Service Worker to forward specified traffic through
-                a proxy server. <span className={tip}>Tip:</span> This command
-                works for Next.js, Create React App, Vue.js, Ember.js, Svelte
-                and Vite. For other frameworks view{" "}
-                <a
-                  href="https://docs.apihero.run/react-quick-start#2-install-the-worker"
-                  rel="noreferrer"
-                  target="_blank"
-                  className="underline hover:text-slate-900"
-                >
-                  this table
-                </a>
-                .
-              </p>
-              <div className={codeContainer}>
-                {copyCode4}
-                <CopyTextButton value={copyCode4} variant="blue" />
-              </div>
-            </div>
-          </li>
-          <li className="flex gap-2">
-            <span className={classNames(listItemNumbered)}>3</span>
-            <div className="flex flex-col gap-2">
-              <p className="text-sm text-slate-700">
-                Configure the Service Worker with your project key.{" "}
-                <span className={tip}>Tip:</span> Although it may seem unsafe,
-                it is okay to put the projectKey in your code. This just
-                identifies your project and is not a secret.
-              </p>
-              <div className={codeContainer}>
-                {copyCode3}
-                <CopyTextButton value={copyCode3} variant="blue" />
-              </div>
-            </div>
-          </li>
-          <li className="flex gap-2">
-            <span className={classNames(listItemNumbered)}>4</span>
-            <div className="flex flex-col gap-2">
-              <p className="text-sm text-slate-700">
-                Send any API request from your project, then come back here.
-              </p>
-              <div className="flex items-center gap-4">
-                <CountdownToRefreshButton projectId={projectId} />
-              </div>
-            </div>
-          </li>
+
+        <ul className="flex gap-2 mb-2">
+          <Instruction step={1}>
+            <p className="text-sm text-slate-700">Select your framework</p>
+          </Instruction>
         </ul>
+
+        <Tab.Group>
+          <StyledTabs.SegmentedList
+            className={"-mb-px flex flex-shrink-0 flex-grow-0"}
+          >
+            <div className="flex w-full flex-wrap-reverse justify-between border-b border-slate-200">
+              <div className="flex max-w-fit">
+                <StyledTabs.Segmented>Next.js</StyledTabs.Segmented>
+                <StyledTabs.Underlined>Node</StyledTabs.Underlined>
+                <StyledTabs.Underlined>React</StyledTabs.Underlined>
+              </div>
+            </div>
+          </StyledTabs.SegmentedList>
+          <Tab.Panels className="flex-grow overflow-y-auto pt-4">
+            <Tab.Panel className="relative h-full">
+              <NextJs projectId={projectId} />
+            </Tab.Panel>
+          </Tab.Panels>
+        </Tab.Group>
       </div>
       <HavingTroublePanel />
     </div>
@@ -180,10 +119,7 @@ function OnboardingComplete({
                 </a>
                 .
               </p>
-              <div className={codeContainer}>
-                {copyCode}
-                <CopyTextButton value={copyCode} variant="blue" />
-              </div>
+              <CodeBlock code={copyCode} />
             </div>
           </div>
           <Form
@@ -233,7 +169,7 @@ export function CountdownToRefreshButton({ projectId }: { projectId: string }) {
     } else {
       setCountdown(remaining);
     }
-  }, [lastUpdated]);
+  }, [lastUpdated, projectId]);
 
   useEffect(() => {
     const interval = setInterval(() => refreshTime(), 1000);
@@ -285,5 +221,144 @@ function HavingTroublePanel() {
         Documentation
       </SecondaryA>
     </div>
+  );
+}
+
+function Instructions({ children }: { children: ReactNode }) {
+  return <ul className="flex flex-col gap-5">{children}</ul>;
+}
+
+function Instruction({
+  step,
+  children,
+}: {
+  step: number;
+  children: ReactNode;
+}) {
+  const classes =
+    "inline-flex text-slate-600 -mt-0.5 h-6 w-6 text-sm bg-white p-2 items-center justify-center rounded border border-slate-200";
+
+  return (
+    <li className="flex gap-2">
+      <span className={classNames(classes)}>{step}</span>
+      <div className="flex flex-col gap-2 w-full">{children}</div>
+    </li>
+  );
+}
+
+function InstallPackage() {
+  const code = `install apihero-js@latest`;
+
+  return (
+    <CommandLine step={2} code={code}>
+      Install the <InlineCode>apihero-js</InlineCode> package.
+    </CommandLine>
+  );
+}
+
+function InstallServiceWorker({ step }: { step: number }) {
+  const installServiceWorkerCode = "exec apihero-js init public/";
+
+  return (
+    <CommandLine step={step} code={installServiceWorkerCode}>
+      <p className="text-sm text-slate-700">
+        Install the Service Worker to forward specified browser traffic through
+        a proxy server.
+      </p>
+    </CommandLine>
+  );
+}
+
+type PackageManager = "npm" | "yarn" | "pnpm";
+
+function CommandLine({
+  step,
+  children,
+  code,
+}: {
+  step: number;
+  children: ReactNode;
+  code: string;
+}) {
+  const [packageManager, setPackageManager] = useState<PackageManager>("npm");
+
+  return (
+    <Instruction step={step}>
+      <div className="flex justify-between items-center">
+        <p className="text-sm text-slate-700">{children}</p>
+        <Select
+          className="w-max"
+          value={packageManager}
+          onChange={(val) =>
+            setPackageManager(val.currentTarget.value as PackageManager)
+          }
+        >
+          <option value="npm">npm</option>
+          <option value="yarn">yarn</option>
+          <option value="pnpm">pnpm</option>
+        </Select>
+      </div>
+
+      <CodeBlock code={`${packageManager} ${code}`} />
+    </Instruction>
+  );
+}
+
+function InlineCode({ children }: { children: ReactNode }) {
+  return <code className={inlineCode}>{children}</code>;
+}
+
+function CodeBlock({ code }: { code: string }) {
+  const codeContainer =
+    "flex items-center font-mono justify-between gap-2.5 rounded-md border bg-slate-700 py-2 pl-4 pr-2 text-sm text-white";
+  return (
+    <pre className={codeContainer}>
+      {code}
+      <CopyTextButton value={code} variant="blue" />
+    </pre>
+  );
+}
+
+function NextJs({ projectId }: { projectId: string }) {
+  const nextJs = `async function initProxy() {
+    const projectKey = "${projectId}";
+    if (typeof window !== "undefined") {
+      const { setupWorker } = await import("apihero-js");
+      //update the allow list with the APIs you're using
+      await setupWorker({ allow: ["https://api.github.com/*"], projectKey, env: process.env.NODE_ENV }).start();
+    } else {
+      const { setupProxy } = await import("apihero-js/node");
+      await setupProxy({ projectKey, env: process.env.NODE_ENV }).start();
+    }
+  }
+  initProxy();`;
+  return (
+    <Instructions>
+      <InstallPackage />
+      <InstallServiceWorker step={3} />
+      <Instruction step={4}>
+        <p className="text-sm text-slate-700">
+          Add the following code to the bottom of your root page (e.g.
+          pages/_app.tsx):
+        </p>
+        <CodeBlock code={nextJs} />
+      </Instruction>
+      <Instruction step={5}>
+        <p className="text-sm text-slate-700">
+          Ensure that you have{" "}
+          <InlineCode>"moduleResolution": "nodenext"</InlineCode> in the{" "}
+          <InlineCode>"compilerOptions"</InlineCode> section of your
+          tsconfig.json file.
+        </p>
+      </Instruction>
+      <Instruction step={6}>
+        <p className="text-sm text-slate-700">
+          Send any API request from your project, then come back here.
+        </p>
+        <div className="flex items-center gap-4">
+          <CountdownToRefreshButton projectId={projectId} />
+        </div>
+      </Instruction>
+    </Instructions>
   );
 }
