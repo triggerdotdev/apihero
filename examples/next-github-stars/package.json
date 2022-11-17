@@ -10,7 +10,7 @@
     "install:worker": "apihero-js init public/"
   },
   "dependencies": {
-    "@apihero/js": "*",
+    "apihero-js": "*",
     "@tanstack/react-query": "^4.16.1",
     "@types/node": "18.11.9",
     "@types/react": "^18.0.21",

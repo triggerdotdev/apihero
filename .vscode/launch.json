@@ -71,7 +71,7 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "@apihero/js current test",
+      "name": "apihero-js current test",
       "runtimeVersion": "18.8.0",
       "autoAttachChildProcesses": true,
       "skipFiles": ["<node_internals>/**", "**/node_modules/**"],

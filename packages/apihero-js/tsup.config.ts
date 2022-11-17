@@ -3,7 +3,7 @@ import { workerScriptPlugin } from "./config/plugins/esbuild/workerScriptPlugin"
 
 // Prevent from bundling the "@apihero/*" packages
 // so that the users get the latest versions without
-// having to bump them in "@apihero/js'."
+// having to bump them in "apihero-js'."
 const ecosystemDependencies = /^@apihero\/(.+)$/;
 
 export default defineConfig([

@@ -1,4 +1,4 @@
-import { setupProxy } from "@apihero/js/node";
+import { setupProxy } from "apihero-js/node";
 import fetch, { Request, type Response } from "node-fetch";
 import { parseArgs } from "node:util";
 

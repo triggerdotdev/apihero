@@ -1,5 +1,5 @@
 {
-  "name": "@apihero/js",
+  "name": "apihero-js",
   "version": "1.3.7",
   "publishConfig": {
     "access": "public"

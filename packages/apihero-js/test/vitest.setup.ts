@@ -68,7 +68,7 @@ Object.keys(console).forEach((methodName) => {
         },
         resolve: {
           alias: {
-            "@apihero/js": path.resolve(__dirname, ".."),
+            "apihero-js": path.resolve(__dirname, ".."),
           },
           extensions: [".ts", ".js"],
         },

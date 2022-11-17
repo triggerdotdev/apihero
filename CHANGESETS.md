@@ -13,5 +13,5 @@ Based on the instructions [here](https://github.com/changesets/changesets/blob/m
 
 To add a changeset, use `pnpm run changeset:add` and follow the instructions [here](https://github.com/changesets/changesets/blob/main/docs/adding-a-changeset.md). Please only ever select one of our public packages when adding a changeset, which currently are:
 
-- `@apihero/js`
+- `apihero-js`
 - `@apihero/interceptors-js`

@@ -14,16 +14,16 @@ Make every API you use faster and more reliable with one line of code.
 
 > We currently only support JavaScript & TypeScript, but more platforms are coming soon.
 
-Install the latest `@apihero/js` package:
+Install the latest `apihero-js` package:
 
 ```bash
-npm install @apihero/js@latest
+npm install apihero-js@latest
 ```
 
 If you only plan on using API Hero in development or testing environments, install into your `devDependencies`:
 
 ```bash
-npm install @apihero/js@latest --save-dev
+npm install apihero-js@latest --save-dev
 ```
 
 ## Usage
@@ -33,7 +33,7 @@ To start intercepting API requests and proxying them through the API Hero servic
 If you are running a Node.js app, include the following code somewhere that will be run at initialization:
 
 ```typescript
-import { setupProxy } from "@apihero/js/node";
+import { setupProxy } from "apihero-js/node";
 
 const proxy = setupProxy({ projectKey: "hero_123abc" });
 
@@ -65,7 +65,7 @@ If you don't want to intercept requests in production, you can do something like
 
 ```typescript
 if (process.env.NODE_ENV !== "production") {
-  const { setupProxy } = require("@apihero/js/node");
+  const { setupProxy } = require("apihero-js/node");
   const proxy = setupProxy({
     projectKey: "hero_123abc",
   });

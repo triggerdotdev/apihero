@@ -37,8 +37,8 @@ export function LogsOnboarding({
 }
 
 function OnboardingIncomplete({ projectId }: { projectId: string }) {
-  const copyCode1 = `npm install @apihero/js@latest`;
-  const copyCode2 = `import { setupProxy } from "@apihero/js/node";`;
+  const copyCode1 = `npm install apihero-js@latest`;
+  const copyCode2 = `import { setupProxy } from "apihero-js/node";`;
   const copyCode4 = "npm exec apihero-js init public/";
   const copyCode3 = `setupProxy({ projectKey: “${projectId}” }).start();`;
   const inlineCode =
@@ -57,7 +57,7 @@ function OnboardingIncomplete({ projectId }: { projectId: string }) {
             <span className={classNames(listItemNumbered)}>1</span>
             <div className="flex flex-col gap-2 w-full">
               <p className="text-sm text-slate-700">
-                Install the <code className={inlineCode}>@apihero/js</code>{" "}
+                Install the <code className={inlineCode}>apihero-js</code>{" "}
                 package. <span className={tip}>Tip:</span> You can swap{" "}
                 <code className={inlineCode}>npm</code> for{" "}
                 <code className={inlineCode}>yarn</code> or{" "}

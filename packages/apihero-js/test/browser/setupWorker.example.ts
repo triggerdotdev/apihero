@@ -1,4 +1,4 @@
-import { setupWorker } from "@apihero/js";
+import { setupWorker } from "apihero-js";
 
 const worker = setupWorker({
   projectKey: "hero_abc123",

@@ -15,9 +15,9 @@
     "jsx": "preserve",
     "incremental": true,
     "paths": {
-      "@apihero/js/*": ["../../packages/@apihero/js/src/*"],
-      "@apihero/js": ["../../packages/@apihero/js/src/index"],
-      "@apihero/js/node": ["../../packages/@apihero/js/src/node/index"]
+      "apihero-js/*": ["../../packages/apihero-js/src/*"],
+      "apihero-js": ["../../packages/apihero-js/src/index"],
+      "apihero-js/node": ["../../packages/apihero-js/src/node/index"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

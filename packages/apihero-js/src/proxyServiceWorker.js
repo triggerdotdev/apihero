@@ -118,7 +118,7 @@ self.addEventListener("fetch", function (event) {
       // At this point, any exception indicates an issue with the original request/response.
       console.error(
         `\
-[@apihero/js] Caught an exception from the "%s %s" request (%s). This is probably not a problem with @apihero/js. There is likely an additional logging output above.`,
+[apihero-js] Caught an exception from the "%s %s" request (%s). This is probably not a problem with apihero-js. There is likely an additional logging output above.`,
         request.method,
         request.url,
         `${error.name}: ${error.message}`
@@ -135,7 +135,7 @@ async function handleRequest(event, requestId) {
 
     return response;
   } catch (e) {
-    console.error(`[@apihero/js] Error`, e);
+    console.error(`[apihero-js] Error`, e);
     throw e;
   }
 }
