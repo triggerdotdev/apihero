@@ -51,6 +51,7 @@ export default defineConfig([
       ecosystemDependencies,
     ],
     clean: true,
+    legacyOutput: true,
     sourcemap: true,
     dts: true,
     esbuildPlugins: [workerScriptPlugin()],
