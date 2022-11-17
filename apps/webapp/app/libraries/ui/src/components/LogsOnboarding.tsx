@@ -237,7 +237,7 @@ function InlineCode({ children }: { children: ReactNode }) {
 
 function CodeBlock({ code }: { code: string }) {
   const codeContainer =
-    "flex items-center font-mono justify-between gap-2.5 rounded-md border bg-slate-700 py-2 pl-4 pr-2 text-sm text-white";
+    "flex items-start font-mono justify-between gap-2.5 rounded-md border bg-slate-700 py-2 pl-4 pr-2 text-sm text-white";
   return (
     <pre className={codeContainer}>
       {code}
