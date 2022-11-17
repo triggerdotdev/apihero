@@ -1,5 +1,11 @@
 # @apihero/js
 
+## 1.3.7
+
+### Patch Changes
+
+- 075e0d3: Try to fix the @apihero/js exports
+
 ## 1.3.6
 
 ### Patch Changes
