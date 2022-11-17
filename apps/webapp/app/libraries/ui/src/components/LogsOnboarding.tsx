@@ -10,7 +10,7 @@ import classNames from "classnames";
 import { useCallback, useEffect, useState } from "react";
 import type { LoaderData } from "~/routes/__app/workspaces/$workspaceSlug/projects/$projectSlug/home";
 import { Spinner } from "../../../common/src/components/Spinner";
-import { SecondaryA, SecondaryLink } from "./Buttons/Buttons";
+import { SecondaryA } from "./Buttons/Buttons";
 import { CopyTextButton } from "./Buttons/CopyTextButton";
 
 const listItemNumbered =
@@ -39,7 +39,12 @@ export function LogsOnboarding({
 function OnboardingIncomplete({ projectId }: { projectId: string }) {
   const copyCode1 = `npm install @apihero/js@latest`;
   const copyCode2 = `import { setupProxy } from "@apihero/js/node";`;
+  const copyCode4 = "npm exec apihero-js init public/";
   const copyCode3 = `setupProxy({ projectKey: “${projectId}” }).start();`;
+  const inlineCode =
+    "px-1 py-0.5 bg-slate-200 border border-slate-300 rounded text-slate-700";
+  const tip =
+    "bg-yellow-100 border border-yellow-300 font-semibold text-xs text-orange-400 rounded px-1.5 py-1 uppercase tracking-wider";
 
   return (
     <div className="grid grid-cols-[1fr_auto] gap-2 mb-4 mr-4">
@@ -50,9 +55,13 @@ function OnboardingIncomplete({ projectId }: { projectId: string }) {
         <ul className="flex flex-col gap-5">
           <li className="flex gap-2">
             <span className={classNames(listItemNumbered)}>1</span>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 w-full">
               <p className="text-sm text-slate-700">
-                Install the <code>@apihero/js</code> package.
+                Install the <code className={inlineCode}>@apihero/js</code>{" "}
+                package. <span className={tip}>Tip:</span> You can swap{" "}
+                <code className={inlineCode}>npm</code> for{" "}
+                <code className={inlineCode}>yarn</code> or{" "}
+                <code className={inlineCode}>pnpm</code> if you prefer.
               </p>
               <div className={codeContainer}>
                 {copyCode1}
@@ -62,9 +71,10 @@ function OnboardingIncomplete({ projectId }: { projectId: string }) {
           </li>
           <li className="flex gap-2">
             <span className={classNames(listItemNumbered)}>2</span>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 w-full">
               <p className="text-sm text-slate-700">
-                Import the <code>setupProxy</code> function.
+                Import the <code className={inlineCode}>setupProxy</code>{" "}
+                function.
               </p>
               <div className={codeContainer}>
                 {copyCode2}
@@ -73,10 +83,37 @@ function OnboardingIncomplete({ projectId }: { projectId: string }) {
             </div>
           </li>
           <li className="flex gap-2">
+            <span className={classNames(listItemNumbered)}>2</span>
+            <div className="flex flex-col gap-2 w-full">
+              <p className="text-sm text-slate-700">
+                Install the Service Worker to forward specified traffic through
+                a proxy server. <span className={tip}>Tip:</span> This command
+                works for Next.js, Create React App, Vue.js, Ember.js, Svelte
+                and Vite. For other frameworks view{" "}
+                <a
+                  href="https://docs.apihero.run/react-quick-start#2-install-the-worker"
+                  rel="noreferrer"
+                  target="_blank"
+                  className="underline hover:text-slate-900"
+                >
+                  this table
+                </a>
+                .
+              </p>
+              <div className={codeContainer}>
+                {copyCode4}
+                <CopyTextButton value={copyCode4} variant="blue" />
+              </div>
+            </div>
+          </li>
+          <li className="flex gap-2">
             <span className={classNames(listItemNumbered)}>3</span>
             <div className="flex flex-col gap-2">
               <p className="text-sm text-slate-700">
-                Setup the proxy with your project key.
+                Configure the Service Worker with your project key.{" "}
+                <span className={tip}>Tip:</span> Although it may seem unsafe,
+                it is okay to put the projectKey in your code. This just
+                identifies your project and is not a secret.
               </p>
               <div className={codeContainer}>
                 {copyCode3}
