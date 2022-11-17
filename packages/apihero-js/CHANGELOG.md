@@ -1,5 +1,11 @@
 # @apihero/js
 
+## 1.3.4
+
+### Patch Changes
+
+- 38335bc: Added the import property to the node export
+
 ## 1.3.3
 
 ### Patch Changes
