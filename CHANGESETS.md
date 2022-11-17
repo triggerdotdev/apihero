@@ -15,4 +15,3 @@ To add a changeset, use `pnpm run changeset:add` and follow the instructions [he
 
 - `@apihero/js`
 - `@apihero/interceptors-js`
-- `@apihero/constants-js`

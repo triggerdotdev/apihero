@@ -80,7 +80,7 @@ importers:
 
   apps/proxy:
     specifiers:
-      '@apihero/constants-js': '*'
+      '@apihero/constants-js': workspace:*
       '@cloudflare/workers-types': ^3.18.0
       '@types/itty-router-extras': ^0.4.0
       cuid: ^2.1.8
@@ -464,9 +464,9 @@ importers:
 
   packages/apihero-js:
     specifiers:
-      '@apihero/constants-js': '*'
+      '@apihero/constants-js': workspace:*
       '@apihero/eslint-config-vite': '*'
-      '@apihero/interceptors-js': '*'
+      '@apihero/interceptors-js': workspace:*
       '@apihero/tsconfig': '*'
       '@open-draft/until': ^2.0.0
       '@types/debug': ^4.1.7

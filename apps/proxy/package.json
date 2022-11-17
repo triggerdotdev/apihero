@@ -15,7 +15,7 @@
     "env:pull": "pnpm dlx infisical pull dev"
   },
   "dependencies": {
-    "@apihero/constants-js": "*",
+    "@apihero/constants-js": "workspace:*",
     "cuid": "^2.1.8",
     "internal-logs": "*",
     "itty-router": "^2.6.5",
