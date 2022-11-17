@@ -46,11 +46,7 @@ function OnboardingIncomplete({ projectId }: { projectId: string }) {
         </ul>
 
         <Tab.Group>
-          <StyledTabs.SegmentedList
-            className={
-              "flex ml-8 gap-0.5 max-w-fit bg-slate-200 rounded-md p-0.5 border border-slate-300"
-            }
-          >
+          <StyledTabs.SegmentedList>
             <StyledTabs.Segmented>Next.js</StyledTabs.Segmented>
             <StyledTabs.Segmented>Node</StyledTabs.Segmented>
             <StyledTabs.Segmented>React</StyledTabs.Segmented>

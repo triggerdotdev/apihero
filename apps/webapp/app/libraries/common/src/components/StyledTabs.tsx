@@ -1,4 +1,5 @@
 import { Tab as HeadlessTab } from "@headlessui/react";
+import classNames from "classnames";
 import classnames from "classnames";
 
 type HeadlessTabProps = Parameters<typeof HeadlessTab>[0];
@@ -60,9 +61,19 @@ export function Underlined({ children, ...props }: HeadlessTabProps) {
   );
 }
 
-export function SegmentedList({ children, ...props }: HeadlessTabListProps) {
+export function SegmentedList({
+  children,
+  className,
+  ...props
+}: HeadlessTabListProps) {
   return (
-    <HeadlessTab.List className={""} {...props}>
+    <HeadlessTab.List
+      className={classNames(
+        "flex ml-8 gap-0.5 max-w-fit bg-slate-200 rounded-md p-0.5 border border-slate-300",
+        className
+      )}
+      {...props}
+    >
       {children}
     </HeadlessTab.List>
   );
