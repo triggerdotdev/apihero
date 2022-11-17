@@ -73,6 +73,9 @@ function OnboardingIncomplete({ projectId }: { projectId: string }) {
             <Tab.Panel className="relative h-full">
               <NextJs projectId={projectId} />
             </Tab.Panel>
+            <Tab.Panel className="relative h-full">
+              <React projectId={projectId} />
+            </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>
       </div>
@@ -320,8 +323,21 @@ function CodeBlock({ code }: { code: string }) {
   );
 }
 
+function ModuleResolution({ step }: { step: number }) {
+  return (
+    <Instruction step={step}>
+      <p className="text-sm text-slate-700">
+        If you're using TypeScript, ensure{" "}
+        <InlineCode>"moduleResolution": "nodenext"</InlineCode> is in the{" "}
+        <InlineCode>"compilerOptions"</InlineCode> section of your tsconfig.json
+        file.
+      </p>
+    </Instruction>
+  );
+}
+
 function NextJs({ projectId }: { projectId: string }) {
-  const nextJs = `async function initProxy() {
+  const code = `async function initProxy() {
   const projectKey = "${projectId}";
   if (typeof window !== "undefined") {
     const { setupWorker } = await import("apihero-js");
@@ -342,16 +358,9 @@ initProxy();`;
           Add the following code to the bottom of your root page (e.g.
           pages/_app.tsx):
         </p>
-        <CodeBlock code={nextJs} />
+        <CodeBlock code={code} />
       </Instruction>
-      <Instruction step={5}>
-        <p className="text-sm text-slate-700">
-          Ensure that you have{" "}
-          <InlineCode>"moduleResolution": "nodenext"</InlineCode> in the{" "}
-          <InlineCode>"compilerOptions"</InlineCode> section of your
-          tsconfig.json file.
-        </p>
-      </Instruction>
+      <ModuleResolution step={5} />
       <Instruction step={6}>
         <p className="text-sm text-slate-700">
           Send any API request from your project, then come back here.
@@ -365,7 +374,7 @@ initProxy();`;
 }
 
 function NodeJs({ projectId }: { projectId: string }) {
-  const nodeJs = `async function initProxy() {
+  const code = `async function initProxy() {
 const { setupProxy } = await import("apihero-js/node");
   await setupProxy({
     projectKey: "${projectId}",
@@ -382,9 +391,46 @@ initProxy();`;
           Place this code anywhere that is executed when your application
           starts:
         </p>
-        <CodeBlock code={nodeJs} />
+        <CodeBlock code={code} />
       </Instruction>
+      <ModuleResolution step={4} />
+      <Instruction step={5}>
+        <p className="text-sm text-slate-700">
+          Send any API request from your project, then come back here.
+        </p>
+        <div className="flex items-center gap-4">
+          <CountdownToRefreshButton projectId={projectId} />
+        </div>
+      </Instruction>
+    </Instructions>
+  );
+}
+
+function React({ projectId }: { projectId: string }) {
+  const code = `async function initProxy() {
+  if (typeof window !== "undefined") {
+    const { setupWorker } = await import("apihero-js");
+    //update the allow list with the APIs you're using
+    await setupWorker({ 
+      allow: ["https://api.github.com/*"], 
+      projectKey: "${projectId}", 
+      env: process.env.NODE_ENV 
+    }).start();
+  }
+}
+initProxy();`;
+  return (
+    <Instructions>
+      <InstallPackage />
+      <InstallServiceWorker step={3} />
       <Instruction step={4}>
+        <p className="text-sm text-slate-700">
+          Add the following code at the bottom of your root component file (e.g.
+          App.tsx):
+        </p>
+        <CodeBlock code={code} />
+      </Instruction>
+      <Instruction step={5}>
         <p className="text-sm text-slate-700">
           Send any API request from your project, then come back here.
         </p>
