@@ -27,12 +27,15 @@ export default {
       debug: env.LOGS_DEBUG,
     });
 
+    const requestBody = await getRequestBody(request);
+
     const [originRequest, originResponse] = await logService.measureRequest(
-      () => proxyRequest(request)
+      () => proxyRequest(request, requestBody)
     );
 
     const requestId = await logService.captureEvent(
       request,
+      requestBody,
       originRequest,
       originResponse.clone()
     );
@@ -40,3 +43,11 @@ export default {
     return createResponse(originResponse, requestId);
   },
 };
+
+async function getRequestBody(request: Request): Promise<string | undefined> {
+  try {
+    return await request.text();
+  } catch (e) {
+    return;
+  }
+}

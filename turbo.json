@@ -124,6 +124,8 @@
     "LOGS_ORIGIN",
     "NEXT_PUBLIC_GITHUB_TOKEN",
     "MAILGUN_KEY",
-    "MERGENT_KEY"
+    "MERGENT_KEY",
+    "PROXY_URL",
+    "APIHERO_KEY"
   ]
 }

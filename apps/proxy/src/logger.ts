@@ -36,6 +36,7 @@ export class LogService {
 
   async captureEvent(
     request: Request,
+    requestBody: any,
     originRequest: Request,
     originResponse: Response
   ): Promise<string | undefined> {
@@ -78,6 +79,7 @@ export class LogService {
 
     const body = await this.createLogRequestBody(
       request,
+      requestBody,
       originRequest,
       originResponse,
       payload.data
@@ -119,6 +121,7 @@ export class LogService {
 
   private async createLogRequestBody(
     request: Request,
+    requestBody: any,
     originRequest: Request,
     originResponse: Response,
     payload: Payload
@@ -128,7 +131,6 @@ export class LogService {
     const requestHeaders = Object.fromEntries(originRequest.headers);
     const responseBody = await getResponseBody(originResponse);
     const responseSize = extractResponseSize(originResponse, responseBody);
-    const requestBody = await getRequestBody(request);
 
     const gatewayDuration = Date.now() - this.startTime;
 
@@ -143,7 +145,7 @@ export class LogService {
       responseHeaders,
       responseBody,
       requestHeaders: filterRequestHeaders(requestHeaders),
-      requestBody: requestBody as any,
+      requestBody: getRequestBody(requestBody),
       requestDuration: this.requestDuration,
       gatewayDuration,
       responseSize,
@@ -268,19 +270,17 @@ export function extractResponseSize(
   return 0;
 }
 
-async function getRequestBody(request: Request) {
-  if (request.method === "POST" || request.method === "PUT") {
-    try {
-      return await request.json();
-    } catch (e) {
-      return null;
-    }
-  }
-}
-
 async function getResponseBody(response: Response): Promise<any> {
   try {
     return await response.json();
+  } catch (e) {
+    return null;
+  }
+}
+
+function getRequestBody(requestBody: any) {
+  try {
+    return JSON.parse(requestBody);
   } catch (e) {
     return null;
   }

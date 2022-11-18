@@ -7,6 +7,8 @@ const EnvironmentSchema = z.object({
   APP_ORIGIN: z.string().default("https://app.apihero.run"),
   LOGS_ORIGIN: z.string().default("https://logs.apihero.run"),
   LOGS_API_AUTHENTICATION_TOKEN: z.string(),
+  PROXY_URL: z.string().default("http://localhost:3000"),
+  APIHERO_KEY: z.string(),
 });
 
 export type Environment = z.infer<typeof EnvironmentSchema>;

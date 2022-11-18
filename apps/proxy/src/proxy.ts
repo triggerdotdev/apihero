@@ -6,12 +6,12 @@ import {
 } from "./constants";
 
 export async function proxyRequest(
-  request: Request
+  request: Request,
+  requestBody: any
 ): Promise<[Request, Response]> {
-  const clonedRequest = request.clone();
   // Get the x-destination-origin header
-  const origin = clonedRequest.headers.get(DESTINATION_HEADER_NAME);
-  const protocol = clonedRequest.headers.get(PROTOCOL_HEADER_NAME);
+  const origin = request.headers.get(DESTINATION_HEADER_NAME);
+  const protocol = request.headers.get(PROTOCOL_HEADER_NAME);
 
   // If the header is not present, return the request
   if (!origin) {
@@ -22,7 +22,7 @@ export async function proxyRequest(
     throw new Error(`${PROTOCOL_HEADER_NAME} header is required`);
   }
 
-  const url = new URL(clonedRequest.url);
+  const url = new URL(request.url);
   url.protocol = protocol;
   url.host = origin;
 
@@ -31,9 +31,9 @@ export async function proxyRequest(
   }
 
   const originRequest = new Request(url.href, {
-    headers: stripHeaders(clonedRequest.headers),
-    method: clonedRequest.method,
-    body: clonedRequest.body,
+    headers: stripHeaders(request.headers),
+    method: request.method,
+    body: requestBody,
     cf: {
       cacheEverything: true,
     },

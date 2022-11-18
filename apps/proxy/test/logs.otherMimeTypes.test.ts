@@ -47,6 +47,7 @@ describe("LogService / sendProxiedRequestEvent", () => {
 
         const requestId = await logger.captureEvent(
           request,
+          request.body,
           originRequest,
           response
         );

@@ -58,6 +58,7 @@ describe("LogService / sendProxiedRequestEvent", () => {
 
         const requestId = await logger.captureEvent(
           request,
+          await request.text(),
           originRequest,
           response
         );
@@ -149,6 +150,7 @@ describe("LogService / sendProxiedRequestEvent", () => {
 
         const requestId = await logger.captureEvent(
           request,
+          await request.text(),
           originRequest,
           response
         );
@@ -212,6 +214,7 @@ describe("LogService / sendProxiedRequestEvent", () => {
 
       const requestId = await logger.captureEvent(
         request,
+        await request.text(),
         originRequest,
         response
       );
@@ -265,6 +268,7 @@ describe("LogService / sendProxiedRequestEvent", () => {
 
       const requestId = await logger.captureEvent(
         request,
+        await request.text(),
         originRequest,
         response
       );
