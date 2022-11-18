@@ -43,6 +43,7 @@ function OnboardingIncomplete({ projectId }: { projectId: string }) {
                 href="https://docs.apihero.run"
                 rel="noreferrer"
                 target="_blank"
+                className="underline hover:text-slate-800 transition"
               >
                 here
               </a>

@@ -14,7 +14,7 @@ const activeStyle =
 export default function ProjectMenu() {
   return (
     <>
-      <div className="flex h-[calc(100%-65px)]">
+      <div className="flex h-mainMobileContainerHeight md:h-mainDesktopContainerHeight">
         <nav className="flex flex-col justify-between border-r border-slate-200 h-full bg-white p-2">
           <ul className="flex flex-col gap-2">
             <li>
