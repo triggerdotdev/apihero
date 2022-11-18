@@ -47,6 +47,46 @@
       "request": "launch",
       "command": "yarn run dev",
       "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "proxy current test",
+      "runtimeVersion": "18.8.0",
+      "autoAttachChildProcesses": true,
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**"],
+      "program": "${workspaceFolder}/apps/proxy/node_modules/vitest/vitest.mjs",
+      "args": [
+        "run",
+        "${relativeFile}",
+        "-r",
+        "${workspaceFolder}/apps/proxy",
+        "-c",
+        "${workspaceFolder}/apps/proxy/vitest.config.ts",
+        "--run"
+      ],
+      "smartStep": true,
+      "console": "integratedTerminal"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "apihero-js current test",
+      "runtimeVersion": "18.8.0",
+      "autoAttachChildProcesses": true,
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**"],
+      "program": "${workspaceFolder}/packages/apihero-js/node_modules/vitest/vitest.mjs",
+      "args": [
+        "run",
+        "${relativeFile}",
+        "-r",
+        "${workspaceFolder}/packages/apihero-js",
+        "-c",
+        "${workspaceFolder}/packages/apihero-js/vitest.config.ts",
+        "--run"
+      ],
+      "smartStep": true,
+      "console": "integratedTerminal"
     }
   ]
 }

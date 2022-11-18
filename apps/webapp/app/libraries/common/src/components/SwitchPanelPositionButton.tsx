@@ -24,7 +24,7 @@ export function SwitchPanelPositionButton({
 }: SwitchPanelPositionButtonProps) {
   return (
     <Menu as="div" className="relative">
-      <div>
+      {/* <div>
         <Menu.Button
           className={`group flex h-[30px] w-[30px] max-w-xs items-center justify-center rounded-md border border-transparent bg-transparent text-sm transition hover:border-slate-200 hover:bg-white ${className}`}
         >
@@ -33,7 +33,7 @@ export function SwitchPanelPositionButton({
             aria-hidden="true"
           />
         </Menu.Button>
-      </div>
+      </div> */}
       <Transition
         as={Fragment}
         enter="transition ease-out duration-100"

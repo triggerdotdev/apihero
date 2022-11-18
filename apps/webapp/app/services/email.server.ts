@@ -1,88 +1,47 @@
 import type { User } from "~/models/user.server";
-import { Client } from "@sendgrid/client";
+import mailgun from "mailgun-js";
+import { env } from "~/env.server";
+import { mergent } from "~/mergent.server";
 
-const sendGridApiKey = process.env.SENDGRID_API_KEY;
-const client = new Client();
-client.setApiKey(sendGridApiKey ?? "");
+const mailgunDomain = "apihero.run";
+
+export const mailgunClient = mailgun({
+  apiKey: env.MAILGUN_KEY,
+  domain: mailgunDomain,
+});
 
 export async function sendEmail(
   emailAddress: string,
   subject: string,
   body: string
 ) {
-  const response = await fetch("https://api.sendgrid.com/v3/mail/send", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: `Bearer ${sendGridApiKey}`,
-    },
-    body: JSON.stringify({
-      personalizations: [
-        {
-          to: [{ email: emailAddress }],
-        },
-      ],
-      from: {
-        email: process.env.SENDGRID_FROM_EMAIL ?? "hi@apihero.run",
-        name: "API Hero",
-      },
-      content: [{ type: "text/html", value: body }],
-      subject,
-    }),
-  });
+  const data = {
+    from: `API Hero <${env.SENDGRID_FROM_EMAIL}>`,
+    to: emailAddress,
+    subject,
+    html: body,
+  };
 
-  if (!response.ok) {
-    throw new Error(`Failed to send email: ${response.statusText}`);
-  }
-
-  if (response.status === 202) {
-    return;
-  }
-
-  return response.json();
+  await mailgunClient.messages().send(data);
 }
 
-export async function addToEmailList(user: User) {
-  if (!sendGridApiKey) {
-    console.log("Missing SENDGRID_API_KEY");
-    return;
-  }
+export async function sendWelcomeEmail(user: User) {
+  const data = {
+    from: `API Hero <${env.SENDGRID_FROM_EMAIL}>`,
+    to: user.email,
+    subject: "🤝 Welcome to API Hero!",
+    template: "welcome_email_test1",
+    "v:greeting": user.name ?? "there",
+  };
 
-  const contacts = user.name
-    ? [
-        {
-          email: user.email,
-          custom_fields: {
-            // This is the user's full_name field.
-            e2_T: user.name,
-          },
-        },
-      ]
-    : [
-        {
-          email: user.email,
-        },
-      ];
-
-  try {
-    const response = await fetch(
-      "https://api.sendgrid.com/v3/marketing/contacts",
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${sendGridApiKey}`,
-        },
-        body: JSON.stringify({ contacts }),
-      }
-    );
-
-    await response.json();
-    if (!response.ok) {
-      throw new Error(`${response.status} ${response.statusText}`);
-    }
-  } catch (error) {
-    console.log(error);
-  }
+  await mergent.tasks.create({
+    request: {
+      url: `${env.APP_ORIGIN}/webhooks/mailgun`,
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+    delay: { minutes: 30 },
+  });
 }

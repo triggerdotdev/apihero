@@ -7,14 +7,14 @@ type GitHubLoginButtonProps = {
 };
 
 export function GitHubLoginButton({
-  label = "Continue with GitHub",
+  label = "Login with GitHub",
   className,
   onClick,
 }: GitHubLoginButtonProps) {
   return (
     <button
       className={classNames(
-        "flex items-center justify-center gap-2 rounded-md bg-gray-800 py-3 pl-5 pr-6 text-lg font-medium text-white hover:bg-slate-900",
+        "flex items-center justify-center gap-2 rounded-md bg-gray-800 py-3 pl-5 pr-6 text-lg font-medium text-white hover:bg-slate-900 transition",
         className
       )}
       onClick={onClick}

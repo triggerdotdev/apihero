@@ -3,7 +3,7 @@ import type { LoaderFunction } from "@remix-run/server-runtime";
 import invariant from "tiny-invariant";
 import { useState } from "react";
 import clsx from "clsx";
-import { JavascriptEditor } from "~/libraries/common/src/components/editor/JavascriptEditor";
+import { CodeEditor } from "~/libraries/common/src/components/editor/JavascriptEditor";
 import { generateFilesForSchema } from "~/models/generator.server";
 
 type LoaderData = {
@@ -53,7 +53,7 @@ function Example({ files }: { files: NonNullable<LoaderData["files"]> }) {
           {/* Main area */}
           <main className="min-w-0 flex-1 lg:flex">
             {/* Primary column */}
-            <JavascriptEditor content={currentFileContent} basicSetup={true} />
+            <CodeEditor content={currentFileContent} basicSetup={true} />
 
             <aside className="order-first block flex-shrink-0">
               <div className="relative flex h-full w-96 flex-col overflow-y-auto border-r border-gray-200 bg-gray-100">

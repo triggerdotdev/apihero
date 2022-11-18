@@ -1,10 +1,10 @@
 import { test } from "tap";
-import { z } from "zod";
-import { CreateLogRequestBody } from "../../src/types";
+import { CreateLogRequestBody } from "internal-logs";
 import { deleteLogs } from "../../src/utilities/test-utilities";
 import { build } from "../helper";
 
-const validRequestBody: z.infer<typeof CreateLogRequestBody> = {
+const validRequestBody: CreateLogRequestBody = {
+  requestId: "test-id",
   method: "GET",
   statusCode: 200,
   baseUrl: "https://example.com",
@@ -25,6 +25,7 @@ const validRequestBody: z.infer<typeof CreateLogRequestBody> = {
   requestDuration: 100,
   gatewayDuration: 120,
   time: new Date().toISOString(),
+  environment: "test",
 };
 
 const projectId = "test-project";
@@ -65,7 +66,7 @@ test("create log fails with invalid body", async (t) => {
     url,
     method: "POST",
     headers: {
-      Authorization: `Bearer ${process.env.LOGS_API_AUTHENTICATION_TOKEN}`,
+      Authorization: `Bearer ${process.env.API_AUTHENTICATION_TOKEN}`,
     },
     payload: {
       projectId: "project-1",
@@ -82,7 +83,7 @@ test("create log fails with invalid project id", async (t) => {
     url: `/logs/`,
     method: "POST",
     headers: {
-      Authorization: `Bearer ${process.env.LOGS_API_AUTHENTICATION_TOKEN}`,
+      Authorization: `Bearer ${process.env.API_AUTHENTICATION_TOKEN}`,
     },
     payload: validRequestBody,
   });
@@ -97,7 +98,7 @@ test("create log succeeds with valid body", async (t) => {
     url,
     method: "POST",
     headers: {
-      Authorization: `Bearer ${process.env.LOGS_API_AUTHENTICATION_TOKEN}`,
+      Authorization: `Bearer ${process.env.API_AUTHENTICATION_TOKEN}`,
     },
     payload: validRequestBody,
   });

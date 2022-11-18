@@ -3,11 +3,15 @@ import { FastifyPluginAsync } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 import invariant from "tiny-invariant";
 import { z } from "zod";
-import { CreateLogRequestBody, Log, ErrorObject } from "../../types";
+import {
+  CreateLogRequestBodySchema,
+  LogSchema,
+  ErrorObjectSchema,
+} from "internal-logs";
 import { databaseToLog } from "../../utilities/log-conversion";
 
-const logsToken = process.env.LOGS_API_AUTHENTICATION_TOKEN;
-invariant(logsToken, "LOGS_API_AUTHENTICATION_TOKEN is required");
+const logsToken = process.env.API_AUTHENTICATION_TOKEN;
+invariant(logsToken, "API_AUTHENTICATION_TOKEN is required");
 
 const logs: FastifyPluginAsync = async (app, opts): Promise<void> => {
   app.withTypeProvider<ZodTypeProvider>().route({
@@ -20,14 +24,14 @@ const logs: FastifyPluginAsync = async (app, opts): Promise<void> => {
       headers: z.object({
         authorization: z.string(),
       }),
-      body: CreateLogRequestBody,
+      body: CreateLogRequestBodySchema,
       response: {
         200: z.object({
           success: z.literal(true),
-          log: Log,
+          log: LogSchema,
         }),
-        "4xx": ErrorObject,
-        "5xx": ErrorObject,
+        "4xx": ErrorObjectSchema,
+        "5xx": ErrorObjectSchema,
       },
     },
     handler: async (request, reply) => {
@@ -53,10 +57,11 @@ const logs: FastifyPluginAsync = async (app, opts): Promise<void> => {
       }
 
       const id = cuid();
-      const query = `INSERT INTO "Log" (id, project_id, method, status_code, base_url, path, search, request_headers, request_body, response_headers, response_body, is_cache_hit, response_size, request_duration, gateway_duration, time) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16) RETURNING *`;
+      const query = `INSERT INTO "Log" (id, request_id, project_id, method, status_code, base_url, path, search, request_headers, request_body, response_headers, response_body, is_cache_hit, response_size, request_duration, gateway_duration, environment, time) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18) RETURNING *`;
 
       const values = [
         id,
+        request.body.requestId,
         request.params.projectId,
         request.body.method,
         request.body.statusCode,
@@ -64,18 +69,19 @@ const logs: FastifyPluginAsync = async (app, opts): Promise<void> => {
         request.body.path,
         request.body.search,
         request.body.requestHeaders,
-        request.body.requestBody,
+        JSON.stringify(request.body.requestBody),
         request.body.responseHeaders,
-        request.body.responseBody,
+        JSON.stringify(request.body.responseBody),
         request.body.isCacheHit,
         request.body.responseSize,
         request.body.requestDuration,
         request.body.gatewayDuration,
+        request.body.environment,
         request.body.time,
       ];
 
       try {
-        const queryResult = await app.pg.query(query, values);
+        const queryResult = await app.pg.pool.query(query, values);
         const log = databaseToLog(queryResult.rows[0]);
         reply.send({ success: true, log });
       } catch (error) {

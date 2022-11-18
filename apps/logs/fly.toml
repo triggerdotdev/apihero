@@ -1,0 +1,47 @@
+app = "ah-logs"
+kill_signal = "SIGINT"
+kill_timeout = 5
+processes = [ ]
+
+[env]
+NODE_ENV = "production"
+PORT = 8080
+SERVER_HOSTNAME = "0.0.0.0"
+PRIMARY_REGION = "mia"
+
+[deploy]
+release_command = "pnpx prisma migrate deploy --schema apps/logs/dist/schema.prisma"
+
+[experimental]
+allowed_public_ports = ["8080"]
+auto_rollback = true
+
+[[services]]
+internal_port = 8080
+processes = [ "app" ]
+protocol = "tcp"
+script_checks = [ ]
+
+  [services.concurrency]
+  hard_limit = 25
+  soft_limit = 20
+  type = "connections"
+
+  [[services.ports]]
+  handlers = [ "http" ]
+  port = 80
+  force_https = true
+
+  [[services.ports]]
+  handlers = [ "tls", "http" ]
+  port = 443
+
+  [[services.http_checks]]
+  interval = "10s"
+  grace_period = "5s"
+  method = "get"
+  path = "/healthcheck"
+  protocol = "http"
+  timeout = "2s"
+  tls_skip_verify = true
+  headers = { }

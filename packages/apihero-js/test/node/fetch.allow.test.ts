@@ -26,6 +26,17 @@ const proxyServer = new HttpServer((app) => {
       })
       .end();
   });
+
+  app.post("/v3/apihero.run/messages", (req, res) => {
+    res.header("x-powered-by", "apihero-mailgun");
+
+    res
+      .status(200)
+      .json({
+        proxy: true,
+      })
+      .end();
+  });
 });
 
 let proxy;
@@ -35,6 +46,56 @@ const agent = new https.Agent({
 });
 
 describe("setupProxy / fetch / allow", () => {
+  describe("*api.mailgun.net/*", () => {
+    beforeAll(async () => {
+      await proxyServer.listen();
+
+      proxy = setupProxy({
+        projectKey: "hero_abc123",
+        url: proxyServer.https.address.href,
+        allow: ["https://api.mergent.co/v2/*", "*api.mailgun.net/*"],
+      });
+
+      proxy.start();
+    });
+
+    afterAll(async () => {
+      proxy.stop();
+      await proxyServer.close();
+    });
+
+    describe("given I perform a POST request to https://api:password@api.mailgun.net/v3/apihero.run/messages", () => {
+      let res: Response;
+
+      beforeAll(async () => {
+        res = await fetch(
+          "https://api:password@api.mailgun.net/v3/apihero.run/messages",
+          {
+            agent,
+            method: "POST",
+            body: JSON.stringify({ hello: "world" }),
+          }
+        );
+      });
+
+      test("should return proxy status code", async () => {
+        expect(res.status).toEqual(200);
+      });
+
+      test("should return proxy headers", () => {
+        expect(res.headers.get("x-powered-by")).toEqual("apihero-mailgun");
+      });
+
+      test("should return proxied body", async () => {
+        const body = await res.json();
+
+        expect(body).toEqual({
+          proxy: true,
+        });
+      });
+    });
+  });
+
   describe("https://httpbin.org/*", () => {
     beforeAll(async () => {
       await proxyServer.listen();

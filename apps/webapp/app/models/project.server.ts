@@ -28,41 +28,6 @@ export function getProjectFromSlugs({
 }) {
   return prisma.project.findFirst({
     where: { slug, workspace: { slug: workspaceSlug } },
-    include: {
-      httpClients: {
-        include: {
-          integration: {
-            include: {
-              currentSchema: {
-                select: {
-                  servers: true,
-                  id: true,
-                },
-              },
-            },
-          },
-          authentications: {
-            include: {
-              securityScheme: true,
-            },
-          },
-          endpoints: {
-            include: {
-              operation: {
-                include: {
-                  path: true,
-                  securityRequirements: {
-                    include: {
-                      securityScheme: true,
-                    },
-                  },
-                },
-              },
-            },
-          },
-        },
-      },
-    },
   });
 }
 
@@ -93,6 +58,27 @@ export function getProjects({ workspaceId }: { workspaceId: Workspace["id"] }) {
   return prisma.project.findMany({
     where: { workspaceId },
     orderBy: { updatedAt: "desc" },
+  });
+}
+
+export function setHasCompletedLogsOnboarding(projectSlug: string) {
+  return prisma.project.updateMany({
+    where: { slug: projectSlug },
+    data: { hasCompletedOnboarding: true },
+  });
+}
+
+export function setHasLogs(projectId: string) {
+  return prisma.project.update({
+    where: { id: projectId },
+    data: { hasLogs: true },
+  });
+}
+
+export async function createFirstProject(userId: string, workspaceId: string) {
+  return await createProject({
+    title: "My project",
+    workspaceId,
   });
 }
 

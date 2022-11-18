@@ -1,6 +1,11 @@
 import type { Debugger } from "debug";
 import type { OutgoingHttpHeaders, RequestOptions } from "http";
-import { ClientRequest, IncomingMessage } from "http";
+import {
+  ClientRequest,
+  IncomingMessage,
+  globalAgent as httpGlobalAgent,
+} from "http";
+import { globalAgent as httpsGlobalAgent } from "https";
 import { until } from "@open-draft/until";
 import { Headers, objectToHeaders } from "headers-polyfill";
 import type { ClientRequestEmitter } from ".";
@@ -71,6 +76,16 @@ export class NodeClientRequest extends ClientRequest {
       : undefined;
 
     if (modifiedRequest && modifiedRequest.url) {
+      if (
+        modifiedRequest.url.protocol === "http:" &&
+        url.protocol === "https:" &&
+        !isLocalHost(modifiedRequest.url)
+      ) {
+        throw new Error(
+          "Cannot use http protocol with https request, unless the host is localhost"
+        );
+      }
+
       options.log("connecting with a modified url:", modifiedRequest.url);
 
       requestOptions.host = modifiedRequest.url.host;
@@ -78,6 +93,22 @@ export class NodeClientRequest extends ClientRequest {
       requestOptions.port = modifiedRequest.url.port;
       requestOptions.path =
         modifiedRequest.url.pathname + modifiedRequest.url.search;
+      requestOptions.protocol = modifiedRequest.url.protocol;
+
+      if (requestOptions.protocol !== url.protocol) {
+        options.log(
+          "switching agents because we're now connecting on %s instead of %s",
+          requestOptions.protocol,
+          url.protocol
+        );
+
+        requestOptions._defaultAgent =
+          requestOptions.protocol === "https:"
+            ? httpsGlobalAgent
+            : httpGlobalAgent;
+
+        requestOptions.agent = requestOptions._defaultAgent;
+      }
 
       connectionUrl = modifiedRequest.url;
     }
@@ -427,4 +458,8 @@ function clientRequestArgsToIsomorphicRequest(
     credentials: "same-origin",
     headers: normalizeOutgoingHeaders(requestOptions.headers),
   });
+}
+
+function isLocalHost(url: URL): boolean {
+  return url.hostname === "localhost" || url.hostname === "127.0.0.1";
 }

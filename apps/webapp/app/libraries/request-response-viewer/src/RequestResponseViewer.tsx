@@ -1,42 +1,38 @@
 import { Tab } from "@headlessui/react";
-import type { HTTPMethod, HttpRequestLog } from ".prisma/client";
+import type { HttpMethod, Log } from "internal-logs";
 import { StyledTabs } from "~/libraries/common";
-import { SwitchPanelPositionButton } from "~/libraries/common/src/components/SwitchPanelPositionButton";
-import type { PanelPosition } from "~/libraries/common/src/hooks/usePanelPosition";
+import { ResponseInfo } from "~/libraries/ui";
 import { RequestViewer } from "./RequestViewer";
 
 type RequestResponseViewerProps = {
-  log: HttpRequestLog;
-  position: PanelPosition;
-  setPosition: (position: PanelPosition) => void;
+  log: Log;
 };
 
-export function RequestResponseViewer({
-  log,
-  position,
-  setPosition,
-}: RequestResponseViewerProps) {
+export function RequestResponseViewer({ log }: RequestResponseViewerProps) {
   return (
     <Tab.Group defaultIndex={1}>
+      <div className="bg-slate-50 p-[5px]">
+        <RequestUrlBar
+          method={log.method}
+          url={`${log.baseUrl}${log.path}${log.search ? log.search : ``}`}
+        />
+      </div>
       <Tab.List
         className={
-          "flex items-center justify-between border-b border-slate-200 bg-slate-50"
+          "flex items-center justify-between flex-wrap-reverse gap-y-4 border-b border-slate-200 bg-slate-50"
         }
       >
         <div className="-mb-px flex">
           <StyledTabs.Classic>Request</StyledTabs.Classic>
           <StyledTabs.Classic>Response</StyledTabs.Classic>
         </div>
-        <RequestUrlBar
-          method={log.method}
-          url={`${log.baseUrl}${log.path}${log.search ? log.search : ``}`}
-        />
-        <SwitchPanelPositionButton
-          className="mr-2"
-          position={position}
-          setPosition={setPosition}
-          options={["right", "bottom", "left", "top"]}
-        />
+        <div className="flex w-full max-w-fit items-center pr-3 pl-2">
+          <ResponseInfo
+            status={log.statusCode}
+            duration={log.gatewayDuration}
+            responseSize={log.responseSize}
+          />
+        </div>
       </Tab.List>
       <Tab.Panels className="h-full">
         <Tab.Panel className={"h-full p-4"}>
@@ -46,7 +42,6 @@ export function RequestResponseViewer({
             status={log.statusCode}
             duration={log.requestDuration}
             responseSize={log.responseSize}
-            params={log.params}
             type="request"
             logId={log.id}
           />
@@ -58,7 +53,6 @@ export function RequestResponseViewer({
             status={log.statusCode}
             duration={log.requestDuration}
             responseSize={log.responseSize}
-            params={log.params}
             type="response"
             logId={log.id}
           />
@@ -72,26 +66,17 @@ export function RequestUrlBar({
   method,
   url,
 }: {
-  method: HTTPMethod;
+  method: HttpMethod;
   url: string;
 }) {
   return (
-    <>
-      {url.length <= 150 ? (
-        <div className="mr-1 ml-1.5 flex min-w-0 max-w-fit flex-1 items-baseline overflow-hidden rounded-md border border-slate-200 bg-white px-2 py-1">
-          <span className="mr-1 shrink-0 text-xs text-slate-900">{method}</span>
-          <span className="flex-1 select-all overflow-hidden overflow-ellipsis whitespace-nowrap text-sm text-slate-900">
-            {url}
-          </span>
-        </div>
-      ) : (
-        <div className="mr-1 ml-1.5 flex min-w-0 max-w-[700px] flex-1 items-baseline overflow-hidden rounded-md border border-slate-200 bg-white px-2 py-1">
-          <span className="mr-1 shrink-0 text-xs text-slate-900">{method}</span>
-          <span className="flex-1 select-all overflow-hidden overflow-ellipsis whitespace-nowrap text-sm text-slate-900">
-            {url}
-          </span>
-        </div>
-      )}
-    </>
+    <div className="flex min-w-0 items-baseline rounded-md border border-slate-200 bg-white px-2.5 py-1 gap-1">
+      <span className="shrink-0 text-xs text-slate-600 font-semibold">
+        {method}
+      </span>
+      <span className="flex-1 select-all overflow-ellipsis whitespace-nowrap text-sm text-slate-900">
+        {url}
+      </span>
+    </div>
   );
 }

@@ -10,6 +10,7 @@ import { authenticator } from "~/services/auth.server";
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 import { InboxArrowDownIcon } from "@heroicons/react/24/outline";
 import { z } from "zod";
+import { LoginPromoPanel } from "~/libraries/ui/src/components/LoginPromoPanel";
 
 export async function loader({ request }: LoaderArgs) {
   await authenticator.isAuthenticated(request, {
@@ -60,8 +61,9 @@ export default function LoginMagicLinkPage() {
   const transition = useTransition();
 
   return (
-    <div className="flex flex-row">
-      <div className="flex h-screen w-screen flex-col justify-center gap-4 overflow-y-scroll bg-gradient-to-r from-[#4669E5] via-[#2B52DE] to-[#644DF5] p-4 sm:items-center lg:flex-row lg:p-0">
+    <div className="flex h-screen w-screen justify-between overflow-y-scroll">
+      <LoginPromoPanel />
+      <div className="flex grow items-center justify-center bg-gradient-background h-full w-full p-4">
         <div className="mt-[100px] flex w-full max-w-xl flex-col justify-between rounded-lg border bg-white shadow-md lg:mt-0 lg:min-h-[430px]">
           <Form className="flex h-full flex-grow flex-col" method="post">
             <div className="flex flex-grow flex-col items-center justify-between px-4 pt-6 pb-2 text-center lg:px-4">
@@ -79,14 +81,14 @@ export default function LoginMagicLinkPage() {
                       type="submit"
                       name="action"
                       value="reset"
-                      className="flex items-center justify-center gap-1 text-sm text-slate-400 transition hover:text-slate-800"
+                      className="flex items-center justify-center gap-1 text-sm text-slate-500 transition hover:text-slate-800"
                     >
                       <ArrowLeftIcon className="h-3 w-3" />
                       Re-enter email
                     </button>
 
                     <Link
-                      className="flex items-center justify-center gap-1 text-sm text-slate-400 transition hover:text-slate-800"
+                      className="flex items-center justify-center gap-1 text-sm text-slate-500 transition hover:text-slate-800"
                       to="/login"
                     >
                       Log in using another option
@@ -98,7 +100,7 @@ export default function LoginMagicLinkPage() {
                   <h2 className="mb-2 text-2xl font-bold tracking-tight text-slate-700 lg:text-4xl">
                     Welcome to API Hero
                   </h2>
-                  <p className="mb-5 text-base lg:text-lg">
+                  <p className="mb-5 text-base lg:text-lg text-slate-600">
                     Enter your email address to get started.
                   </p>
                   <div className="flex w-full max-w-sm flex-col">

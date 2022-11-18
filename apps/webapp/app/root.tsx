@@ -23,6 +23,7 @@ import type { ToastMessage } from "~/models/message.server";
 import { commitSession, getSession } from "~/models/message.server";
 import { useEffect, useRef } from "react";
 import posthog from "posthog-js";
+import { withSentry } from "@sentry/remix";
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: tailwindStylesheetUrl }];
@@ -55,7 +56,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   );
 };
 
-export default function App() {
+function App() {
   const { toastMessage, posthogProjectKey, user } = useLoaderData<LoaderData>();
   const postHogInitialised = useRef<boolean>(false);
 
@@ -117,3 +118,5 @@ export default function App() {
     </html>
   );
 }
+
+export default withSentry(App);

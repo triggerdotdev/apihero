@@ -23,6 +23,7 @@ packages/**/styles/tailwind.css
 # misc
 .DS_Store
 *.pem
+!packages/apihero-js/test/support/certs/*.pem
 
 # debug
 npm-debug.log*
@@ -43,4 +44,3 @@ yarn-error.log*
 .env
 .output
 apps/**/public/build
-!apps/webapp/.env

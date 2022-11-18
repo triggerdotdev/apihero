@@ -3,14 +3,14 @@ import {
   drawSelection,
   highlightActiveLine,
   dropCursor,
+  lineNumbers,
+  highlightActiveLineGutter,
 } from "@codemirror/view";
 import type { Extension } from "@codemirror/state";
-import { highlightActiveLineGutter } from "@codemirror/gutter";
-import { bracketMatching } from "@codemirror/matchbrackets";
 import { highlightSelectionMatches } from "@codemirror/search";
 import { json as jsonLang } from "@codemirror/lang-json";
-import { lineNumbers } from "@codemirror/gutter";
 import { closeBrackets } from "@codemirror/autocomplete";
+import { bracketMatching } from "@codemirror/language";
 
 export function getPreviewSetup(): Array<Extension> {
   return [
@@ -28,16 +28,29 @@ export function getViewerSetup(): Array<Extension> {
   return [drawSelection(), dropCursor(), bracketMatching(), lineNumbers()];
 }
 
-export function getEditorSetup(): Array<Extension> {
-  return [
-    highlightActiveLineGutter(),
-    highlightSpecialChars(),
+export function getEditorSetup(
+  showLineNumbers = true,
+  showHighlights = true
+): Array<Extension> {
+  const options = [
     drawSelection(),
     dropCursor(),
     bracketMatching(),
-    highlightActiveLine(),
-    highlightSelectionMatches(),
-    lineNumbers(),
     closeBrackets(),
   ];
+
+  if (showLineNumbers) {
+    options.push(lineNumbers());
+  }
+
+  if (showHighlights) {
+    options.push([
+      highlightActiveLineGutter(),
+      highlightSpecialChars(),
+      highlightActiveLine(),
+      highlightSelectionMatches(),
+    ]);
+  }
+
+  return options;
 }

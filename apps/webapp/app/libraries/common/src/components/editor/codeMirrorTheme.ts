@@ -1,6 +1,6 @@
 import { EditorView } from "@codemirror/view";
 import type { Extension } from "@codemirror/state";
-import { HighlightStyle } from "@codemirror/highlight";
+import { HighlightStyle } from "@codemirror/language";
 import { tagHighlighter, tags } from "@lezer/highlight";
 import { syntaxHighlighting } from "@codemirror/language";
 
@@ -17,9 +17,9 @@ export function darkTheme(): Extension {
     violet = "#c678dd",
     darkBackground = "#21252b",
     highlightBackground = "rgba(234,179,8,0.3)",
-    background = "rgb(15,23,42)",
+    background = "rgb(51 65 85)",
     tooltipBackground = "#353a42",
-    selection = "#3E4451",
+    selection = "rgb(71 85 105)",
     cursor = "#528bff";
 
   const jsonHeroEditorTheme = EditorView.theme(
@@ -158,7 +158,7 @@ export function darkTheme(): Extension {
     { tag: tags.invalid, color: invalid },
   ]);
 
-  return [jsonHeroEditorTheme, jsonHeroHighlightStyle];
+  return [jsonHeroEditorTheme, syntaxHighlighting(jsonHeroHighlightStyle)];
 }
 
 export function lightTheme(): Extension[] {

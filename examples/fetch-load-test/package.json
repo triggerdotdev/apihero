@@ -1,0 +1,20 @@
+{
+  "private": true,
+  "name": "@examples/fetch-load-test",
+  "version": "0.0.1",
+  "description": "Fetch load test",
+  "dependencies": {
+    "apihero-js": "*",
+    "node-fetch": "2.6.x"
+  },
+  "devDependencies": {
+    "@apihero/tsconfig": "*",
+    "@types/node": "^18.11.9",
+    "@types/node-fetch": "2.6.x",
+    "tsx": "^3.12.0"
+  },
+  "scripts": {
+    "start": "tsx src/index.ts",
+    "start:bin": "docker run -p 8080:80 kennethreitz/httpbin"
+  }
+}

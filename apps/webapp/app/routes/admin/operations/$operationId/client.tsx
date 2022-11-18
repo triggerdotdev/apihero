@@ -4,7 +4,7 @@ import type { LoaderFunction } from "@remix-run/server-runtime";
 import type { OpenAPIV3_1 } from "openapi-types";
 import invariant from "tiny-invariant";
 import { JSONEditor } from "~/libraries/common";
-import { JavascriptEditor } from "~/libraries/common/src/components/editor/JavascriptEditor";
+import { CodeEditor } from "~/libraries/common/src/components/editor/JavascriptEditor";
 import {
   generateSpecFromSchemaScopedToOperation,
   getSchemaIdFromOperationId,
@@ -95,7 +95,7 @@ export default function SchemaOperationClientRoute() {
           content={JSON.stringify(spec, null, 2)}
           basicSetup={true}
         />
-        <JavascriptEditor
+        <CodeEditor
           className="h-[calc(100vh-260px)] w-1/2"
           content={code ?? ""}
           basicSetup={true}

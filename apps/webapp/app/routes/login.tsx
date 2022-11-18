@@ -1,12 +1,9 @@
-import {
-  CheckCircleIcon,
-  CheckIcon,
-  EnvelopeIcon,
-} from "@heroicons/react/24/solid";
+import { EnvelopeIcon } from "@heroicons/react/24/solid";
 import type { LoaderFunction, MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, Link, useLoaderData } from "@remix-run/react";
 import { GitHubLoginButton } from "~/libraries/ui";
+import { LoginPromoPanel } from "~/libraries/ui/src/components/LoginPromoPanel";
 import { Logo } from "~/libraries/ui/src/components/Logo";
 import { commitSession, setRedirectTo } from "~/services/redirectTo.server";
 import { getUserId } from "~/services/session.server";
@@ -47,53 +44,10 @@ export const meta: MetaFunction = () => {
 export default function LoginPage() {
   const data = useLoaderData<LoaderData>();
   return (
-    <div className="flex sm:flex-row flex-col">
-      <div className="flex flex-col flex-none items-center justify-center w-full sm:w-96 lg:w-1/3 bg-gradient-to-b from-[#314caf] via-[#13266c] to-[#3422a7] p-8">
-        <h2 className="mb-2 text-2xl font-bold tracking-tight text-slate-200 lg:text-4xl pb-8">
-          APIs as they were meant to be
-        </h2>
-        <div>
-          <div>
-            <div className="flex flex-row items-center">
-              <CheckCircleIcon className="flex w-10 h-10  text-lime-500 pr-2" />
-              <h2 className="flex  text-xl font-bold tracking-tight text-slate-200 lg:text-2xl">
-                Small typesafe SDK
-              </h2>
-            </div>
-            <p className="mb-4 text-base lg:mb-12 lg:text-lg text-slate-400">
-              Reduce friction and errors with full type safety.
-            </p>
-          </div>
-
-          <div>
-            <div className="flex flex-row items-center">
-              <CheckCircleIcon className="flex w-10 h-10  text-lime-500 pr-2" />
-              <h2 className="flex  text-xl font-bold tracking-tight text-slate-200 lg:text-2xl">
-                Full Observability
-              </h2>
-            </div>
-            <p className="mb-4 text-base lg:mb-12 lg:text-lg text-slate-400">
-              View every request and response so you can easily debug issues and
-              share requests with your teammates.
-            </p>
-          </div>
-
-          <div>
-            <div className="flex flex-row items-center">
-              <CheckCircleIcon className="flex w-10 h-10  text-lime-500 pr-2" />
-              <h2 className="flex  text-xl font-bold tracking-tight text-slate-200 lg:text-2xl">
-                Simplicity & security
-              </h2>
-            </div>
-            <p className="mb-4 text-base lg:mb-12 lg:text-lg text-slate-400">
-              We deal with CORS, storing secrets, caching, validation and much
-              more.
-            </p>
-          </div>
-        </div>
-      </div>
-      <div className="flex flex-auto h-screen flex-col items-center justify-center align-middle gap-4 overflow-y-scroll bg-gradient-to-r from-[#4669E5] via-[#2B52DE] to-[#644DF5] p-4 sm:items-center lg:flex-row lg:p-0">
-        <div className=" flex w-full max-w-xl flex-col justify-between rounded-lg border bg-white shadow-md lg:mt-0 lg:min-h-[430px]">
+    <div className="flex h-screen w-screen justify-between overflow-y-scroll">
+      <LoginPromoPanel />
+      <div className="flex grow items-center justify-center bg-gradient-background h-full w-full p-4">
+        <div className="mt-[100px] flex w-full max-w-xl flex-col justify-between rounded-lg border bg-white shadow-md lg:mt-0 lg:min-h-[430px]">
           <Form
             className="flex flex-col"
             action={`/auth/github${
@@ -104,7 +58,7 @@ export default function LoginPage() {
             <div className="flex flex-col items-center px-4 pt-6 pb-4 text-center lg:px-10">
               <Logo className="mb-4 h-10 w-auto lg:mb-6 lg:mt-8 lg:h-14" />
               <h2 className="mb-2 text-2xl font-bold tracking-tight text-slate-700 lg:text-4xl">
-                The easiest way to integrate third party APIs
+                Welcome to API Hero
               </h2>
               <p className="mb-4 text-base lg:mb-12 lg:text-lg">
                 Connect your GitHub account to get started.

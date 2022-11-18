@@ -52,15 +52,13 @@ export class FetchInterceptor extends Interceptor<HttpRequestEventMap> {
       this.log("[%s] %s", method, url);
 
       const body = await request.clone().arrayBuffer();
-      const isomorphicRequest = new IsomorphicRequest(
-        new URL(url, location.origin),
-        {
-          body,
-          method,
-          headers: new Headers(request.headers),
-          credentials: request.credentials,
-        }
-      );
+      const isomorphicUrl = new URL(url);
+      const isomorphicRequest = new IsomorphicRequest(isomorphicUrl, {
+        body,
+        method,
+        headers: new Headers(request.headers),
+        credentials: request.credentials,
+      });
 
       const interactiveIsomorphicRequest = new InteractiveIsomorphicRequest(
         isomorphicRequest

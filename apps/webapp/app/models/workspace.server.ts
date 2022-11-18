@@ -70,8 +70,8 @@ export function getWorkspacesWithProjects({ userId }: { userId: User["id"] }) {
 }
 
 export async function createFirstWorkspace(userId: string) {
-  await createWorkspace({
-    title: "Personal workspace",
+  return await createWorkspace({
+    title: "My workspace",
     userId: userId,
   });
 }

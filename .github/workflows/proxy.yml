@@ -1,0 +1,97 @@
+name: 🚀 Deploy Proxy
+on:
+  push:
+    paths:
+      - "apps/proxy/**"
+      - "packages/internal-logs/**"
+      - "packages/constants-js/**"
+      - ".github/workflows/proxy.yml"
+    branches:
+      - main
+      - dev
+  pull_request: {}
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  typecheck:
+    runs-on: ubuntu-latest
+    name: Typecheck
+    steps:
+      - name: 🛑 Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.10.1
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+      - name: ⎔ Setup pnpm@v7
+        uses: pnpm/action-setup@v2.2.2
+        with:
+          version: 7
+      - name: ⎔ Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: 📥 Download deps
+        run: pnpm install --ignore-scripts
+      - name: 🔎 Type check
+        run: pnpm run typecheck --filter proxy
+
+  tests:
+    name: ⚡ Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🛑 Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.10.1
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+      - name: ⎔ Setup pnpm@v7
+        uses: pnpm/action-setup@v2.2.2
+        with:
+          version: 7
+      - name: 🏄 Copy test env vars
+        run: cp .env.example .env
+      - name: ⎔ Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: 📥 Download deps
+        run: pnpm install --ignore-scripts
+      - name: ⚡ Run tests
+        run: pnpm run test --filter proxy
+
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy
+    needs: [typecheck, tests]
+    if: ${{ (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev') && github.event_name == 'push' }}
+    steps:
+      - name: 🛑 Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.10.1
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+      - name: ⎔ Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: ⎔ Setup pnpm@v7
+        uses: pnpm/action-setup@v2.2.2
+        with:
+          version: 7
+      - name: 📥 Download deps
+        run: pnpm install --ignore-scripts
+      - name: 🚀 Deploy Staging
+        if: ${{ github.ref == 'refs/heads/dev' }}
+        uses: cloudflare/wrangler-action@2.0.0
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          command: publish --env=staging
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: "./apps/proxy"
+      - name: 🚀 Deploy Production
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: cloudflare/wrangler-action@2.0.0
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          command: publish --env=production
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: "./apps/proxy"

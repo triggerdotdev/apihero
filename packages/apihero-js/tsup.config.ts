@@ -3,7 +3,7 @@ import { workerScriptPlugin } from "./config/plugins/esbuild/workerScriptPlugin"
 
 // Prevent from bundling the "@apihero/*" packages
 // so that the users get the latest versions without
-// having to bump them in "@apihero/js'."
+// having to bump them in "apihero-js'."
 const ecosystemDependencies = /^@apihero\/(.+)$/;
 
 export default defineConfig([
@@ -11,13 +11,13 @@ export default defineConfig([
     name: "main",
     entry: ["./src/index.ts"],
     outDir: "./lib",
-    format: ["cjs"],
+    format: ["esm", "cjs"],
     legacyOutput: true,
     sourcemap: true,
     clean: true,
     bundle: true,
     splitting: false,
-    dts: false,
+    dts: true,
     esbuildPlugins: [workerScriptPlugin()],
   },
   {
@@ -31,7 +31,7 @@ export default defineConfig([
     bundle: true,
     sourcemap: true,
     splitting: false,
-    dts: false,
+    dts: true,
     esbuildPlugins: [workerScriptPlugin()],
   },
   {
@@ -52,16 +52,7 @@ export default defineConfig([
     ],
     clean: true,
     sourcemap: true,
-    dts: false,
+    dts: true,
     esbuildPlugins: [workerScriptPlugin()],
-  },
-  {
-    name: "typedefs",
-    entry: ["./src/index.ts", "./src/node/index.ts"],
-    outDir: "./lib",
-    clean: false,
-    dts: {
-      only: true,
-    },
   },
 ]);

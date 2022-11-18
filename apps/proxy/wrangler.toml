@@ -1,9 +1,30 @@
-name = "apihero-proxy"
+name = "apihero-proxy-dev"
 main = "dist/index.mjs"
 compatibility_date = "2022-09-30"
+
+[vars]
+LOGS_URL = "http://localhost:3001"
+LOGS_DEBUG = true
+
+[env.staging]
+name = "apihero-proxy-staging"
+routes = [
+	{ pattern = "proxy-staging.apihero.run", custom_domain = true, zone_name = "apihero.run" }
+]
+
+[env.staging.vars]
+LOGS_URL = "https://ah-logs-staging.fly.dev"
+LOGS_DEBUG = true
+
+[env.production]
+name = "apihero-proxy"
 routes = [
 	{ pattern = "proxy.apihero.run", custom_domain = true, zone_name = "apihero.run" }
 ]
+
+[env.production.vars]
+LOGS_URL = "https://logs.apihero.run"
+LOGS_DEBUG = false
 
 [build]
 command = "node build.js"
@@ -11,3 +32,6 @@ command = "node build.js"
 [miniflare]
 kv_persist = true
 cache_persist = true
+
+# Required secrets to be set:
+# - LOGS_AUTHENTICATION_TOKEN

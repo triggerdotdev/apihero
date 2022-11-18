@@ -10,14 +10,19 @@ const timeAgo = new TimeAgo("en-US");
 type PaginationButtonProps = {
   onClick: () => void;
   disabled?: boolean;
+  className?: string;
 };
 
-export function NextButton({ onClick, disabled }: PaginationButtonProps) {
+export function NextButton({
+  onClick,
+  disabled,
+  className,
+}: PaginationButtonProps) {
   return (
     <PaginationButton
       onClick={onClick}
       disabled={disabled}
-      className="rounded-r-md"
+      className={`rounded-r-md ${className}`}
     >
       Next
       <ChevronRightIcon className="h-4 w-4" />
@@ -92,7 +97,7 @@ function PaginationButton({
     <button
       disabled={disabled}
       onClick={onClick}
-      className={`focus:shadow-outline group flex h-[30px] max-w-xs items-center justify-center rounded-md border border-transparent bg-transparent p-3 py-2 text-sm text-slate-500 transition hover:border-slate-200 hover:bg-white hover:text-slate-800 focus:outline-none disabled:border-transparent disabled:bg-transparent disabled:text-slate-400 ${className}`}
+      className={`focus:shadow-outline group flex h-[30px] max-w-xs items-center justify-center rounded-md border border-transparent bg-transparent p-3 py-2 text-xs text-slate-500 transition hover:border-slate-200 hover:bg-white hover:text-slate-800 focus:outline-none disabled:border-transparent disabled:bg-transparent disabled:text-slate-400 ${className}`}
     >
       {children}
     </button>
