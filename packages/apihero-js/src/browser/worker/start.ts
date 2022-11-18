@@ -166,7 +166,10 @@ function createRequestListener(
       }
 
       const requestUrl = new URL(request.url);
-      const newUrl = new URL(requestUrl.pathname, context.proxyOptions.url);
+      const newUrl = new URL(
+        requestUrl.pathname,
+        context.proxyOptions.url ?? "https://proxy.apihero.run"
+      );
 
       messageChannel.postMessage("PROXY_REQUEST", {
         url: newUrl.href,
