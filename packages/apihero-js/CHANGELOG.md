@@ -1,5 +1,11 @@
 # @apihero/js
 
+## 1.3.10
+
+### Patch Changes
+
+- 87ad484: Remove matcher dependency as it was breaking (shakes fist at ESM)
+
 ## 1.3.9
 
 ### Patch Changes
