@@ -3,8 +3,7 @@
     "global.d.ts",
     "src/**/*.ts",
     "tsup.config.ts",
-    "../interceptors-js/src/types.ts",
-    "../constants-js/index.d.ts"
+    "../interceptors-js/src/types.ts"
   ],
   "compilerOptions": {
     "strict": true,

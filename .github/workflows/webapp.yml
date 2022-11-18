@@ -4,7 +4,6 @@ on:
     paths:
       - "apps/webapp/**"
       - "packages/internal-logs/**"
-      - "packages/constants-js/**"
       - ".github/workflows/webapp.yml"
     branches:
       - dev
