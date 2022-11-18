@@ -33,7 +33,10 @@ export async function proxyRequest(
   const originRequest = new Request(url.href, {
     headers: stripHeaders(request.headers),
     method: request.method,
-    body: requestBody,
+    body:
+      request.method !== "GET" && request.method !== "HEAD"
+        ? requestBody
+        : undefined,
     cf: {
       cacheEverything: true,
     },
