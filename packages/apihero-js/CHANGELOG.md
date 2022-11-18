@@ -1,5 +1,11 @@
 # @apihero/js
 
+## 1.3.11
+
+### Patch Changes
+
+- c997cf6: Added default url for browser proxy
+
 ## 1.3.10
 
 ### Patch Changes
