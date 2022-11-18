@@ -1,6 +1,6 @@
 # API Hero Proxy
 
-A Cloudflare Worker powered proxy server for API Hero.
+A Cloudflare Worker powered proxy server for API Hero. Requests pass through the proxy and logs are sent to the logs service.
 
 ## Deployment
 
