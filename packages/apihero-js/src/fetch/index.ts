@@ -6,7 +6,7 @@ import {
 } from "../constants";
 import { IsomorphicRequest } from "@apihero/interceptors-js";
 import { FetchInterceptor } from "@apihero/interceptors-js/lib/interceptors/fetch/index.js";
-import { isMatch } from "matcher";
+import { isMatch } from "../matcher";
 import debug from "debug";
 import { SetupProxyOptions, PolicyRule } from "../types";
 

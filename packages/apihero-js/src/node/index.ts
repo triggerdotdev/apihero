@@ -7,7 +7,7 @@ import {
 import { IsomorphicRequest } from "@apihero/interceptors-js";
 import { ClientRequestInterceptor } from "@apihero/interceptors-js/lib/interceptors/ClientRequest/index.js";
 import { FetchInterceptor } from "@apihero/interceptors-js/lib/interceptors/fetch/index.js";
-import { isMatch } from "matcher";
+import { isMatch } from "../matcher";
 import debug from "debug";
 import { SetupProxyOptions, PolicyRule } from "../types";
 
@@ -23,26 +23,6 @@ export function setupProxy(options: SetupProxyOptions): ProxyInstance {
   const fetchInterceptor = new FetchInterceptor();
 
   const proxyUrl = options.url || "https://proxy.apihero.run";
-
-  interceptor.on("request", (request) => {
-    if (
-      (options.allow && !isAllowed(request, options.allow)) ||
-      (options.deny && isAllowed(request, options.deny))
-    ) {
-      log("request not proxied", request.url.href);
-      return;
-    }
-
-    const env = options.env || process.env.NODE_ENV || "development";
-
-    request.requestWith({
-      headers: {
-        ...Object.fromEntries(request.headers.entries()),
-        [PROJECT_KEY_HEADER_NAME]: options.projectKey,
-        [PAYLOAD_HEADER_NAME]: JSON.stringify({ env }),
-      },
-    });
-  });
 
   fetchInterceptor.on("request", (request) => {
     if (
@@ -80,6 +60,8 @@ export function setupProxy(options: SetupProxyOptions): ProxyInstance {
 
     const newUrl = new URL(request.url.pathname, proxyUrl);
 
+    const env = options.env || process.env.NODE_ENV || "development";
+
     log(`proxying ${request.url.href} to ${newUrl.href}`);
 
     request.connectWith({
@@ -88,6 +70,8 @@ export function setupProxy(options: SetupProxyOptions): ProxyInstance {
         ...Object.fromEntries(request.headers.entries()),
         [DESTINATION_HEADER_NAME]: request.url.host,
         [PROTOCOL_HEADER_NAME]: request.url.protocol,
+        [PROJECT_KEY_HEADER_NAME]: options.projectKey,
+        [PAYLOAD_HEADER_NAME]: JSON.stringify({ env }),
       },
     });
   });

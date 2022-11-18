@@ -5,7 +5,7 @@ import {
   PROTOCOL_HEADER_NAME,
 } from "../../constants";
 import { until } from "@open-draft/until";
-import { isMatch } from "matcher";
+import { isMatch } from "../../matcher";
 import {
   PolicyRule,
   RequiredDeep,
