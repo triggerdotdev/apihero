@@ -135,7 +135,10 @@ export default function Logs() {
                 </div>
               </div>
             </div>
-            <ResizableChild showHandle className="border-b-2 border-slate-200">
+            <ResizableChild
+              showHandle
+              className="border-b-2 border-slate-200 overflow-hidden pb-20"
+            >
               <LogViewer log={openLog} />
             </ResizableChild>
           </Resizable>
