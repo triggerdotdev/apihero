@@ -8,7 +8,7 @@ on:
       - ".github/workflows/webapp.yml"
     branches:
       - dev
-      - legacy
+      - main
   pull_request: {}
 permissions:
   actions: write
