@@ -26,8 +26,6 @@ export function LogsOnboarding({
 
 const inlineCode =
   "px-1 py-0.5 bg-slate-200 border border-slate-300 rounded text-slate-700";
-const tip =
-  "bg-yellow-100 border border-yellow-300 font-semibold text-xs text-orange-400 rounded px-1.5 py-1 uppercase tracking-wider";
 
 function OnboardingIncomplete({ projectId }: { projectId: string }) {
   return (
@@ -39,7 +37,17 @@ function OnboardingIncomplete({ projectId }: { projectId: string }) {
 
         <ul className="flex gap-2 mb-2">
           <Instruction step={1}>
-            <p className="text-sm text-slate-700">Select your framework:</p>
+            <p className="text-sm text-slate-700">
+              Select your framework. Or view other available frameworks{" "}
+              <a
+                href="https://docs.apihero.run"
+                rel="noreferrer"
+                target="_blank"
+              >
+                here
+              </a>
+              .
+            </p>
           </Instruction>
         </ul>
 
