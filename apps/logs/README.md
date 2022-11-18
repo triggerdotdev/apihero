@@ -1,3 +1,7 @@
+# API Hero Logs
+
+Logs API service for API Hero. Logs are stored in Postgres and are created and retrieved using this API.
+
 ## Deployment
 
 ## Setup Deployment to fly.io
