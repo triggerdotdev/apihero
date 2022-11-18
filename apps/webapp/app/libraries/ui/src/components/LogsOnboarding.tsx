@@ -197,7 +197,8 @@ function InstallServiceWorker({ step }: { step: number }) {
   return (
     <CommandLine step={step} code={installServiceWorkerCode}>
       Install the Service Worker to forward specified browser traffic through a
-      proxy server.
+      proxy server. Select <InlineCode>Y</InlineCode> to save{" "}
+      <InlineCode>"public"</InlineCode> as the worker directory.
     </CommandLine>
   );
 }
@@ -269,8 +270,8 @@ function ModuleResolution({ step }: { step: number }) {
       <p className="text-sm text-slate-700">
         If you're using TypeScript, ensure{" "}
         <InlineCode>"moduleResolution": "nodenext"</InlineCode> is in the{" "}
-        <InlineCode>"compilerOptions"</InlineCode> section of your tsconfig.json
-        file.
+        <InlineCode>"compilerOptions"</InlineCode> section of your{" "}
+        <InlineCode>tsconfig.json</InlineCode> file.
       </p>
     </Instruction>
   );

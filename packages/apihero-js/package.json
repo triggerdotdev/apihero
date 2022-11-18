@@ -35,7 +35,6 @@
     "clean": "rimraf lib",
     "dev": "tsup --watch",
     "lint": "eslint ./src --fix",
-    "typecheck": "tsc --project ./tsconfig.json --noEmit",
     "test": "vitest -c vitest.config.ts --run"
   },
   "dependencies": {
