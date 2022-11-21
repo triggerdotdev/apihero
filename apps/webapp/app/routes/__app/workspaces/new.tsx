@@ -5,7 +5,6 @@ import { Form, useActionData } from "@remix-run/react";
 import * as React from "react";
 import {
   PrimaryButton,
-  PrimaryLink,
   SecondaryLink,
 } from "~/libraries/ui/src/components/Buttons/Buttons";
 import { createProject } from "~/models/project.server";
@@ -27,14 +26,19 @@ export const action: ActionFunction = async ({ request }) => {
   const title = formData.get("title");
   if (typeof title !== "string" || title.length === 0) {
     return json<ActionData>(
-      { errors: { title: "Workspace title is required" } },
+      { errors: { title: "A Workspace title is required." } },
       { status: 400 }
     );
   }
   const projectTitle = formData.get("projectTitle");
   if (typeof projectTitle !== "string" || projectTitle.length === 0) {
     return json<ActionData>(
-      { errors: { projectTitle: "Project title is required" } },
+      {
+        errors: {
+          projectTitle:
+            "A Project title is required. This is usually named after your app or website.",
+        },
+      },
       { status: 400 }
     );
   }
