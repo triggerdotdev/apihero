@@ -1,4 +1,4 @@
-# API Hero (Developer Preview)
+# API Hero
 
 Make every API you use faster and more reliable with one line of code.
 
@@ -35,7 +35,7 @@ If you are running a Node.js app, include the following code somewhere that will
 ```typescript
 import { setupProxy } from "apihero-js/node";
 
-const proxy = setupProxy({ projectKey: "hero_123abc" });
+const proxy = setupProxy({ projectKey: "<PROJECT_KEY_HERE>" });
 
 // Start intercepting requests and sending them to proxy.apihero.run
 proxy.start();
@@ -47,7 +47,7 @@ By default, this will proxy all requests, which may not be what you want (and co
 
 ```typescript
 const proxy = setupProxy({
-  projectKey: "hero_123abc",
+  projectKey: "<PROJECT_KEY_HERE>",
   allow: ["api.github.com/*"],
 });
 ```
@@ -78,6 +78,9 @@ You can also selectively stop intercepting/proxying requests using `proxy.stop()
 ## Coming soon
 
 We plan on adding browser support very soon, as well as a custom `fetch` module that will allow you to use API Hero without stubbing the Node.js request modules.
+
+## Self hosting
+A detailed self-hosting guide is coming soon. For now you can use the Readmes for the separate apps.
 
 ## Plans
 
