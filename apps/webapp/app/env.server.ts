@@ -7,6 +7,7 @@ const EnvironmentSchema = z.object({
   APP_ORIGIN: z.string().default("https://app.apihero.run"),
   LOGS_ORIGIN: z.string().default("https://logs.apihero.run"),
   LOGS_API_AUTHENTICATION_TOKEN: z.string(),
+  APIHERO_PROJECT_KEY: z.string(),
   SENTRY_DSN: z
     .string()
     .default(

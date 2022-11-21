@@ -34,3 +34,5 @@ if (process.env.NODE_ENV === "production") {
 
   console.log("🚦 Sentry initialized");
 }
+
+require("./services/apihero.server");
