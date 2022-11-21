@@ -1,5 +1,11 @@
 # @apihero/js
 
+## 1.3.12
+
+### Patch Changes
+
+- b30ef59: Proxy start does not need to be async
+
 ## 1.3.11
 
 ### Patch Changes
