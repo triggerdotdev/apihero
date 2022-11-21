@@ -9,8 +9,6 @@ export async function loader() {
 
   const users = dbUsers.map((user) => {
     let projectsCount = 0;
-    let endpointsCount = 0;
-    let requestsCount = 0;
     for (
       let workspaceIndex = 0;
       workspaceIndex < user.workspaces.length;
@@ -18,32 +16,6 @@ export async function loader() {
     ) {
       const workspace = user.workspaces[workspaceIndex];
       projectsCount += workspace.projects.length;
-
-      for (
-        let projectIndex = 0;
-        projectIndex < workspace.projects.length;
-        projectIndex++
-      ) {
-        const project = workspace.projects[projectIndex];
-
-        for (
-          let clientIndex = 0;
-          clientIndex < project.httpClients.length;
-          clientIndex++
-        ) {
-          const client = project.httpClients[clientIndex];
-          endpointsCount += client.endpoints.length;
-
-          for (
-            let endpointIndex = 0;
-            endpointIndex < client.endpoints.length;
-            endpointIndex++
-          ) {
-            const endpoint = client.endpoints[endpointIndex];
-            requestsCount += endpoint._count.requestLogs;
-          }
-        }
-      }
     }
 
     return {
@@ -53,16 +25,11 @@ export async function loader() {
       displayName: user.displayName,
       workspacesCount: user.workspaces.length,
       projectsCount: projectsCount,
-      endpointsCount: endpointsCount,
-      requestsCount: requestsCount,
       admin: user.admin,
     };
   });
 
-  const sortedUsers = sorted(users, [
-    { key: "workspacesCount", direction: "desc" },
-    { key: "requestsCount", direction: "desc" },
-  ]);
+  const sortedUsers = sorted(users, [{ key: "createdAt", direction: "desc" }]);
 
   return typedjson({ users: sortedUsers });
 }
@@ -99,13 +66,10 @@ export default function AdminDashboardRoute() {
                 Projects
               </th>
               <th scope="col" className={headerClassName}>
-                Endpoints
-              </th>
-              <th scope="col" className={headerClassName}>
-                Requests
-              </th>
-              <th scope="col" className={headerClassName}>
                 id
+              </th>
+              <th scope="col" className={headerClassName}>
+                Created At
               </th>
               <th scope="col" className={headerClassName}>
                 Admin?
@@ -132,9 +96,11 @@ export default function AdminDashboardRoute() {
                   </td>
                   <td className={cellClassName}>{user.workspacesCount}</td>
                   <td className={cellClassName}>{user.projectsCount}</td>
-                  <td className={cellClassName}>{user.endpointsCount}</td>
-                  <td className={cellClassName}>{user.requestsCount}</td>
                   <td className={cellClassName}>{user.id}</td>
+                  <td className={cellClassName}>
+                    {user.createdAt.toLocaleDateString()} at{" "}
+                    {user.createdAt.toLocaleTimeString()}
+                  </td>
                   <td className={cellClassName}>{user.admin ? "✅" : ""}</td>
                 </tr>
               );
