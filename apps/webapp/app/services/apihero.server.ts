@@ -34,4 +34,4 @@ function getProxy() {
   return result;
 }
 
-export default proxy;
+export { proxy };
