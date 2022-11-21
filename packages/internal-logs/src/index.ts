@@ -152,3 +152,7 @@ export const GetProjectStatsSuccessResponseSchema = z.object({
     })
   ),
 });
+
+export type GetProjectStats = z.infer<
+  typeof GetProjectStatsSuccessResponseSchema
+>;

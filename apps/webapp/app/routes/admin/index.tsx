@@ -1,14 +1,15 @@
-import { Form } from "@remix-run/react";
 import { typedjson, useTypedLoaderData } from "remix-typedjson";
-import { SecondaryButton } from "~/libraries/common";
 import { sorted } from "~/libraries/common/src/multi-sort";
 import { adminGetUsers } from "~/models/admin.server";
+import { getProjectStats } from "~/services/logs.server";
 
 export async function loader() {
+  const stats = await getProjectStats();
   const dbUsers = await adminGetUsers();
 
   const users = dbUsers.map((user) => {
     let projectsCount = 0;
+    let logsCount = 0;
     for (
       let workspaceIndex = 0;
       workspaceIndex < user.workspaces.length;
@@ -16,6 +17,17 @@ export async function loader() {
     ) {
       const workspace = user.workspaces[workspaceIndex];
       projectsCount += workspace.projects.length;
+
+      for (
+        let projectIndex = 0;
+        projectIndex < workspace.projects.length;
+        projectIndex++
+      ) {
+        const project = workspace.projects[projectIndex];
+
+        logsCount +=
+          stats.projects.find((p) => p.projectId === project.id)?.total || 0;
+      }
     }
 
     return {
@@ -24,7 +36,8 @@ export async function loader() {
       createdAt: user.createdAt,
       displayName: user.displayName,
       workspacesCount: user.workspaces.length,
-      projectsCount: projectsCount,
+      projectsCount,
+      logsCount,
       admin: user.admin,
     };
   });
@@ -66,6 +79,9 @@ export default function AdminDashboardRoute() {
                 Projects
               </th>
               <th scope="col" className={headerClassName}>
+                Logs
+              </th>
+              <th scope="col" className={headerClassName}>
                 id
               </th>
               <th scope="col" className={headerClassName}>
@@ -96,6 +112,7 @@ export default function AdminDashboardRoute() {
                   </td>
                   <td className={cellClassName}>{user.workspacesCount}</td>
                   <td className={cellClassName}>{user.projectsCount}</td>
+                  <td className={cellClassName}>{user.logsCount}</td>
                   <td className={cellClassName}>{user.id}</td>
                   <td className={cellClassName}>
                     {user.createdAt.toLocaleDateString()} at{" "}

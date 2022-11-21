@@ -14,20 +14,7 @@ export async function adminGetUsers() {
           projects: {
             select: {
               title: true,
-              httpClients: {
-                select: {
-                  endpoints: {
-                    select: {
-                      id: true,
-                      _count: {
-                        select: {
-                          requestLogs: true,
-                        },
-                      },
-                    },
-                  },
-                },
-              },
+              id: true,
             },
           },
         },
