@@ -1,3 +1,3 @@
 export { setupWorker } from "./browser/setupWorker";
-export { setupProxy } from "./fetch";
+export { setupFetchProxy } from "./fetch";
 export * from "./types";
