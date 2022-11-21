@@ -10,6 +10,8 @@ Make every API you use faster and more reliable with one line of code.
 - Automatically obfuscate sensitive data
 - All with just one line of code
 
+You can [self-host](#self-hosting) or use the [hosted version](http://apihero.run/).
+
 ## Installation
 
 > We currently only support JavaScript & TypeScript, but more platforms are coming soon.
