@@ -60,7 +60,6 @@ COPY --from=builder --chown=remixjs:nodejs /app/apps/webapp/prisma/schema.prisma
 COPY --from=builder --chown=remixjs:nodejs /app/apps/webapp/prisma/migrations ./apps/webapp/build/migrations
 COPY --from=builder --chown=remixjs:nodejs /app/apps/webapp/node_modules/.prisma/client/libquery_engine-debian-openssl-1.1.x.so.node ./apps/webapp/build/libquery_engine-debian-openssl-1.1.x.so.node
 COPY --from=builder --chown=fastify:nodejs /app/apps/webapp/node_modules/internal-logs ./apps/webapp/node_modules/internal-logs
-COPY --from=builder --chown=fastify:nodejs /app/apps/webapp/node_modules/apihero-js ./apps/webapp/node_modules/apihero-js
 
 # release_command = "pnpx prisma migrate deploy --schema apps/webapp/prisma/schema.prisma"
 CMD ["pnpm", "--filter", "webapp", "run", "start"]
