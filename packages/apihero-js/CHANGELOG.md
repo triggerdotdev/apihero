@@ -1,5 +1,11 @@
 # @apihero/js
 
+## 1.3.13
+
+### Patch Changes
+
+- da2956b: Renamed setupProxy to setupFetchProxy for fetch environments
+
 ## 1.3.12
 
 ### Patch Changes
