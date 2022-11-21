@@ -24,10 +24,6 @@ function getProxy() {
     allow: ["*api.mergent.co/*", "*api.mailgun.net/*"],
   });
 
-  result.start();
-
-  console.info("🔶 API Hero proxy running");
-
   process.once("SIGINT", () => result.stop());
   process.once("SIGTERM", () => result.stop());
 
