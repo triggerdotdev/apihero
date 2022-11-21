@@ -14,8 +14,8 @@ import { SetupProxyOptions, PolicyRule } from "../types";
 const log = debug("apihero");
 
 export interface ProxyInstance {
-  start(): Promise<void>;
-  stop(): Promise<void>;
+  start(callback?: () => void): void;
+  stop(): void;
 }
 
 export function setupProxy(options: SetupProxyOptions): ProxyInstance {
@@ -76,16 +76,12 @@ export function setupProxy(options: SetupProxyOptions): ProxyInstance {
     });
   });
 
-  return {
-    start: async () => {
-      interceptor.apply();
-      fetchInterceptor.apply();
-    },
-    stop: async () => {
-      interceptor.dispose();
-      fetchInterceptor.dispose();
-    },
-  };
+  const internalInstance = new InternalProxyInstance([
+    interceptor,
+    fetchInterceptor,
+  ]);
+
+  return internalInstance;
 }
 
 function isAllowed(
@@ -101,4 +97,28 @@ function isAllowed(
       rule.method === request.method && isMatch(request.url.href, rule.url)
     );
   });
+}
+
+class InternalProxyInstance implements ProxyInstance {
+  private _isStarted = false;
+
+  constructor(
+    private interceptors: Array<ClientRequestInterceptor | FetchInterceptor>
+  ) {
+    this.interceptors = interceptors;
+  }
+
+  start(callback?: () => void) {
+    if (this._isStarted) {
+      return;
+    }
+
+    this.interceptors.forEach((interceptor) => interceptor.apply());
+    this._isStarted = true;
+    callback?.();
+  }
+
+  stop() {
+    this.interceptors.forEach((interceptor) => interceptor.dispose());
+  }
 }

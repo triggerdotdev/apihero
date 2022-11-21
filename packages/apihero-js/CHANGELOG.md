@@ -1,5 +1,23 @@
 # @apihero/js
 
+## 1.3.14
+
+### Patch Changes
+
+- 484d2c3: Allow start to be called repeatedly, and run the callback only once
+
+## 1.3.13
+
+### Patch Changes
+
+- da2956b: Renamed setupProxy to setupFetchProxy for fetch environments
+
+## 1.3.12
+
+### Patch Changes
+
+- b30ef59: Proxy start does not need to be async
+
 ## 1.3.11
 
 ### Patch Changes

@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "description": "Fetch load test",
   "dependencies": {
-    "apihero-js": "*",
+    "apihero-js": "workspace:*",
     "node-fetch": "2.6.x"
   },
   "devDependencies": {

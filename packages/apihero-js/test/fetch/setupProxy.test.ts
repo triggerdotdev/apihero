@@ -1,5 +1,5 @@
 import { HttpServer } from "../support/httpServer";
-import { setupProxy } from "../../src";
+import { setupFetchProxy } from "../../src";
 import {
   afterAll,
   afterEach,
@@ -44,11 +44,11 @@ const proxyServer = new HttpServer((app) => {
 
 let proxy;
 
-describe("fetch / setupProxy / fetch", () => {
+describe("fetch / setupFetchProxy / fetch", () => {
   beforeAll(async () => {
     await proxyServer.listen();
 
-    proxy = setupProxy({
+    proxy = setupFetchProxy({
       projectKey: "hero_abc123",
       url: proxyServer.http.address.href,
       env: "test",

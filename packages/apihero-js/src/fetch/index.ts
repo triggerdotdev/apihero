@@ -13,11 +13,11 @@ import { SetupProxyOptions, PolicyRule } from "../types";
 const log = debug("apihero");
 
 export interface ProxyInstance {
-  start(): Promise<void>;
-  stop(): Promise<void>;
+  start(): void;
+  stop(): void;
 }
 
-export function setupProxy(options: SetupProxyOptions): ProxyInstance {
+export function setupFetchProxy(options: SetupProxyOptions): ProxyInstance {
   const interceptor = new FetchInterceptor();
 
   interceptor.on("request", (request) => {
@@ -48,10 +48,10 @@ export function setupProxy(options: SetupProxyOptions): ProxyInstance {
   });
 
   return {
-    start: async () => {
+    start: () => {
       interceptor.apply();
     },
-    stop: async () => {
+    stop: () => {
       interceptor.dispose();
     },
   };

@@ -5,9 +5,10 @@ import morgan from "morgan";
 import { createRequestHandler as expressCreateRequestHandler } from "@remix-run/express";
 import { wrapExpressCreateRequestHandler } from "@sentry/remix";
 
-const createRequestHandler = wrapExpressCreateRequestHandler(
-  expressCreateRequestHandler
-);
+const createRequestHandler =
+  process.env.NODE_ENV === "production"
+    ? wrapExpressCreateRequestHandler(expressCreateRequestHandler)
+    : expressCreateRequestHandler;
 
 const app = express();
 
