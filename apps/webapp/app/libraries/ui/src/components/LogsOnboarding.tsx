@@ -371,14 +371,17 @@ initProxy();`;
 }
 
 function NodeJs({ projectId }: { projectId: string }) {
-  const code = `async function initProxy() {
-  const { setupProxy } = await import("apihero-js/node");
-  await setupProxy({
+  const code = `import { setupProxy } from "apihero-js/node";
+  
+function initProxy() {
+  const proxy = setupProxy({
     projectKey: "${projectId}",
     env: process.env.NODE_ENV,
     // remove this line if you want all traffic to be proxied
     allow: ["https://api.github.com/*"] 
-  }).start();
+  });
+
+  proxy.start();
 }
 initProxy();`;
   return (
