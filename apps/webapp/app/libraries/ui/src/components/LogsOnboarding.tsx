@@ -6,6 +6,7 @@ import {
 } from "@heroicons/react/24/outline";
 import classNames from "classnames";
 import type { ReactNode } from "react";
+import { createContext, useContext } from "react";
 import { useCallback, useEffect, useState } from "react";
 import { StyledTabs } from "~/libraries/common";
 import { CodeEditor } from "~/libraries/common/src/components/editor/JavascriptEditor";
@@ -27,52 +28,86 @@ export function LogsOnboarding({
 const inlineCode =
   "px-1 py-0.5 bg-slate-200 border border-slate-300 rounded text-slate-700";
 
+type PackageManagerContextType = [PackageManager, (pm: PackageManager) => void];
+
+const PackageManagerContext = createContext<
+  PackageManagerContextType | undefined
+>(undefined);
+
+function PackageManagerProvider({
+  defaultProvider,
+  children,
+}: {
+  defaultProvider: PackageManager;
+  children: ReactNode;
+}) {
+  const [packageManager, setPackageManager] = useState(defaultProvider);
+
+  return (
+    <PackageManagerContext.Provider value={[packageManager, setPackageManager]}>
+      {children}
+    </PackageManagerContext.Provider>
+  );
+}
+
+function usePackageManager(): PackageManagerContextType {
+  const context = useContext(PackageManagerContext);
+  if (context === undefined) {
+    throw new Error(
+      "usePackageManager must be used within a PackageManagerProvider"
+    );
+  }
+  return context;
+}
+
 function OnboardingIncomplete({ projectId }: { projectId: string }) {
   return (
-    <div className="grid grid-cols-[4fr_1fr] gap-2 mb-4 mr-4">
-      <div className="bg-slate-100 p-4 border border-slate-200 rounded-md overflow-hidden">
-        <h2 className="font-semibold text-xl mb-4 text-slate-600">
-          Get started
-        </h2>
+    <PackageManagerProvider defaultProvider="npm">
+      <div className="grid grid-cols-[4fr_1fr] gap-2 mb-4 mr-4">
+        <div className="bg-slate-100 p-4 border border-slate-200 rounded-md overflow-hidden">
+          <h2 className="font-semibold text-xl mb-4 text-slate-600">
+            Get started
+          </h2>
 
-        <ul className="flex gap-2 mb-2">
-          <Instruction step={1}>
-            <p className="text-sm text-slate-700">
-              Select your framework. Or view other available frameworks{" "}
-              <a
-                href="https://docs.apihero.run"
-                rel="noreferrer"
-                target="_blank"
-                className="underline hover:text-slate-800 transition"
-              >
-                here
-              </a>
-              .
-            </p>
-          </Instruction>
-        </ul>
+          <ul className="flex gap-2 mb-2">
+            <Instruction step={1}>
+              <p className="text-sm text-slate-700">
+                Select your framework. Or view other available frameworks{" "}
+                <a
+                  href="https://docs.apihero.run"
+                  rel="noreferrer"
+                  target="_blank"
+                  className="underline hover:text-slate-800 transition"
+                >
+                  here
+                </a>
+                .
+              </p>
+            </Instruction>
+          </ul>
 
-        <Tab.Group>
-          <StyledTabs.SegmentedList>
-            <StyledTabs.Segmented>Node</StyledTabs.Segmented>
-            <StyledTabs.Segmented>Next.js</StyledTabs.Segmented>
-            <StyledTabs.Segmented>React</StyledTabs.Segmented>
-          </StyledTabs.SegmentedList>
-          <Tab.Panels className="flex-grow pt-4">
-            <Tab.Panel className="relative h-full">
-              <NodeJs projectId={projectId} />
-            </Tab.Panel>
-            <Tab.Panel className="relative h-full">
-              <NextJs projectId={projectId} />
-            </Tab.Panel>
-            <Tab.Panel className="relative h-full">
-              <React projectId={projectId} />
-            </Tab.Panel>
-          </Tab.Panels>
-        </Tab.Group>
+          <Tab.Group>
+            <StyledTabs.SegmentedList>
+              <StyledTabs.Segmented>Node</StyledTabs.Segmented>
+              <StyledTabs.Segmented>Next.js</StyledTabs.Segmented>
+              <StyledTabs.Segmented>React</StyledTabs.Segmented>
+            </StyledTabs.SegmentedList>
+            <Tab.Panels className="flex-grow pt-4">
+              <Tab.Panel className="relative h-full">
+                <NodeJs projectId={projectId} />
+              </Tab.Panel>
+              <Tab.Panel className="relative h-full">
+                <NextJs projectId={projectId} />
+              </Tab.Panel>
+              <Tab.Panel className="relative h-full">
+                <React projectId={projectId} />
+              </Tab.Panel>
+            </Tab.Panels>
+          </Tab.Group>
+        </div>
+        <HavingTroublePanel />
       </div>
-      <HavingTroublePanel />
-    </div>
+    </PackageManagerProvider>
   );
 }
 
@@ -182,27 +217,31 @@ function Instruction({
   );
 }
 
-const installCommandByPackageManager = {
-  npm: "npm install apihero-js@latest",
-  yarn: "yarn add apihero-js@latest",
-  pnpm: "pnpm add apihero-js@latest",
-};
-
 function InstallPackage() {
-  const code = `install apihero-js@latest`;
-
   return (
-    <CommandLine step={2} code={code}>
+    <CommandLine
+      step={2}
+      code={{
+        npm: "npm install apihero-js@latest",
+        yarn: "yarn add apihero-js@latest",
+        pnpm: "pnpm add apihero-js@latest",
+      }}
+    >
       Install the <InlineCode>apihero-js</InlineCode> package.
     </CommandLine>
   );
 }
 
 function InstallServiceWorker({ step }: { step: number }) {
-  const installServiceWorkerCode = "exec apihero-js init public/";
-
   return (
-    <CommandLine step={step} code={installServiceWorkerCode}>
+    <CommandLine
+      step={step}
+      code={{
+        npm: "npm exec apihero-js init public/",
+        yarn: "yarn exec apihero-js init public/",
+        pnpm: "pnpm exec apihero-js init public/",
+      }}
+    >
       Install the Service Worker to forward specified browser traffic through a
       proxy server. Select <InlineCode>Y</InlineCode> to save{" "}
       <InlineCode>"public"</InlineCode> as the worker directory.
@@ -219,11 +258,15 @@ function CommandLine({
 }: {
   step: number;
   children: ReactNode;
-  code: string;
+  code: {
+    yarn: string;
+    npm: string;
+    pnpm: string;
+  };
 }) {
-  const [packageManager, setPackageManager] = useState<PackageManager>("npm");
+  const [packageManager, setPackageManager] = usePackageManager();
 
-  const installCommand = installCommandByPackageManager[packageManager];
+  const codeToDisplay = code[packageManager];
 
   return (
     <Instruction step={step}>
@@ -242,7 +285,7 @@ function CommandLine({
         </Select>
       </div>
 
-      <CodeBlock code={installCommand} language="shell" />
+      <CodeBlock code={codeToDisplay} language="shell" />
     </Instruction>
   );
 }
