@@ -182,6 +182,12 @@ function Instruction({
   );
 }
 
+const installCommandByPackageManager = {
+  npm: "npm install apihero-js@latest",
+  yarn: "yarn add apihero-js@latest",
+  pnpm: "pnpm add apihero-js@latest",
+};
+
 function InstallPackage() {
   const code = `install apihero-js@latest`;
 
@@ -217,6 +223,8 @@ function CommandLine({
 }) {
   const [packageManager, setPackageManager] = useState<PackageManager>("npm");
 
+  const installCommand = installCommandByPackageManager[packageManager];
+
   return (
     <Instruction step={step}>
       <div className="flex justify-between items-baseline">
@@ -234,7 +242,7 @@ function CommandLine({
         </Select>
       </div>
 
-      <CodeBlock code={`${packageManager} ${code}`} language="shell" />
+      <CodeBlock code={installCommand} language="shell" />
     </Instruction>
   );
 }
