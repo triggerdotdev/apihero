@@ -143,3 +143,16 @@ export const GetCachedResponseSchema = z.union([
   ErrorObjectSchema,
   GetCachedSuccessResponseSchema,
 ]);
+
+export const GetProjectStatsSuccessResponseSchema = z.object({
+  projects: z.array(
+    z.object({
+      projectId: z.string(),
+      total: z.number(),
+    })
+  ),
+});
+
+export type GetProjectStats = z.infer<
+  typeof GetProjectStatsSuccessResponseSchema
+>;

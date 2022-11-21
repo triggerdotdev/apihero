@@ -56,7 +56,9 @@ export default function LoginPage() {
             method="post"
           >
             <div className="flex flex-col items-center px-4 pt-6 pb-4 text-center lg:px-10">
-              <Logo className="mb-4 h-10 w-auto lg:mb-6 lg:mt-8 lg:h-14" />
+              <a href="https://apihero.run">
+                <Logo className="mb-4 h-10 w-auto lg:mb-6 lg:mt-8 lg:h-14" />
+              </a>
               <h2 className="mb-2 text-2xl font-bold tracking-tight text-slate-700 lg:text-4xl">
                 Welcome to API Hero
               </h2>
