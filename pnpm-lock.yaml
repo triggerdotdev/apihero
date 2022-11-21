@@ -443,7 +443,7 @@ importers:
       node-fetch: 2.6.x
       tsx: ^3.12.0
     dependencies:
-      apihero-js: link:../../packages/apihero-js
+      apihero-js: 1.3.14
       node-fetch: 2.6.7
     devDependencies:
       '@apihero/tsconfig': link:../../config-packages/tsconfig
@@ -469,7 +469,7 @@ importers:
       '@types/node': 18.11.9
       '@types/react': 18.0.21
       '@types/react-dom': 18.0.6
-      apihero-js: link:../../packages/apihero-js
+      apihero-js: 1.3.14
       next: 13.0.3_biqbaboplfbrettd7655fr4n2y
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
@@ -666,6 +666,19 @@ packages:
       '@jridgewell/gen-mapping': 0.1.1
       '@jridgewell/trace-mapping': 0.3.17
     dev: true
+
+  /@apihero/interceptors-js/1.0.2:
+    resolution: {integrity: sha512-qKZ5bRd4jhFeTbc0Kax82UIfQFqL6cXSEnq1tlyJwAlPGW1r0nhv+lUZzx7Au4azScJRIsqKncie6qby9uk+Uw==}
+    dependencies:
+      '@mswjs/interceptors': 0.17.6
+      '@open-draft/until': 2.0.0
+      '@types/debug': 4.1.7
+      debug: 4.3.4
+      headers-polyfill: 3.1.2
+      outvariant: 1.3.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
 
   /@apihero/openapi-spec-generator/0.1.6:
     resolution: {integrity: sha512-NjmGf6PmZ+U42cst36Xg4zss1lAxChXq11/UFVf4Vay9VY78qPXUh2I0hIzpxNWkVP1EzG9G3YbjgbYhHkf5pw==}
@@ -6029,6 +6042,22 @@ packages:
     dependencies:
       normalize-path: 3.0.0
       picomatch: 2.3.1
+
+  /apihero-js/1.3.14:
+    resolution: {integrity: sha512-P37nYPZQjVIdd8/cW6kQDtF9F1eDZ74U2GZ6qxPj2Z4rF+V2T1lu7FvWfQ4F7iottMt5vapf0Ac7GMhuyh6peQ==}
+    hasBin: true
+    dependencies:
+      '@apihero/interceptors-js': 1.0.2
+      '@open-draft/until': 2.0.0
+      chalk: 4.1.2
+      debug: 4.3.4
+      inquirer: 8.2.4
+      is-node-process: 1.0.1
+      outvariant: 1.3.0
+      yargs: 17.6.2
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
 
   /append-transform/2.0.0:
     resolution: {integrity: sha512-7yeyCEurROLQJFv5Xj4lEGTy0borxepjFv1g22oAdqFu//SrAlDl1O1Nxx15SH1RoliUml6p8dwJW9jvZughhg==}
@@ -16525,7 +16554,7 @@ packages:
       smartwrap: 2.0.2
       strip-ansi: 6.0.1
       wcwidth: 1.0.1
-      yargs: 17.6.0
+      yargs: 17.6.2
     dev: false
 
   /tunnel-agent/0.6.0:
@@ -17821,6 +17850,7 @@ packages:
       string-width: 4.2.3
       y18n: 5.0.8
       yargs-parser: 21.1.1
+    dev: true
 
   /yargs/17.6.2:
     resolution: {integrity: sha512-1/9UrdHjDZc0eOU0HxOHoS78C69UD3JRMvzlJ7S79S2nTaWRA/whGCTV8o9e/N/1Va9YIV7Q4sOxD8VV4pCWOw==}

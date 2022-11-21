@@ -67,7 +67,9 @@ export default function LoginMagicLinkPage() {
         <div className="mt-[100px] flex w-full max-w-xl flex-col justify-between rounded-lg border bg-white shadow-md lg:mt-0 lg:min-h-[430px]">
           <Form className="flex h-full flex-grow flex-col" method="post">
             <div className="flex flex-grow flex-col items-center justify-between px-4 pt-6 pb-2 text-center lg:px-4">
-              <Logo className="mb-4 h-10 w-auto lg:mb-6 lg:mt-8 lg:h-14" />
+              <a href="https://apihero.run">
+                <Logo className="mb-4 h-10 w-auto lg:mb-6 lg:mt-8 lg:h-14" />
+              </a>
               {magicLinkSent ? (
                 <>
                   <InboxArrowDownIcon className="mt-0 h-12 w-12 text-blue-500" />
