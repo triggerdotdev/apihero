@@ -19,10 +19,9 @@ import { Select } from "./Select";
 export function LogsOnboarding({
   project,
   workspaceSlug,
+  hasLogs,
 }: LoaderData & { workspaceSlug: string }) {
-  return (
-    <>{!project.hasLogs && <OnboardingIncomplete projectId={project.id} />}</>
-  );
+  return <>{!hasLogs && <OnboardingIncomplete projectId={project.id} />}</>;
 }
 
 const inlineCode =

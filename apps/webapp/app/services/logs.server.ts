@@ -28,6 +28,15 @@ export async function searchLogsInProject(
   return json;
 }
 
+export async function hasLogsInProject(projectId: string): Promise<boolean> {
+  const response = await searchLogsInProject(
+    new URLSearchParams({ days: "365", page: "1" }),
+    projectId
+  );
+
+  return typeof response === "undefined" ? false : response.logs.length > 0;
+}
+
 export async function getProjectStats(): Promise<GetProjectStats> {
   const apiUrl = `${env.LOGS_ORIGIN}/stats/projects`;
 

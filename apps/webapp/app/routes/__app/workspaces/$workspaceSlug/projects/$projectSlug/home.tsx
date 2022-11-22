@@ -4,10 +4,9 @@ import { getProjectFromSlugs } from "~/models/project.server";
 import { requireUserId } from "~/services/session.server";
 import { typedjson, useTypedLoaderData } from "remix-typedjson";
 import { Outlet, useParams } from "@remix-run/react";
-import type { GetLogsSuccessResponse } from "internal-logs";
 import { LogsOnboarding } from "~/libraries/ui/src/components/LogsOnboarding";
 import type { UseDataFunctionReturn } from "remix-typedjson/dist/remix";
-import { searchLogsInProject } from "~/services/logs.server";
+import { hasLogsInProject, searchLogsInProject } from "~/services/logs.server";
 
 export type LoaderData = UseDataFunctionReturn<typeof loader>;
 
@@ -30,8 +29,9 @@ export const loader = async ({ request, params }: LoaderArgs) => {
   const searchParams = new URLSearchParams(url.search);
 
   const logs = await searchLogsInProject(searchParams, project.id);
+  const hasLogs = await hasLogsInProject(project.id);
 
-  return typedjson({ project, logs });
+  return typedjson({ project, hasLogs, logs });
 };
 
 export default function Page() {
@@ -43,6 +43,7 @@ export default function Page() {
       <LogsOnboarding
         project={data.project}
         logs={data.logs}
+        hasLogs={data.hasLogs}
         workspaceSlug={workspaceSlug ?? ""}
       />
       <Outlet />
