@@ -23,7 +23,9 @@ packages/**/styles/tailwind.css
 # misc
 .DS_Store
 *.pem
-!packages/apihero-js/test/support/certs/*.pem
+!packages/apihero-node/test/support/certs/*.pem
+!packages/apihero-browser/test/support/certs/*.pem
+!packages/apihero-fetch/test/support/certs/*.pem
 
 # debug
 npm-debug.log*

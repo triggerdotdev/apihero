@@ -1,22 +1,23 @@
-import fetch, { Response } from "node-fetch";
-import https from "https";
-import { HttpServer } from "../support/httpServer";
-import { setupProxy } from "../../src";
+import { createFetchProxy, FetchFunction } from "../src";
 import {
-  afterAll,
-  afterEach,
-  beforeAll,
-  expect,
-  vi,
   describe,
+  it,
+  expect,
+  beforeAll,
+  afterEach,
+  vi,
   test,
+  afterAll,
 } from "vitest";
+
 import {
   DESTINATION_HEADER_NAME,
   PROJECT_KEY_HEADER_NAME,
   PROTOCOL_HEADER_NAME,
   PAYLOAD_HEADER_NAME,
 } from "internal-constants";
+
+import { HttpServer } from "./support/httpServer";
 
 const proxyServer = new HttpServer((app) => {
   app.get("/get", (req, res) => {
@@ -45,22 +46,17 @@ const proxyServer = new HttpServer((app) => {
   });
 });
 
-let proxy;
+let fetchProxy: FetchFunction;
 
-const agent = new https.Agent({
-  rejectUnauthorized: false,
-});
-
-describe("setupProxy / fetch", () => {
+describe("createFetchProxy / fetch", () => {
   beforeAll(async () => {
     await proxyServer.listen();
 
-    proxy = setupProxy({
+    fetchProxy = createFetchProxy({
       projectKey: "hero_abc123",
-      url: proxyServer.https.address.href,
+      url: proxyServer.http.address.href,
+      env: "test",
     });
-
-    proxy.start();
   });
 
   afterEach(() => {
@@ -68,15 +64,14 @@ describe("setupProxy / fetch", () => {
   });
 
   afterAll(async () => {
-    proxy.stop();
     await proxyServer.close();
   });
 
-  describe("given I perform a GET request using fetch", () => {
+  describe("given I perform a GET request using fetchProxy", () => {
     let res: Response;
 
     beforeAll(async () => {
-      res = await fetch("https://httpbin.org/get", { agent });
+      res = await fetchProxy("https://httpbin.org/get");
     });
 
     test("should return proxy status code", async () => {
@@ -104,11 +99,11 @@ describe("setupProxy / fetch", () => {
     });
   });
 
-  describe("given I perform a GET request using fetch with searchParams", () => {
+  describe("given I perform a GET request using fetchProxy with search params", () => {
     let res: Response;
 
     beforeAll(async () => {
-      res = await fetch("https://httpbin.org/get?foo=bar", { agent });
+      res = await fetchProxy("https://httpbin.org/get?foo=bar");
     });
 
     test("should return proxy status code", async () => {
@@ -143,7 +138,7 @@ describe("setupProxy / fetch", () => {
     let res: Response;
 
     beforeAll(async () => {
-      res = await fetch("https://httpbin.org/post", {
+      res = await fetchProxy("https://httpbin.org/post", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -151,7 +146,6 @@ describe("setupProxy / fetch", () => {
         body: JSON.stringify({
           payload: "info",
         }),
-        agent,
       });
     });
 

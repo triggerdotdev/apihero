@@ -1,5 +1,11 @@
 # @apihero/js
 
+## 1.3.16
+
+### Patch Changes
+
+- 689c55d: Created new @apihero/fetch package, and fixed missing searchParams in others
+
 ## 1.3.15
 
 ### Patch Changes

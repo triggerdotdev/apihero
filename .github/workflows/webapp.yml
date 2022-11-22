@@ -9,6 +9,7 @@ on:
       - dev
       - main
   pull_request: {}
+  workflow_dispatch: {}
 permissions:
   actions: write
   contents: read
