@@ -36,8 +36,6 @@ if (process.env.NODE_ENV === "production") {
   console.log("🚦 Sentry initialized");
 }
 
-if (process.env.NODE_ENV === "development") {
-  apihero.proxy.start(() => {
-    console.info("🔶 API Hero proxy running");
-  });
-}
+apihero.proxy.start(() => {
+  console.info("🔶 API Hero proxy running");
+});

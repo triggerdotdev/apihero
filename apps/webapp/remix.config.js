@@ -8,6 +8,7 @@ module.exports = {
     "pretty-bytes",
     "marked",
     "@cfworker/json-schema",
+    "@apihero/node",
   ],
   watchPaths: async () => {
     return ["../../packages/internal-nobuild/src/**/*"];

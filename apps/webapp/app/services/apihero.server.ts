@@ -1,11 +1,11 @@
-import type { ProxyInstance } from "apihero-js/node";
-import { setupProxy } from "apihero-js/node";
+import type { SetupProxyInstance } from "@apihero/node";
+import { setupProxy } from "@apihero/node";
 import { env } from "~/env.server";
 
-let proxy: ProxyInstance;
+let proxy: SetupProxyInstance;
 
 declare global {
-  var __ah_client__: ProxyInstance;
+  var __ah_client__: SetupProxyInstance;
 }
 
 if (process.env.NODE_ENV === "production") {
