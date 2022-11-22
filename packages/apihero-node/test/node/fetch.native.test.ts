@@ -14,7 +14,7 @@ import {
   PROJECT_KEY_HEADER_NAME,
   PROTOCOL_HEADER_NAME,
   PAYLOAD_HEADER_NAME,
-} from "../../src/constants";
+} from "internal-constants";
 
 const proxyServer = new HttpServer((app) => {
   app.get("/get", (req, res) => {

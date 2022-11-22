@@ -500,6 +500,7 @@ importers:
       fs-extra: ^10.1.0
       happy-dom: ^6.0.4
       inquirer: 8.2.x
+      is-node-process: ^1.0.1
       outvariant: ^1.3.0
       page-with: ^0.6.0
       rimraf: ^3.0.2
@@ -517,6 +518,7 @@ importers:
       chalk: 4.1.2
       debug: 4.3.4
       inquirer: 8.2.4
+      is-node-process: 1.0.1
       outvariant: 1.3.0
       yargs: 17.6.2
     devDependencies:
@@ -545,6 +547,39 @@ importers:
       vitest: 0.24.5_happy-dom@6.0.4
       webpack: 5.74.0_esbuild@0.15.12
 
+  packages/apihero-fetch:
+    specifiers:
+      '@apihero/eslint-config-vite': workspace:*
+      '@apihero/tsconfig': workspace:*
+      '@types/debug': ^4.1.7
+      '@types/expect': ^24.3.0
+      cors: ^2.8.5
+      debug: ^4.3.4
+      express: ^4.18.2
+      internal-constants: workspace:*
+      rimraf: ^3.0.2
+      tsup: ^6.2.3
+      typescript: ^4.9.0
+      vite: ^3.1.4
+      vite-tsconfig-paths: ^3.5.1
+      vitest: ^0.24.4
+    dependencies:
+      debug: 4.3.4
+    devDependencies:
+      '@apihero/eslint-config-vite': link:../../config-packages/eslint-config-vite
+      '@apihero/tsconfig': link:../../config-packages/tsconfig
+      '@types/debug': 4.1.7
+      '@types/expect': 24.3.0
+      cors: 2.8.5
+      express: 4.18.2
+      internal-constants: link:../internal-constants
+      rimraf: 3.0.2
+      tsup: 6.3.0_typescript@4.9.3
+      typescript: 4.9.3
+      vite: 3.2.3
+      vite-tsconfig-paths: 3.5.2_vite@3.2.3
+      vitest: 0.24.5
+
   packages/apihero-node:
     specifiers:
       '@apihero/eslint-config-vite': '*'
@@ -563,6 +598,7 @@ importers:
       esbuild: ^0.15.12
       express: ^4.18.2
       fs-extra: ^10.1.0
+      internal-constants: workspace:*
       is-node-process: ^1.0.1
       node-fetch: 2.6.x
       outvariant: ^1.3.0
@@ -593,6 +629,7 @@ importers:
       esbuild: 0.15.12
       express: 4.18.2
       fs-extra: 10.1.0
+      internal-constants: link:../internal-constants
       node-fetch: 2.6.7
       rimraf: 3.0.2
       tsup: 6.3.0_typescript@4.8.4
@@ -658,6 +695,12 @@ importers:
       vite-tsconfig-paths: 3.5.1_vite@3.1.8
       vitest: 0.24.4_happy-dom@6.0.4
       webpack: 5.74.0
+
+  packages/internal-constants:
+    specifiers:
+      typescript: ^4.9.0
+    devDependencies:
+      typescript: 4.9.3
 
   packages/internal-logs:
     specifiers:
@@ -16683,6 +16726,42 @@ packages:
       - ts-node
     dev: true
 
+  /tsup/6.3.0_typescript@4.9.3:
+    resolution: {integrity: sha512-IaNQO/o1rFgadLhNonVKNCT2cks+vvnWX3DnL8sB87lBDqRvJXHENr5lSPJlqwplUlDxSwZK8dSg87rgBu6Emw==}
+    engines: {node: '>=14'}
+    hasBin: true
+    peerDependencies:
+      '@swc/core': ^1
+      postcss: ^8.4.12
+      typescript: ^4.1.0
+    peerDependenciesMeta:
+      '@swc/core':
+        optional: true
+      postcss:
+        optional: true
+      typescript:
+        optional: true
+    dependencies:
+      bundle-require: 3.1.0_esbuild@0.15.12
+      cac: 6.7.14
+      chokidar: 3.5.3
+      debug: 4.3.4
+      esbuild: 0.15.12
+      execa: 5.1.1
+      globby: 11.1.0
+      joycon: 3.1.1
+      postcss-load-config: 3.1.4
+      resolve-from: 5.0.0
+      rollup: 2.79.1
+      source-map: 0.8.0-beta.0
+      sucrase: 3.28.0
+      tree-kill: 1.2.2
+      typescript: 4.9.3
+    transitivePeerDependencies:
+      - supports-color
+      - ts-node
+    dev: true
+
   /tsutils/3.21.0_typescript@4.8.4:
     resolution: {integrity: sha512-mHKK3iUXL+3UF6xL5k0PEhKRUBKPBCv/+RkEOpjRWxxx27KKRBmmA60A9pgOUvMi8GKhRMPEmjBRPzs2W7O1OA==}
     engines: {node: '>= 6'}
@@ -16866,6 +16945,12 @@ packages:
     resolution: {integrity: sha512-QCh+85mCy+h0IGff8r5XWzOVSbBO+KfeYrMQh7NJ58QujwcE22u+NUSmUxqF+un70P9GXKxa2HCNiTTMJknyjQ==}
     engines: {node: '>=4.2.0'}
     hasBin: true
+
+  /typescript/4.9.3:
+    resolution: {integrity: sha512-CIfGzTelbKNEnLpLdGFgdyKhG23CKdKgQPOBc+OUNrkJ2vr+KSzsSV5kq5iWhEQbok+quxgGzrAtGWCyU7tHnA==}
+    engines: {node: '>=4.2.0'}
+    hasBin: true
+    dev: true
 
   /unbox-primitive/1.0.2:
     resolution: {integrity: sha512-61pPlCD9h51VoreyJ0BReideM3MDKMKnh6+V9L08331ipq6Q8OFXZYiqP6n/tbHx4s5I9uRhcye6BrbkizkBDw==}
