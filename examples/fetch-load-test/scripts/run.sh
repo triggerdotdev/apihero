@@ -7,7 +7,7 @@ pnpm run start:bin
 pnpm run dev --filter proxy...
 
 # in the root of the repo, run this command to star the logs server:
-pnpm run dev --filter ./apps/logs...
+pnpm run dev --filter ./apps/logs
 
 # Now in <root>/examples/fetch-load-test, you can run the following command to create a load test:
 pnpm run start -n 1 -p hero_123abc --env development --url "http://localhost:8787" -v --bin-url "http://localhost:8080"

@@ -2,12 +2,12 @@
 /* tslint:disable */
 
 /**
- * Proxy Service Worker (1.2.0).
+ * Proxy Service Worker (1.3.14).
  * @see https://github.com/apihero-run/apihero
  * - Please do NOT modify this file.
  */
 
-const INTEGRITY_CHECKSUM = "bad2cff9bae58d052e7ad9ebd0e8cb29";
+const INTEGRITY_CHECKSUM = "35746afa86b50c73a417acda79f12ce4";
 const activeClientIds = new Set();
 
 self.addEventListener("install", function () {
@@ -118,7 +118,7 @@ self.addEventListener("fetch", function (event) {
       // At this point, any exception indicates an issue with the original request/response.
       console.error(
         `\
-[@apihero/js] Caught an exception from the "%s %s" request (%s). This is probably not a problem with @apihero/js. There is likely an additional logging output above.`,
+[apihero-js] Caught an exception from the "%s %s" request (%s). This is probably not a problem with apihero-js. There is likely an additional logging output above.`,
         request.method,
         request.url,
         `${error.name}: ${error.message}`
@@ -135,7 +135,7 @@ async function handleRequest(event, requestId) {
 
     return response;
   } catch (e) {
-    console.error(`[@apihero/js] Error`, e);
+    console.error(`[apihero-js] Error`, e);
     throw e;
   }
 }

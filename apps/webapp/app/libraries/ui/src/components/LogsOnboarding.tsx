@@ -217,17 +217,17 @@ function Instruction({
   );
 }
 
-function InstallPackage() {
+function InstallPackage({ packageName }: { packageName: string }) {
   return (
     <CommandLine
       step={2}
       code={{
-        npm: "npm install apihero-js@latest",
-        yarn: "yarn add apihero-js@latest",
-        pnpm: "pnpm add apihero-js@latest",
+        npm: `npm install ${packageName}@latest`,
+        yarn: `yarn add ${packageName}@latest`,
+        pnpm: `pnpm add ${packageName}@latest`,
       }}
     >
-      Install the <InlineCode>apihero-js</InlineCode> package.
+      Install the <InlineCode>{packageName}</InlineCode> package.
     </CommandLine>
   );
 }
@@ -237,9 +237,9 @@ function InstallServiceWorker({ step }: { step: number }) {
     <CommandLine
       step={step}
       code={{
-        npm: "npm exec apihero-js init public/",
-        yarn: "yarn exec apihero-js init public/",
-        pnpm: "pnpm exec apihero-js init public/",
+        npm: "npm exec apihero-cli init public/",
+        yarn: "yarn exec apihero-cli init public/",
+        pnpm: "pnpm exec apihero-cli init public/",
       }}
     >
       Install the Service Worker to forward specified browser traffic through a
@@ -316,39 +316,23 @@ function CodeBlock({
   );
 }
 
-function ModuleResolution({ step }: { step: number }) {
-  return (
-    <Instruction step={step}>
-      <p className="text-sm text-slate-700">
-        If you're using TypeScript, ensure{" "}
-        <InlineCode>"moduleResolution": "nodenext"</InlineCode> is in the{" "}
-        <InlineCode>"compilerOptions"</InlineCode> section of your{" "}
-        <InlineCode>tsconfig.json</InlineCode> file.
-      </p>
-    </Instruction>
-  );
-}
-
 function NextJs({ projectId }: { projectId: string }) {
   const code = `async function initProxy() {
   const projectKey = "${projectId}";
   if (typeof window !== "undefined") {
-    const { setupWorker } = await import("apihero-js");
+    const { setupWorker } = await import("@apihero/browser");
     //update the allow list with the APIs you're using
     await setupWorker({ 
       allow: ["https://api.github.com/*"], 
       projectKey, 
       env: process.env.NODE_ENV 
     }).start();
-  } else {
-    const { setupProxy } = await import("apihero-js/node");
-    await setupProxy({ projectKey, env: process.env.NODE_ENV }).start();
   }
 }
 initProxy();`;
   return (
     <Instructions>
-      <InstallPackage />
+      <InstallPackage packageName="@apihero/browser" />
       <InstallServiceWorker step={3} />
       <Instruction step={4}>
         <p className="text-sm text-slate-700">
@@ -357,8 +341,7 @@ initProxy();`;
         </p>
         <CodeBlock code={code} language="typescript" />
       </Instruction>
-      <ModuleResolution step={5} />
-      <Instruction step={6}>
+      <Instruction step={5}>
         <p className="text-sm text-slate-700">
           Send any API request from your project, then come back here.
         </p>
@@ -371,7 +354,7 @@ initProxy();`;
 }
 
 function NodeJs({ projectId }: { projectId: string }) {
-  const code = `import { setupProxy } from "apihero-js/node";
+  const code = `import { setupProxy } from "@apihero/node";
   
 function initProxy() {
   const proxy = setupProxy({
@@ -386,7 +369,7 @@ function initProxy() {
 initProxy();`;
   return (
     <Instructions>
-      <InstallPackage />
+      <InstallPackage packageName="@apihero/node" />
       <Instruction step={3}>
         <p className="text-sm text-slate-700">
           Place this code anywhere that is executed when your application
@@ -394,8 +377,7 @@ initProxy();`;
         </p>
         <CodeBlock code={code} language="typescript" />
       </Instruction>
-      <ModuleResolution step={4} />
-      <Instruction step={5}>
+      <Instruction step={4}>
         <p className="text-sm text-slate-700">
           Send any API request from your project, then come back here.
         </p>
@@ -410,7 +392,7 @@ initProxy();`;
 function React({ projectId }: { projectId: string }) {
   const code = `async function initProxy() {
   if (typeof window !== "undefined") {
-    const { setupWorker } = await import("apihero-js");
+    const { setupWorker } = await import("@apihero/browser");
     //update the allow list with the APIs you're using
     await setupWorker({ 
       allow: ["https://api.github.com/*"], 
@@ -422,7 +404,7 @@ function React({ projectId }: { projectId: string }) {
 initProxy();`;
   return (
     <Instructions>
-      <InstallPackage />
+      <InstallPackage packageName="@apihero/browser" />
       <InstallServiceWorker step={3} />
       <Instruction step={4}>
         <p className="text-sm text-slate-700">

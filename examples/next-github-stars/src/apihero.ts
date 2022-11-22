@@ -1,6 +1,6 @@
 async function initProxy() {
   if (typeof window !== "undefined") {
-    const { setupWorker } = await import("apihero-js");
+    const { setupWorker } = await import("@apihero/browser");
     const worker = setupWorker({
       // You MUST supply the allow option for setupWorker, to ensure too many requests are not sent to the API Hero proxy
       allow: ["https://api.github.com/*"],
@@ -10,7 +10,7 @@ async function initProxy() {
     });
     await worker.start();
   } else {
-    const { setupProxy } = await import("apihero-js/node");
+    const { setupProxy } = await import("@apihero/node");
     const proxy = setupProxy({
       projectKey: "hero_123abc",
       url: "http://localhost:8787",

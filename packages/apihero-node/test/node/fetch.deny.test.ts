@@ -1,7 +1,7 @@
 import fetch, { Response } from "node-fetch";
 import https from "https";
 import { HttpServer } from "../support/httpServer";
-import { setupProxy } from "../../src/node";
+import { setupProxy } from "../../src";
 import { afterAll, beforeAll, expect, describe, test } from "vitest";
 
 const proxyServer = new HttpServer((app) => {
@@ -26,17 +26,6 @@ const proxyServer = new HttpServer((app) => {
       })
       .end();
   });
-
-  app.post("/v3/apihero.run/messages", (req, res) => {
-    res.header("x-powered-by", "apihero-mailgun");
-
-    res
-      .status(200)
-      .json({
-        proxy: true,
-      })
-      .end();
-  });
 });
 
 let proxy;
@@ -45,57 +34,7 @@ const agent = new https.Agent({
   rejectUnauthorized: false,
 });
 
-describe("setupProxy / fetch / allow", () => {
-  describe("*api.mailgun.net/*", () => {
-    beforeAll(async () => {
-      await proxyServer.listen();
-
-      proxy = setupProxy({
-        projectKey: "hero_abc123",
-        url: proxyServer.https.address.href,
-        allow: ["https://api.mergent.co/v2/*", "*api.mailgun.net/*"],
-      });
-
-      proxy.start();
-    });
-
-    afterAll(async () => {
-      proxy.stop();
-      await proxyServer.close();
-    });
-
-    describe("given I perform a POST request to https://api:password@api.mailgun.net/v3/apihero.run/messages", () => {
-      let res: Response;
-
-      beforeAll(async () => {
-        res = await fetch(
-          "https://api:password@api.mailgun.net/v3/apihero.run/messages",
-          {
-            agent,
-            method: "POST",
-            body: JSON.stringify({ hello: "world" }),
-          }
-        );
-      });
-
-      test("should return proxy status code", async () => {
-        expect(res.status).toEqual(200);
-      });
-
-      test("should return proxy headers", () => {
-        expect(res.headers.get("x-powered-by")).toEqual("apihero-mailgun");
-      });
-
-      test("should return proxied body", async () => {
-        const body = await res.json();
-
-        expect(body).toEqual({
-          proxy: true,
-        });
-      });
-    });
-  });
-
+describe("setupProxy / fetch / deny", () => {
   describe("https://httpbin.org/*", () => {
     beforeAll(async () => {
       await proxyServer.listen();
@@ -103,7 +42,7 @@ describe("setupProxy / fetch / allow", () => {
       proxy = setupProxy({
         projectKey: "hero_abc123",
         url: proxyServer.https.address.href,
-        allow: ["https://httpbin.org/*"],
+        deny: ["https://httpbin.org/*"],
       });
 
       proxy.start();
@@ -121,20 +60,18 @@ describe("setupProxy / fetch / allow", () => {
         res = await fetch("https://httpbin.org/get", { agent });
       });
 
-      test("should return proxy status code", async () => {
+      test("should return real status code", async () => {
         expect(res.status).toEqual(200);
       });
 
-      test("should return proxy headers", () => {
-        expect(res.headers.get("x-powered-by")).toEqual("apihero");
+      test("should return real headers", () => {
+        expect(res.headers.get("x-powered-by")).toBeNull();
       });
 
-      test("should return proxied body", async () => {
+      test("should return real body", async () => {
         const body = await res.json();
 
-        expect(body).toEqual({
-          proxy: true,
-        });
+        expect(body.url).toEqual("https://httpbin.org/get");
       });
     });
 
@@ -154,36 +91,33 @@ describe("setupProxy / fetch / allow", () => {
         });
       });
 
-      test("should return proxy status code", () => {
+      test("should return real status code", () => {
         expect(res.status).toEqual(200);
       });
 
-      test("should return proxy headers", () => {
-        expect(res.headers.get("x-powered-by")).toEqual("apihero");
+      test("should return real headers", () => {
+        expect(res.headers.get("x-powered-by")).toBeNull();
       });
 
-      test("should return proxied and parsed JSON body", async () => {
+      test("should return real JSON body", async () => {
         const body = await res.json();
-        expect(body).toMatchInlineSnapshot(`
-        {
-          "body": {
+        expect(body.json).toMatchInlineSnapshot(`
+          {
             "payload": "info",
-          },
-          "proxy": true,
-        }
-      `);
+          }
+        `);
       });
     });
   });
 
-  describe("https://httpbin.org/get", () => {
+  describe("https://httpbin.org/post", () => {
     beforeAll(async () => {
       await proxyServer.listen();
 
       proxy = setupProxy({
         projectKey: "hero_abc123",
         url: proxyServer.https.address.href,
-        allow: ["https://httpbin.org/get"],
+        deny: ["https://httpbin.org/post"],
       });
 
       proxy.start();
@@ -253,14 +187,14 @@ describe("setupProxy / fetch / allow", () => {
     });
   });
 
-  describe("url: https://httpbin.org/* method: GET", () => {
+  describe("url: https://httpbin.org/* method: POST", () => {
     beforeAll(async () => {
       await proxyServer.listen();
 
       proxy = setupProxy({
         projectKey: "hero_abc123",
         url: proxyServer.https.address.href,
-        allow: [{ url: "https://httpbin.org/*", method: "GET" }],
+        deny: [{ url: "https://httpbin.org/*", method: "POST" }],
       });
 
       proxy.start();
@@ -321,6 +255,7 @@ describe("setupProxy / fetch / allow", () => {
 
       test("should return real body", async () => {
         const body = await res.json();
+
         expect(body.json).toMatchInlineSnapshot(`
           {
             "payload": "info",

@@ -34,7 +34,9 @@ export async function proxyRequest(
     headers: stripHeaders(request.headers),
     method: request.method,
     body:
-      request.method !== "GET" && request.method !== "HEAD"
+      request.method !== "GET" &&
+      request.method !== "HEAD" &&
+      request.method !== "DELETE"
         ? requestBody
         : undefined,
     cf: {
@@ -60,6 +62,7 @@ function stripHeaders(headers: Headers): Headers {
     if (key === "cf-ipcountry") continue;
     if (key === "cf-ray") continue;
     if (key === "cf-visitor") continue;
+    if (key === "content-length") continue;
 
     result.set(key, value);
   }

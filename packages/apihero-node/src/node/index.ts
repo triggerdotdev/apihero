@@ -9,16 +9,11 @@ import { ClientRequestInterceptor } from "@apihero/interceptors-js/lib/intercept
 import { FetchInterceptor } from "@apihero/interceptors-js/lib/interceptors/fetch/index.js";
 import { isMatch } from "../matcher";
 import debug from "debug";
-import { SetupProxyOptions, PolicyRule } from "../types";
+import { SetupProxyOptions, PolicyRule, SetupProxyInstance } from "../types";
 
 const log = debug("apihero");
 
-export interface ProxyInstance {
-  start(callback?: () => void): void;
-  stop(): void;
-}
-
-export function setupProxy(options: SetupProxyOptions): ProxyInstance {
+export function setupProxy(options: SetupProxyOptions): SetupProxyInstance {
   const interceptor = new ClientRequestInterceptor();
   const fetchInterceptor = new FetchInterceptor();
 
@@ -99,7 +94,7 @@ function isAllowed(
   });
 }
 
-class InternalProxyInstance implements ProxyInstance {
+class InternalProxyInstance implements SetupProxyInstance {
   private _isStarted = false;
 
   constructor(

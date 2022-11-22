@@ -1,5 +1,5 @@
 import { HttpServer } from "../support/httpServer";
-import { setupFetchProxy } from "../../src";
+import { setupProxy } from "../../src";
 import {
   afterAll,
   afterEach,
@@ -44,14 +44,13 @@ const proxyServer = new HttpServer((app) => {
 
 let proxy;
 
-describe("fetch / setupFetchProxy / fetch", () => {
+describe("setupProxy / native fetch", () => {
   beforeAll(async () => {
     await proxyServer.listen();
 
-    proxy = setupFetchProxy({
+    proxy = setupProxy({
       projectKey: "hero_abc123",
       url: proxyServer.http.address.href,
-      env: "test",
     });
 
     proxy.start();
@@ -70,7 +69,7 @@ describe("fetch / setupFetchProxy / fetch", () => {
     let res: Response;
 
     beforeAll(async () => {
-      res = await fetch("http://httpbin.org/get");
+      res = await fetch("https://httpbin.org/get");
     });
 
     test("should return proxy status code", async () => {
@@ -89,7 +88,7 @@ describe("fetch / setupFetchProxy / fetch", () => {
           proxy: true,
           requestHeaders: expect.objectContaining({
             [PROJECT_KEY_HEADER_NAME]: "hero_abc123",
-            [PROTOCOL_HEADER_NAME]: "http:",
+            [PROTOCOL_HEADER_NAME]: "https:",
             [DESTINATION_HEADER_NAME]: "httpbin.org",
             [PAYLOAD_HEADER_NAME]: JSON.stringify({ env: "test" }),
           }),

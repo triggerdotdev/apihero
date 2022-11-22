@@ -1,7 +1,7 @@
 import fetch, { Response } from "node-fetch";
 import https from "https";
 import { HttpServer } from "../support/httpServer";
-import { setupProxy } from "../../src/node";
+import { setupProxy } from "../../src";
 import {
   afterAll,
   afterEach,
