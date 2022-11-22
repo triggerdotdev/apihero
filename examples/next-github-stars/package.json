@@ -7,10 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "install:worker": "apihero-js init public/"
+    "install:worker": "apihero-cli init public/"
   },
   "dependencies": {
-    "apihero-js": "*",
+    "@apihero/browser": "workspace:*",
+    "@apihero/node": "workspace:*",
     "@tanstack/react-query": "^4.16.1",
     "@types/node": "18.11.9",
     "@types/react": "^18.0.21",
