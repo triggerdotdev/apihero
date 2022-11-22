@@ -4,9 +4,6 @@
   "private": true,
   "main": "./src/index.ts",
   "types": "./src/index.ts",
-  "scripts": {
-    "typecheck": "tsc --project ./tsconfig.json --noEmit"
-  },
   "devDependencies": {
     "typescript": "^4.9.0"
   }
