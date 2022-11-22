@@ -1,5 +1,11 @@
 # @apihero/js
 
+## 1.3.15
+
+### Patch Changes
+
+- 2553692: Split node and browser packages into two different packages
+
 ## 1.3.14
 
 ### Patch Changes
