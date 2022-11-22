@@ -1,6 +1,6 @@
 {
   "name": "@apihero/fetch",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "publishConfig": {
     "access": "public"
   },
