@@ -29,11 +29,27 @@ export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: tailwindStylesheetUrl }];
 };
 
-export const meta: MetaFunction = () => ({
-  charset: "utf-8",
-  title: "API Hero",
-  viewport: "width=device-width,initial-scale=1",
-});
+export const meta: MetaFunction = () => {
+  const description = `Make every API you use faster and more reliable with one line of code.`;
+  return {
+    charset: "utf-8",
+    title: "API Hero",
+    viewport: "width=device-width,initial-scale=1",
+    description,
+    keywords:
+      "API,speed,reliable,faster,monitoring,observability,caching,cache,CORS,internal api,external api,third-party api, 3rd party api",
+    "og:title": "API Hero",
+    "og:description": description,
+    "og:image": "https://apihero.run/og-image.jpg",
+    "og:url": "https://apihero.run",
+    "twitter:image": "https://apihero.run/og-image.jpg",
+    "twitter:card": "summary_large_image",
+    "twitter:creator": "@runapihero",
+    "twitter:site": "@runapihero",
+    "twitter:title": "API Hero",
+    "twitter:description": description,
+  };
+};
 
 type LoaderData = {
   user: Awaited<ReturnType<typeof getUser>>;

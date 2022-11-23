@@ -1,5 +1,5 @@
 import { Outlet, useMatches } from "@remix-run/react";
-import type { LoaderArgs } from "@remix-run/server-runtime";
+import type { LoaderArgs, MetaFunction } from "@remix-run/server-runtime";
 import { typedjson, useTypedLoaderData } from "remix-typedjson";
 import type { UseDataFunctionReturn } from "remix-typedjson/dist/remix";
 import { Footer, Header } from "~/libraries/ui";
@@ -9,6 +9,12 @@ import { clearRedirectTo, commitSession } from "~/services/redirectTo.server";
 import { requireUserId } from "~/services/session.server";
 
 export type LoaderData = UseDataFunctionReturn<typeof loader>;
+
+export const meta: MetaFunction = () => ({
+  title: "API Hero",
+  description:
+    "Make every API you use faster and more reliable with one line of code.",
+});
 
 export function useUserWorkspacesData(): LoaderData {
   const matches = useMatches();

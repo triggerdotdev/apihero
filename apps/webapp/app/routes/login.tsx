@@ -12,6 +12,14 @@ type LoaderData = {
   redirectTo?: string;
 };
 
+export const meta: MetaFunction = () => {
+  return {
+    title: "API Hero | Login",
+    description:
+      "Login to API Hero to make every API you use faster and more reliable with one line of code.",
+  };
+};
+
 export const loader: LoaderFunction = async ({ request }) => {
   const userId = await getUserId(request);
   if (userId) return redirect("/");
@@ -33,12 +41,6 @@ export const loader: LoaderFunction = async ({ request }) => {
   } else {
     return json({});
   }
-};
-
-export const meta: MetaFunction = () => {
-  return {
-    title: "Login",
-  };
 };
 
 export default function LoginPage() {
