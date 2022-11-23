@@ -1,4 +1,4 @@
-import * as apihero from "~/services/apihero.server";
+// import * as apihero from "~/services/apihero.server";
 import type { EntryContext } from "@remix-run/node";
 import { RemixServer } from "@remix-run/react";
 import { renderToString } from "react-dom/server";
@@ -36,6 +36,8 @@ if (process.env.NODE_ENV === "production") {
   console.log("🚦 Sentry initialized");
 }
 
-apihero.proxy.start(() => {
-  console.info("🔶 API Hero proxy running");
-});
+// if (process.env.NODE_ENV === "development") {
+//   apihero.proxy.start(() => {
+//     console.info("🔶 API Hero proxy running");
+//   });
+// }
