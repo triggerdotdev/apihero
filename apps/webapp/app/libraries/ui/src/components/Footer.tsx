@@ -21,7 +21,7 @@ export function Footer() {
         <a
           target="_blank"
           rel="noopener noreferrer"
-          href="https://discord.com/channels/946768798457921646/1020286418343448586"
+          href="https://discord.gg/4XZ3wsCXnG"
           className={linkStyle}
         >
           Discord
